@@ -37,7 +37,7 @@ packages = [
 
 [tool.poetry.scripts]
 mosamatic2 = "mosamatic2.app:main"
-mosamatic2-api = "mosamatic2.api:main"
+mosamatic2-server = "mosamatic2.server:main"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
