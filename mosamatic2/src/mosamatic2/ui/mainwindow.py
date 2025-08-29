@@ -25,7 +25,9 @@ class MainWindow(QMainWindow):
     def init_window(self):
         self.setWindowTitle(f'{constants.MOSAMATIC2_WINDOW_TITLE} {version()}')
         icon_file_name = constants.MOSAMATIC2_APP_ICON_FILE_NAME_MAC if is_macos() else constants.MOSAMATIC2_APP_ICON_FILE_NAME_WIN
-        self.setWindowIcon(QIcon(resource_path(os.path.join(constants.MOSAMATIC2_ICONS_DIR_PATH, icon_file_name))))
+        icon_path = resource_path(os.path.join(constants.MOSAMATIC2_ICONS_DIR_PATH, icon_file_name))
+        print(icon_path)
+        self.setWindowIcon(QIcon(icon_path))
         if not self.load_geometry_and_state():
             self.set_default_size_and_position()
 

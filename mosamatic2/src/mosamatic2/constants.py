@@ -2,9 +2,9 @@ MOSAMATIC2_BUNDLE_IDENTIFIER = 'org.mumc'
 MOSAMATIC2_APP_NAME = 'mosamatic2'
 MOSAMATIC2_VERSION_FILE = 'mosamatic2/ui/resources/VERSION'
 MOSAMATIC2_IMAGES_DIR_PATH = 'mosamatic2/ui/resources/images'
-MOSAMATIC2_ICONS_DIR_PATH = 'mosamaticdesktop/resources/ui/images/icons'
-MOSAMATIC2_APP_ICON_FILE_NAME_WIN = 'mosamaticdesktop.ico'
-MOSAMATIC2_APP_ICON_FILE_NAME_MAC = 'mosamaticdesktop.icns'
+MOSAMATIC2_ICONS_DIR_PATH = 'mosamatic2/ui/resources/icons'
+MOSAMATIC2_APP_ICON_FILE_NAME_WIN = 'mosamatic2.ico'
+MOSAMATIC2_APP_ICON_FILE_NAME_MAC = 'mosamatic2.icns'
 MOSAMATIC2_BACKGROUND_IMAGE_FILE_NAME = 'body-composition.jpg'
 MOSAMATIC2_BACKGROUND_IMAGE_OPACITY = 0.4
 
