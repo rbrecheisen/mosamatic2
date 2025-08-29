@@ -1,2 +1,3 @@
 # TODO
-- Get icon display working
+
+- [done] Get icon display working
