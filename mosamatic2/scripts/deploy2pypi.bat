@@ -22,6 +22,7 @@ if /I "%BUMP_LEVEL%"=="major" (
 )
 
 FOR /F %%v IN ('poetry version --short') DO SET VERSION=%%v
+echo %VERSION% > src\mosamatic2\ui\resources\VERSION
 echo Deploying version %VERSION% to PyPI...
 set /p CONFIRM="Is this correct? (y/n) "
 if /I NOT "%CONFIRM%"=="y" (
