@@ -63,10 +63,32 @@ You can also find all documentation related to mosamatic2 (both desktop and API)
 website https://www.mosamatic.com. 
 
 
-## X. User scenarios
-### X.X. L3-based body composition analysis using CT
-### X.X. L3-based body composition analysis using Dixon MRI
-### X.X. Liver analysis using Dixon MRI
+## X. Pipelines
+mosamatcic2 supports a number of analysis pipelines, each consisting of a number of (reusable)
+tasks. Here are a few examples (running on a single scan):
+
+- Muscle and fat L3 using CT
+    - Select L3
+    - Segment muscle and fat
+    - Calculate scores
+
+- Muscle and fat 3D using CT
+    - Segment muscle and fat
+    - Calculate scores
+
+- Muscle and fat L3 using CT and Dixon MRI
+    - Select L3 from CT
+    - Select L3 from Dixon MRI
+    - Register L3s from CT and Dixon MRI
+    - Calculate PDFF map inside muscle ROI from Dixon MRI
+    - Calculate scores
+
+- Muscle and fat 3D using CT and Dixon MRI
+
+- Liver using CT and Dixon MRI
+    - Segment liver from Dixon MRI
+    - Calculate PDFF map inside liver ROI from Dixon MRI
+    - Calculate scores
 
 
 ## X. Design considerations

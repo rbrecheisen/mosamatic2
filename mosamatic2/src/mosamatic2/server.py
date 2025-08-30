@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 
 @app.route('/test')
-def test():
+def run_tests():
     return 'PASSED'
 
 
