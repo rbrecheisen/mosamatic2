@@ -25,7 +25,7 @@ dependencies = [
     "tensorflow-macos==2.15.0; platform_system == 'Darwin' and platform_machine == 'arm64'",
     "tensorboard==2.15.2",
     "tensorboard-data-server==0.7.2",
-    "tensorflow-io-gcs-filesystem==0.31.0",
+    "tensorflow-io-gcs-filesystem>=0.31.0; platform_system == 'Windows'",
     "totalsegmentator>=2.11.0",
     "flask>=3.1.2",
     "antspyx>=0.5.4",
