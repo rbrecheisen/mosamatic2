@@ -92,6 +92,7 @@ tasks. Here are a few examples (running on a single scan):
 
 
 ## X. Design considerations
+
 ### X.X Image modalities
 mosamatic2 should be able to handle both CT scans/images and Dixon MRI scans/images both in
 DICOM format. Should I also consider NIFTI format files? Perhaps. In that case you could 
