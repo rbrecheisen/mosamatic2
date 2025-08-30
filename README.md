@@ -32,7 +32,7 @@ extracted inside the liver parenchyma only and used for clinical assessment.
 
 ## 2. Desktop vs. API
 mosamatic2 can be started in two ways: (1) as a desktop application (written in PySide6)
-or (2) as an API server that can be called through its REST interface from the command-line.
+or (2) as a server that can be called through its REST interface from the command-line.
 This allows mosamatic2 to be used inside larger data processing and analysis pipelines.
 
 
@@ -42,13 +42,13 @@ installing Python 3.11):
 
     python -m pip install mosamatic2
 
-After installation mosamatic2 can be started as desktop application with the command:
+After installation mosamatic2 can be started as a desktop application with the command:
 
     mosamatic2
 
-or as an API server with the command:
+or as a server with the command:
 
-    mosamatic2-api
+    mosamatic2-server
 
 In the latter case, the API server can be accessed through its REST interface at the 
 following URL:
@@ -63,7 +63,28 @@ You can also find all documentation related to mosamatic2 (both desktop and API)
 website https://www.mosamatic.com. 
 
 
-## 4. Desktop features and user manual
+## X. User scenarios
+### X.X. L3-based body composition analysis using CT
+### X.X. L3-based body composition analysis using Dixon MRI
+### X.X. Liver analysis using Dixon MRI
 
 
-## 5. API specification
+## X. Design considerations
+### X.X Image modalities
+mosamatic2 should be able to handle both CT scans/images and Dixon MRI scans/images both in
+DICOM format. Should I also consider NIFTI format files? Perhaps. In that case you could 
+consider a Loader class with child class DicomLoader and NiftiLoader. The DicomLoader class
+uses pydicom. The NiftiLoader class uses nibabel. I can think of other child classes for the
+DicomLoader class, e.g., DicomCtLoader and DicomDixonLoader. Or I just make specific loaders
+for these data modalities and figure out later how to refactor/redesign the code to better
+represent different modalities.
+
+### X.X. AI models
+Another consideration are AI models that mosamatic2 uses. We have two AI packages: TensorFlow
+and PyTorch. mosamatic2 should be able to work with both. 
+
+
+## X. Desktop features and user manual
+
+
+## X. API specification
