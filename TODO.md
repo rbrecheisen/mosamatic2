@@ -1,5 +1,4 @@
 # TODO
-- Segment vertebrae from Dixon MRI (water image) using Total Segmentator
-- Segment liver from Dixon MRI using Total Segmentator
+- Fix problem generating PDFF map from Dixon in-phase and opposite-phase images (map is now empty)
 
 - [done] Get icon display working
