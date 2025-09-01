@@ -3,13 +3,13 @@ import os
 from mosamatic2.core.loaders.loader import Loader
 from mosamatic2.core.loaders.fileloader import FileLoader
 from mosamatic2.core.loaders.dicomimageloader import DicomImageLoader
-from mosamatic2.core.data.dicomseriesdata import DicomSeriesData
+from mosamatic2.core.data.dixonseriesdata import DixonSeriesData
 
 
 class DixonSeriesLoader(Loader, FileLoader):
     """
     DixonSeriesLoader
-    Loads a single Dixon MRI series (in-phase, opposite-phase, water and fat images)
+    Loads a set of Dixon MRI series for a single scan session
     """
     def __init__(self):
         self._dir_path = None

@@ -3,6 +3,7 @@ import sys
 SOURCES = {
     'mac': {
         'input': '/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/Mosamatic/testdata/L3',
+        'scans': None,
         'model_files': {
             'pytorch': '/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/Mosamatic/models/pytorch/L3/2.2',
             'tensorflow': '/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/Mosamatic/models/tensorflow/L3/1.0',
@@ -11,6 +12,7 @@ SOURCES = {
     },
     'windows': {
         'input': 'G:\\My Drive\\data\\Mosamatic\\testdata\\L3',
+        'scans': 'D:\\Mosamatic\\CLI\\Input\\AutoSelect',
         'model_files': {
             'pytorch': 'G:\\My Drive\\data\\Mosamatic\\models\\pytorch\\L3\\2.2',
             'tensorflow': 'G:\\My Drive\\data\\Mosamatic\\models\\tensorflow\\L3\\1.0',

@@ -1,15 +1,17 @@
 import os
 from mosamatic2.core.loaders.dicomimageloader import DicomImageLoader
 from mosamatic2.core.loaders.dicomseriesloader import DicomSeriesLoader
+from mosamatic2.core.loaders.dixonseriesloader import DixonSeriesLoader
 from mosamatic2.core.data.data import Data
 from mosamatic2.core.data.dicomimagedata import DicomImageData
 from mosamatic2.core.data.dicomseriesdata import DicomSeriesData
+from mosamatic2.core.data.dixonseriesdata import DixonSeriesData
 from tests.sources import get_sources
 
 SOURCES = get_sources()
 
 
-def test_dicomfileloader():
+def test_dicomimageloader():
     loader = DicomImageLoader()
     loader.set_path(os.path.join(SOURCES['input'], 'SURG-ZUYD-0001.dcm'))
     data = loader.load()
@@ -40,3 +42,8 @@ def test_dicomseriesloader():
     for item in data.object():
         instance_number = item.object().get('InstanceNumber')
         assert instance_number > prev_instance_number
+
+
+def test_dixonseriesloader():
+    loader = DixonSeriesLoader()
+    pass

@@ -7,6 +7,7 @@ import struct
 import binascii
 import pydicom
 import warnings
+from pathlib import Path
 from pydicom.uid import (
     ExplicitVRLittleEndian, ImplicitVRLittleEndian, ExplicitVRBigEndian
 )
@@ -24,6 +25,22 @@ def create_name_with_timestamp(prefix: str='') -> str:
         prefix = prefix + '-'
     name = f'{prefix}{timestamp}'
     return name
+
+
+def home_dir():
+    return Path.home()
+
+
+def mosamatic_dir():
+    d = os.path.join(home_dir(), '.mosamatic2')
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
+def mosamatic_data_dir():
+    data_dir = os.path.join(mosamatic_dir(), 'data')
+    os.makedirs(data_dir, exist_ok=True)
+    return data_dir
 
 
 def current_time_in_milliseconds():
