@@ -106,6 +106,35 @@ represent different modalities.
 Another consideration are AI models that mosamatic2 uses. We have two AI packages: TensorFlow
 and PyTorch. mosamatic2 should be able to work with both. 
 
+### X.X. Processing and visualization support
+mosamatic2 should support both processing (input -> task/pipeline -> output) as well as 
+visualization of output results (input -> visualization). For this I can envision three types
+of panels:
+
+- AbstractBasePanel
+    - TaskPanel
+    - PipelinePanel
+    - VisualizationPanel
+
+### X.X. Tasks
+mosamatic2 supports the following tasks:
+
+- DecompressDicomImagesTask
+- RescaleDicomImagesTask
+- Anony
+- SegmentMuscleAndFatAtL3FromCtTask (supports both TF and PT)
+- CalculateDefaultBodyCompositionMetricsTask
+- GeneratePngImagesFromSegmentationsTask
+- GenerateDicomSummaryTask (scans DICOM directory)
+
+### X.X. Visualizations
+mosamatic2 supports the following visualizations:
+
+- DicomSummaryVisualization
+- DefaultBodyCompositionMetricsVisualization
+- DicomImageVisualization
+- DicomImageSeriesVisualization
+- PngImageVisualization
 
 ## X. Desktop features and user manual
 
