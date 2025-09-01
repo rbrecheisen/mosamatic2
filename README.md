@@ -121,8 +121,11 @@ mosamatic2 supports the following tasks:
 
 - DecompressDicomImagesTask
 - RescaleDicomImagesTask
-- Anony
-- SegmentMuscleAndFatAtL3FromCtTask (supports both TF and PT)
+- AnonymizeDicomImagesTask
+- SegmentMuscleAndFatTask
+    - Supports both TF and PT
+    - Supports both CT and MRI models
+    - Supports both 2D (L3) and 3D models
 - CalculateDefaultBodyCompositionMetricsTask
 - GeneratePngImagesFromSegmentationsTask
 - GenerateDicomSummaryTask (scans DICOM directory)
