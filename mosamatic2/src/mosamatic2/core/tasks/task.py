@@ -6,6 +6,10 @@ LOG = LogManager()
 
 
 class Task:
+    INPUTS = []
+    PARAMS = []
+    OUTPUT = 'output'
+
     def __init__(self, inputs, params):
         self._inputs = inputs
         self._params = params
@@ -13,6 +17,14 @@ class Task:
         for k, v in self._inputs.items():
             assert isinstance(v, Data)
             assert isinstance(v, FileData)
+        # Check that input and param names match specification
+        assert len(self._inputs.keys()) == len(Task.INPUTS)
+        for k in self._inputs.keys():
+            assert k in Task.INPUTS
+        assert len(self._params.keys()) == len(Task.PARAMS)
+        for k in self._params.keys():
+            assert k in Task.PARAMS
+
 
     def input(self, name):
         return self._inputs[name]
