@@ -14,11 +14,11 @@ from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.widgets.panels.mainpanel import MainPanel
 from mosamatic2.ui.widgets.panels.logpanel import LogPanel
-# from mosamatic2.ui.widgets.panels.tasks.rescaledicomimagestaskpanel import RescaleDicomImagesTaskPanel
-# from mosamatic2.ui.widgets.panels.tasks.segmentmusclefatl3tensorflowtaskpanel import SegmentMuscleFatL3TensorFlowTaskPanel
-# from mosamatic2.ui.widgets.panels.tasks.createpngsfromsegmentationstaskpanel import CreatePngsFromSegmentationsTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.rescaledicomimagestaskpanel import RescaleDicomImagesTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.segmentmusclefatl3tensorflowtaskpanel import SegmentMuscleFatL3TensorFlowTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.createpngsfromsegmentationstaskpanel import CreatePngsFromSegmentationsTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.calculatescorestaskpanel import CalculateScoresTaskPanel
-# from mosamatic2.ui.widgets.panels.pipelines.defaultpipelinepanel import DefaultPipelinePanel
+from mosamatic2.ui.widgets.panels.pipelines.defaultpipelinepanel import DefaultPipelinePanel
 
 LOG = LogManager()
 
@@ -96,7 +96,7 @@ class MainWindow(QMainWindow):
     def main_panel(self):
         if not self._main_panel:
             self._main_panel = MainPanel(self)
-            self._main_panel.add_panel(self.rescale_dicom_files_task_panel(), 'rescaledicomfilestaskpanel')
+            self._main_panel.add_panel(self.rescale_dicom_images_task_panel(), 'rescaledicomimagestaskpanel')
             self._main_panel.add_panel(self.segment_muscle_fat_l3_tensorflow_task_panel(), 'segmentmusclefatl3tensorflowtaskpanel')
             self._main_panel.add_panel(self.create_pngs_from_segmentations_task_panel(), 'createpngsfromsegmentationstaskpanel')
             self._main_panel.add_panel(self.calculate_scores_task_panel(), 'calculatescorestaskpanel')

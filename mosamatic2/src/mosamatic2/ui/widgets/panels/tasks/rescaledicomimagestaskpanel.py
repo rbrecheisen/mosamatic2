@@ -16,23 +16,22 @@ from PySide6.QtCore import (
     Slot,
 )
 
-from mosamaticdesktop.core.utils.logmanager import LogManager
-from mosamaticdesktop.ui.panels.taskpanel import TaskPanel
-from mosamaticdesktop.ui.settings import Settings
-from mosamaticdesktop.ui.utils import is_macos
-from mosamaticdesktop.ui.worker import Worker
-
-from mosamatic.tasks import RescaleDicomFilesTask
+from mosamatic2.core.managers.logmanager import LogManager
+from mosamatic2.ui.widgets.panels.taskpanel import TaskPanel
+from mosamatic2.ui.settings import Settings
+from mosamatic2.ui.utils import is_macos
+from mosamatic2.ui.worker import Worker
+# from mosamatic2.core.tasks import RescaleDicomImagesTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Rescale DICOM files'
+PANEL_TITLE = 'RescaleDicomImagesTask'
 PANEL_NAME = 'rescaledicomfilestaskpanel'
 
 
-class RescaleDicomFilesTaskPanel(TaskPanel):
+class RescaleDicomImagesTaskPanel(TaskPanel):
     def __init__(self):
-        super(RescaleDicomFilesTaskPanel, self).__init__()
+        super(RescaleDicomImagesTaskPanel, self).__init__()
         self.set_title(PANEL_TITLE)
         self._images_dir_line_edit = None
         self._images_dir_select_button = None
@@ -144,12 +143,12 @@ class RescaleDicomFilesTaskPanel(TaskPanel):
             LOG.info('Running task...')
             self.run_task_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            self._task = RescaleDicomFilesTask(
-                self.images_dir_line_edit().text(), 
-                self.output_dir_line_edit().text(), 
-                self.target_size_spinbox().value(),
-                self.overwrite_checkbox().isChecked()
-            )
+            # self._task = RescaleDicomFilesTask(
+            #     self.images_dir_line_edit().text(), 
+            #     self.output_dir_line_edit().text(), 
+            #     self.target_size_spinbox().value(),
+            #     self.overwrite_checkbox().isChecked()
+            # )
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)

@@ -16,17 +16,16 @@ from PySide6.QtCore import (
     Slot,
 )
 
-from mosamaticdesktop.core.utils.logmanager import LogManager
-from mosamaticdesktop.ui.panels.taskpanel import TaskPanel
-from mosamaticdesktop.ui.settings import Settings
-from mosamaticdesktop.ui.utils import is_macos
-from mosamaticdesktop.ui.worker import Worker
-
-from mosamatic.tasks import CreatePngsFromSegmentationsTask
+from mosamatic2.core.managers.logmanager import LogManager
+from mosamatic2.ui.widgets.panels.taskpanel import TaskPanel
+from mosamatic2.ui.settings import Settings
+from mosamatic2.ui.utils import is_macos
+from mosamatic2.ui.worker import Worker
+# from mosamatic2.core.tasks import CreatePngsFromSegmentationsTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Create PNG images from segmentation masks'
+PANEL_TITLE = 'CreatePngsFromSegmentationsTask'
 PANEL_NAME = 'createpngsfromsegmentationstaskpanel'
 
 
@@ -134,13 +133,13 @@ class CreatePngsFromSegmentationsTaskPanel(TaskPanel):
             LOG.info('Running task...')
             self.run_task_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            self._task = CreatePngsFromSegmentationsTask(
-                self.segmentations_dir_line_edit().text(), 
-                self.output_dir_line_edit().text(), 
-                10,
-                10,
-                self.overwrite_checkbox().isChecked()
-            )
+            # self._task = CreatePngsFromSegmentationsTask(
+            #     self.segmentations_dir_line_edit().text(), 
+            #     self.output_dir_line_edit().text(), 
+            #     10,
+            #     10,
+            #     self.overwrite_checkbox().isChecked()
+            # )
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)

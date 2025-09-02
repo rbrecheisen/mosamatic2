@@ -17,17 +17,16 @@ from PySide6.QtCore import (
     Slot,
 )
 
-from mosamaticdesktop.core.utils.logmanager import LogManager
-from mosamaticdesktop.ui.panels.defaultpanel import DefaultPanel
-from mosamaticdesktop.ui.settings import Settings
-from mosamaticdesktop.ui.utils import is_macos
-from mosamaticdesktop.ui.worker import Worker
-
-from mosamatic.pipelines import DefaultPipeline
+from mosamatic2.core.managers.logmanager import LogManager
+from mosamatic2.ui.widgets.panels.defaultpanel import DefaultPanel
+from mosamatic2.ui.settings import Settings
+from mosamatic2.ui.utils import is_macos
+from mosamatic2.ui.worker import Worker
+# from mosamatic2.pipelines import DefaultPipeline
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Default pipeline'
+PANEL_TITLE = 'DefaultPipeline'
 PANEL_NAME = 'defaultpipeline'
 MODEL_TYPE_ITEM_NAMES = ['tensorflow', 'pytorch']
 MODEL_VERSION_ITEM_NAMES = ['1.0', '2.2']
@@ -176,12 +175,6 @@ class DefaultPipelinePanel(DefaultPanel):
         self.form_layout().addRow('Images directory', images_dir_layout)
         self.form_layout().addRow('Model files directory', model_files_dir_layout)
         self.form_layout().addRow('Output directory', output_dir_layout)
-        # self.form_layout().addRow('Rescale target size', self.target_size_spinbox())
-        # self.form_layout().addRow('Model type', self.model_type_combobox())
-        # self.form_layout().addRow('Model version', self.model_version_combobox())
-        # self.form_layout().addRow('PNG figure width', self.fig_width_spinbox())
-        # self.form_layout().addRow('PNG figure height', self.fig_height_spinbox())
-        # self.form_layout().addRow('Full scan', self.full_scan_checkbox())
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
@@ -233,25 +226,18 @@ class DefaultPipelinePanel(DefaultPanel):
             LOG.info('Running pipeline...')
             self.run_pipeline_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            self._task = DefaultPipeline(
-                images_dir=self.images_dir_line_edit().text(),
-                model_files_dir=self.model_files_dir_line_edit().text(),
-                output_dir=self.output_dir_line_edit().text(),
-                model_type='tensorflow',
-                model_version='1.0',
-                target_size=512,
-                fig_width=10,
-                fig_height=10,
-                full_scan=False,
-                # model_type=self.model_type_combobox().currentText(),
-                # model_version=self.model_version_combobox().currentText(),
-                # target_size=self.target_size_spinbox().value(),
-                # fig_width=self.fig_width_spinbox().value(),
-                # fig_height=self.fig_height_spinbox().value(),
-                # full_scan=self.full_scan_checkbox().isChecked(),
-                overwrite=self.overwrite_checkbox().isChecked(),
-            )
-            # self._task.run()
+            # self._task = DefaultPipeline(
+            #     images_dir=self.images_dir_line_edit().text(),
+            #     model_files_dir=self.model_files_dir_line_edit().text(),
+            #     output_dir=self.output_dir_line_edit().text(),
+            #     model_type='tensorflow',
+            #     model_version='1.0',
+            #     target_size=512,
+            #     fig_width=10,
+            #     fig_height=10,
+            #     full_scan=False,
+            #     overwrite=self.overwrite_checkbox().isChecked(),
+            # )
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)
