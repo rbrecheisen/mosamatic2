@@ -3,10 +3,6 @@ from mosamatic2.core.data.filedata import FileData
 
 
 class DicomImageData(Data, FileData):
-    """
-    DicomImageData
-    Represents a single (2D) DICOM image
-    """
     def __init__(self):
         self._file_path = None
         self._name = None

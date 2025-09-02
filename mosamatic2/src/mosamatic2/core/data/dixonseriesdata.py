@@ -3,11 +3,6 @@ from mosamatic2.core.data.filedata import FileData
 
 
 class DixonSeriesData(Data, FileData):
-    """
-    DixonSeriesData
-    Represents a set of Dixon MRI series for a single scan session. The
-    set should contain in-phase, opposite-phase, water and fat series.
-    """
     def __init__(self):
         self._dir_path = None
         self._name = None

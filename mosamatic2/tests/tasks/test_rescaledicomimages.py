@@ -10,12 +10,17 @@ IMAGES_DIR = ''
 
 
 def test_rescaledicomimages():
-    images_path = SOURCES['input']
-    images_loader = MultiDicomImageLoader()
-    images_loader.set_path(images_path)
-    data = images_loader.load()
-    assert isinstance(data, MultiDicomImageData)
-    for image in data.items():
-        assert isinstance(image, DicomImageData)
-    task = RescaleDicomImagesTask(inputs={'images': data}, params={'target_size': 512})
+    images_dir = SOURCES['input']
+    task = RescaleDicomImagesTask(
+        inputs={'images': images_dir}, 
+        params={'target_size': 512}
+    )
     task.run()
+    # images_loader = MultiDicomImageLoader()
+    # images_loader.set_path(images_path)
+    # data = images_loader.load()
+    # assert isinstance(data, MultiDicomImageData)
+    # for image in data.items():
+    #     assert isinstance(image, DicomImageData)
+    # task = RescaleDicomImagesTask(inputs={'images': data}, params={'target_size': 512})
+    # task.run()

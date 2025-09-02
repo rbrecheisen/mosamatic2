@@ -7,10 +7,6 @@ from mosamatic2.core.data.dixonseriesdata import DixonSeriesData
 
 
 class DixonSeriesLoader(Loader, FileLoader):
-    """
-    DixonSeriesLoader
-    Loads a set of Dixon MRI series for a single scan session
-    """
     def __init__(self):
         self._dir_path = None
 

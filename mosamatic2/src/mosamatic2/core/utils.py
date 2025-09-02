@@ -45,7 +45,7 @@ def mosamatic_data_dir():
 
 def mosamatic_output_dir():
     output_dir = os.path.join(mosamatic_data_dir(), 'output')
-    os.makedirs(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
     return output_dir
 
 

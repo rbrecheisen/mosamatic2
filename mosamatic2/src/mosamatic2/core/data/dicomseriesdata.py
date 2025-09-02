@@ -3,10 +3,6 @@ from mosamatic2.core.data.filedata import FileData
 
 
 class DicomSeriesData(Data, FileData):
-    """
-    DicomSeriesData
-    Represents a single DICOM series, e.g., a CT or MRI scan
-    """
     def __init__(self):
         self._dir_path = None
         self._name = None

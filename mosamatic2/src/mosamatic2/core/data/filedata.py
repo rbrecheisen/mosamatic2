@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class FileData(ABC):
-
     @abstractmethod
     def path(self):
         pass

@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class FileLoader(ABC):
-
     @abstractmethod
     def path():
         pass

@@ -3,10 +3,9 @@ import shutil
 import numpy as np
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
-from mosamatic2.core.managers.datamanager import DataManager
 from mosamatic2.core.data.multidicomimagedata import MultiDicomImageData
 from mosamatic2.core.data.dicomimagedata import DicomImageData
-from mosamatic2.core.utils import mosamatic_output_dir
+from mosamatic2.core.loaders.multidicomimageloader import MultiDicomImageLoader
 from scipy.ndimage import zoom
 
 LOG = LogManager()
@@ -40,31 +39,25 @@ class RescaleDicomImagesTask(Task):
         return p
 
     def run(self):
-        target_size = int(self.param('target_size'))
-        data = self.input('images')
-        assert isinstance(data, MultiDicomImageData)
-        manager = DataManager()
-        output_name = manager.add(MultiDicomImageData())
-        output = manager.get(output_name)
-        nr_steps = len(data.items())
+        loader = MultiDicomImageLoader()
+        loader.set_path(self.input('images'))
+        image_data = loader.load()
+        assert isinstance(image_data, MultiDicomImageData)
+        images = image_data.items()
+        nr_steps = len(images)
         for step in range(nr_steps):
-            source = data.items()[step]
+            source = images[step]
             assert isinstance(source, DicomImageData)
             p = source.item()
             if len(p.pixel_array.shape) == 2:
                 source_name = os.path.split(source.path())[1]
-                if p.Rows != target_size or p.Columns != target_size:
-                    p = self.rescale_image(p, target_size)
-                    target = os.path.join(mosamatic_output_dir(), output_name, source_name)
+                if p.Rows != self.param('target_size') or p.Columns != self.param('target_size'):
+                    p = self.rescale_image(p, self.param('target_size'))
+                    target = os.path.join(self.output(), source_name)
                     p.save_as(target)
-                    image = DicomImageData()
-                    image.set_path(target)
-                    image.set_item(p)
-                    output.add_item(image)
                 else:
-                    # target = os.path.join(self.output(), source_name)
-                    # shutil.copy(source, target)
-                    pass
+                    target = os.path.join(self.output(), source_name)
+                    shutil.copy(source.path(), target)
             else:
                 LOG.warning(f'Shape of pixel data in file {source.path()} should be 2D but is {len(p.pixel_array.shape)}D')
             self.set_progress(step, nr_steps)

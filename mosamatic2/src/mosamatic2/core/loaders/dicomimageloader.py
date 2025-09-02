@@ -1,8 +1,4 @@
-import pydicom
-
-
 from mosamatic2.core.managers.logmanager import LogManager
-from mosamatic2.core.managers.datamanager import DataManager
 from mosamatic2.core.loaders.loader import Loader
 from mosamatic2.core.loaders.fileloader import FileLoader
 from mosamatic2.core.data.dicomimagedata import DicomImageData
@@ -16,10 +12,6 @@ LOG = LogManager()
 
 
 class DicomImageLoader(Loader, FileLoader):
-    """
-    DicomImageLoader
-    Loads a single DICOM image
-    """
     def __init__(self):
         self._file_path = None
         
@@ -29,7 +21,7 @@ class DicomImageLoader(Loader, FileLoader):
     def set_path(self, path):
         self._file_path = path
 
-    def load(self, to_manager=True):        
+    def load(self):        
         if self.path():
             if is_dicom(self.path()):
                 p = load_dicom(self.path())
@@ -38,9 +30,6 @@ class DicomImageLoader(Loader, FileLoader):
                 data = DicomImageData()
                 data.set_path(self.path())
                 data.set_item(p)
-                if to_manager:
-                    manager = DataManager()
-                    manager.add(data)
                 return data
             return None
         raise RuntimeError('File path not set')
