@@ -17,8 +17,8 @@ def test_dicomimageloader():
     data = loader.load()
     assert isinstance(data, Data)
     assert isinstance(data, DicomImageData)
-    assert data.object()
-    assert data.object().get('PatientID', False)
+    assert data.item()
+    assert data.item().get('PatientID', False)
     # Try to load a non-DICOM file
     try:
         loader.set_file_path(os.path.join(SOURCES['input'], 'SURG-ZUYD-0001.tag'))
@@ -33,14 +33,13 @@ def test_dicomseriesloader():
     data = loader.load()
     assert isinstance(data, Data)
     assert isinstance(data, DicomSeriesData)
-    assert data.object()
-    assert len(data.object()) == 4
-    for item in data.object():
-        assert item.object().get('PatientID', False)
+    assert len(data.items()) == 4
+    for item in data.items():
+        assert item.item().get('PatientID', False)
     # Make sure they're sorted
     prev_instance_number = -1
-    for item in data.object():
-        instance_number = item.object().get('InstanceNumber')
+    for item in data.items():
+        instance_number = item.item().get('InstanceNumber')
         assert instance_number > prev_instance_number
 
 

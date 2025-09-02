@@ -23,6 +23,7 @@ class DataManager:
             self.notify_listeners(self._data[data.name()])
         else:
             LOG.warning(f'Data object with name "{data.name()}" already added')
+        return data.name()
 
     def remove(self, name):
         if name in self._data.keys():

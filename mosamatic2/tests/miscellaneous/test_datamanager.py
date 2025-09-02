@@ -13,8 +13,8 @@ def test_datamanager():
     data = loader.load()
     assert isinstance(data, Data)
     assert isinstance(data, DicomSeriesData)
-    assert data.object()
-    for item in data.object():
+    assert len(data.items()) > 0
+    for item in data.items():
         assert isinstance(item, DicomImageData)
     data_manager = DataManager()
     data_manager.add(data)

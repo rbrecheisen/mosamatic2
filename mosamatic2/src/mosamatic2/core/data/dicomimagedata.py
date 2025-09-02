@@ -10,7 +10,7 @@ class DicomImageData(Data, FileData):
     def __init__(self):
         self._file_path = None
         self._name = None
-        self._object = None
+        self._item = None
 
     def path(self):
         return self._file_path
@@ -24,8 +24,8 @@ class DicomImageData(Data, FileData):
     def set_name(self, name):
         self._name = name
 
-    def object(self):
-        return self._object
+    def item(self):
+        return self._item
     
-    def set_object(self, object):
-        self._object = object
+    def set_item(self, item):
+        self._item = item

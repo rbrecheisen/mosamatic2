@@ -43,6 +43,12 @@ def mosamatic_data_dir():
     return data_dir
 
 
+def mosamatic_output_dir():
+    output_dir = os.path.join(mosamatic_data_dir(), 'output')
+    os.makedirs(output_dir)
+    return output_dir
+
+
 def current_time_in_milliseconds():
     return int(round(time.time() * 1000))
 

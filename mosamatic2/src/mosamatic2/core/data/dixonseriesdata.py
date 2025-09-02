@@ -25,20 +25,20 @@ class DixonSeriesData(Data, FileData):
     def set_name(self, name):
         self._name = name
 
-    def object(self):
+    def item(self):
         return self._object
     
-    def set_object(self, object):
+    def set_item(self, object):
         self._object = object
 
     def ip(self):
-        return self.object()['ip']
+        return self.item()['ip']
     
     def op(self):
-        return self.object()['op']
+        return self.item()['op']
     
     def water(self):
-        return self.object()['water']
+        return self.item()['water']
     
     def fat(self):
-        return self.object()['fat']
+        return self.item()['fat']
