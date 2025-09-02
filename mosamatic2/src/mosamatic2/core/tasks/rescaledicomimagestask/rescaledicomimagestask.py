@@ -8,7 +8,6 @@ from scipy.ndimage import zoom
 class RescaleDicomImagesTask(Task):
     INPUTS = ['images']
     PARAMS = ['width', 'height']
-    OUTPUT = 'output'
 
     def __init__(self, inputs, output, params):
         super(RescaleDicomImagesTask, self).__init__(inputs, output, params)
