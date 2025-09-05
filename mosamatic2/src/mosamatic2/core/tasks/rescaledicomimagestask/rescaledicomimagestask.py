@@ -15,8 +15,8 @@ class RescaleDicomImagesTask(Task):
     INPUTS = ['images']
     PARAMS = ['target_size']
 
-    def __init__(self, inputs, params):
-        super(RescaleDicomImagesTask, self).__init__(inputs, params)
+    def __init__(self, inputs, params, output=None, overwrite=True):
+        super(RescaleDicomImagesTask, self).__init__(inputs, params, output, overwrite)
 
     def rescale_image(self, p, target_size):
         pixel_array = p.pixel_array

@@ -10,12 +10,11 @@ TASK_NAME = 'RescaleDicomImagesTask'.lower()
 def test_rescaledicomimages():
     task = RescaleDicomImagesTask(
         inputs={'images': SOURCES['input']}, 
-        params={'target_size': 512}
+        params={'target_size': 512},
+        output=SOURCES['output'],
+        overwrite=True,
     )
     task.run()
-    found = False
-    for d in os.listdir(mosamatic_output_dir()):
-        dir_path = os.path.join(mosamatic_output_dir(), d)
-        if TASK_NAME in dir_path:
-            found = True
-    assert found
+    for f in os.listdir(task.input('images')):
+        if f.endswith('.dcm'):
+            assert os.path.isfile(os.path.join(task.output(), f))

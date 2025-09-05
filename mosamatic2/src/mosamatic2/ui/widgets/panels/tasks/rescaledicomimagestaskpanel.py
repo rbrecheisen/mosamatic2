@@ -21,7 +21,7 @@ from mosamatic2.ui.widgets.panels.taskpanel import TaskPanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
-# from mosamatic2.core.tasks import RescaleDicomImagesTask
+from mosamatic2.core.tasks import RescaleDicomImagesTask
 
 LOG = LogManager()
 
@@ -143,12 +143,12 @@ class RescaleDicomImagesTaskPanel(TaskPanel):
             LOG.info('Running task...')
             self.run_task_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            # self._task = RescaleDicomFilesTask(
-            #     self.images_dir_line_edit().text(), 
-            #     self.output_dir_line_edit().text(), 
-            #     self.target_size_spinbox().value(),
-            #     self.overwrite_checkbox().isChecked()
-            # )
+            self._task = RescaleDicomImagesTask(
+                inputs={'images': self.images_dir_line_edit().text()},
+                params={'target_size': self.target_size_spinbox().value()},
+                output=self.output_dir_line_edit().text(),
+                overwrite=self.overwrite_checkbox().isChecked(),
+            )
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)
@@ -171,6 +171,7 @@ class RescaleDicomImagesTaskPanel(TaskPanel):
 
     @Slot()
     def handle_finished(self):
+        LOG.info(f'Output saved in {self._task.output()}')
         self.run_task_button().setEnabled(True)
 
     # HELPERS
