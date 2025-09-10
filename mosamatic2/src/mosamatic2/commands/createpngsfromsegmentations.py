@@ -32,7 +32,7 @@ from mosamatic2.core.tasks import CreatePngsFromSegmentationsTask
     '--overwrite', 
     type=click.BOOL, 
     default=False, 
-    help='Overwrite (true/false)'
+    help='Overwrite [true|false]'
 )
 def createpngsfromsegmentations(segmentations, output, fig_width, fig_height, overwrite):
     """
@@ -54,7 +54,7 @@ def createpngsfromsegmentations(segmentations, output, fig_width, fig_height, ov
         Height of PNG image
 
     --overwrite : bool
-        Overwrite contents output directory true/false
+        Overwrite contents output directory [true|false]
     """
     task = CreatePngsFromSegmentationsTask(
         inputs={'segmentations': segmentations},

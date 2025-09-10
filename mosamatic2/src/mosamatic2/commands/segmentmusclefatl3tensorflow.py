@@ -26,7 +26,7 @@ from mosamatic2.core.tasks import SegmentMuscleFatL3TensorFlowTask
     '--overwrite', 
     default=False, 
     type=click.BOOL, 
-    help='Overwrite (true/false)'
+    help='Overwrite [true|false]'
 )
 def segmentmusclefatl3tensorflow(images, model_files, output, overwrite):
     """
@@ -44,7 +44,7 @@ def segmentmusclefatl3tensorflow(images, model_files, output, overwrite):
         Path to output directory
 
     --overwrite : bool
-        Overwrite contents output directory true/false
+        Overwrite contents output directory [true|false]
     """
     task = SegmentMuscleFatL3TensorFlowTask(
         inputs={'images': images, 'model_files': model_files},

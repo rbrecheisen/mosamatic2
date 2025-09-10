@@ -25,7 +25,7 @@ from mosamatic2.core.tasks import RescaleDicomImagesTask
     '--overwrite', 
     type=click.BOOL, 
     default=False, 
-    help='Overwrite (true/false)'
+    help='Overwrite [true|false]'
 )
 def rescaledicomimages(images, output, target_size, overwrite):
     """
@@ -43,7 +43,7 @@ def rescaledicomimages(images, output, target_size, overwrite):
         Target size for rescaled images (default: 512)
     
     --overwrite : bool
-        Overwrite contents output directory true/false
+        Overwrite contents output directory: [true|false]
     """
     task = RescaleDicomImagesTask(
         inputs={'images': images}, 

@@ -31,7 +31,7 @@ from mosamatic2.core.tasks import CalculateScoresTask
     '--overwrite', 
     type=click.BOOL, 
     default=False, 
-    help='Overwrite (true/false)'
+    help='Overwrite [true|false]'
 )
 def calculatescores(images, segmentations, output, file_type, overwrite):
     """
@@ -62,7 +62,7 @@ def calculatescores(images, segmentations, output, file_type, overwrite):
         Type of segmentation file to use. Can be either "npy" or "tag"
     
     --overwrite : bool
-        Overwrite contents output directory true/false
+        Overwrite contents output directory [true|false]
     """
     task = CalculateScoresTask(
         inputs={'images': images, 'segmentations': segmentations},
