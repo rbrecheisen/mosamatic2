@@ -1,11 +1,8 @@
 import os
-from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.data.dicomimagedata import DicomImageData
 
-LOG = LogManager()
 
-
-class MultiDicomImageData:
+class DicomImageSeriesData:
     def __init__(self):
         self._dir_path = None
         self._name = None
@@ -27,17 +24,15 @@ class MultiDicomImageData:
         return self._images
     
     def load(self):
-        series_instance_uids = []
         if self.path():
-            items = []
+            images = []
             for f in os.listdir(self.path()):
                 f_path = os.path.join(self.path(), f)
                 image = DicomImageData()
                 image.set_path(f_path)
                 if image.load():
-                    series_instance_uid = image.object().SeriesInstanceUID
-                    if series_instance_uid in series_instance_uids:
-                        RuntimeError('Cannot load DICOM images with identical series instance UID')
-                    items.append(image)
+                    images.append(image)
+            # Sort DICOM objects by instance number
+            self._images = sorted(images, key=lambda image: int(image.object().get('InstanceNumber')))
             return True
         return False
