@@ -11,8 +11,6 @@ class LogManager:
         self._suppress_print = suppress_print
         self._listeners = []
         file_path = os.path.join(Path.home(), 'mosamatic2.log')
-        if os.path.isfile(file_path):
-            os.remove(file_path)
         self._file_handle = open(file_path, 'w', buffering=1)
         atexit.register(self.close_file)
 
