@@ -1,1 +1,3 @@
 from mosamatic2.core.tasks.rescaledicomimagestask.rescaledicomimagestask import RescaleDicomImagesTask
+from mosamatic2.core.tasks.segmentmusclefatl3tensorflowtask.segmentmusclefatl3tensorflowtask import SegmentMuscleFatL3TensorFlowTask
+from mosamatic2.core.tasks.calculatescorestask.calculatescorestask import CalculateScoresTask

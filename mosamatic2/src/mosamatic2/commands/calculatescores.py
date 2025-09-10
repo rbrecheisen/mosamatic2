@@ -34,6 +34,10 @@ from mosamatic2.core.tasks import CalculateScoresTask
     help='Overwrite (true/false)'
 )
 def calculatescores(images, segmentations, output, file_type, overwrite):
-    # task = CalculateScoresTask(images_dir, segmentations_dir, output_dir, file_type, overwrite=overwrite)
-    # task.run()
-    pass
+    task = CalculateScoresTask(
+        inputs={'images': images, 'segmentations': segmentations},
+        params={'file_type': file_type},
+        output=output,
+        overwrite=overwrite,
+    )
+    task.run()
