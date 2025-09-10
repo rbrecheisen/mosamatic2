@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
-from mosamatic2.core.data.multidicomimagedata import MultiDicomImageData
+from mosamatic2.core.data.multidicomimage import MultiDicomImage
 from mosamatic2.core.utils import (
     is_dicom, 
     load_dicom,
@@ -54,7 +54,7 @@ class CalculateScoresTask(Task):
         return img_seg_pairs
 
     def load_images(self):
-        image_data = MultiDicomImageData()
+        image_data = MultiDicomImage()
         image_data.set_path(self.input('images'))
         if image_data.load():
             return image_data

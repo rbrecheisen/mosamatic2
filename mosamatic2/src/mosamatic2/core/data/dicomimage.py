@@ -6,7 +6,7 @@ from mosamatic2.core.utils import (
 )
 
 
-class DicomImageData(FileData):
+class DicomImage(FileData):
     def load(self):
         if self.path():
             if is_dicom(self.path()):

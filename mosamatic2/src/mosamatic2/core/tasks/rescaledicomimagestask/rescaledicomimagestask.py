@@ -3,9 +3,9 @@ import shutil
 import numpy as np
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
-from mosamatic2.core.data.multidicomimagedata import MultiDicomImageData
-from mosamatic2.core.data.dicomimagedata import DicomImageData
-from mosamatic2.core.data.multidicomimagedata import MultiDicomImageData
+from mosamatic2.core.data.multidicomimage import MultiDicomImage
+from mosamatic2.core.data.dicomimage import DicomImage
+from mosamatic2.core.data.multidicomimage import MultiDicomImage
 from scipy.ndimage import zoom
 
 LOG = LogManager()
@@ -39,14 +39,14 @@ class RescaleDicomImagesTask(Task):
         return p
 
     def run(self):
-        image_data = MultiDicomImageData()
+        image_data = MultiDicomImage()
         image_data.set_path(self.input('images'))
         if image_data.load():
             images = image_data.images()
             nr_steps = len(images)
             for step in range(nr_steps):
                 source = images[step]
-                assert isinstance(source, DicomImageData)
+                assert isinstance(source, DicomImage)
                 p = source.object()
                 if len(p.pixel_array.shape) == 2:
                     source_name = os.path.split(source.path())[1]

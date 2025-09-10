@@ -1,4 +1,4 @@
-class DixonSeriesData:
+class DixonSeries:
     def __init__(self):
         self._dir_path = None
         self._name = None

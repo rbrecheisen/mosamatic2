@@ -1,21 +1,21 @@
+import os
+
+
 class FileData:
     def __init__(self):
-        self._file_path = None
+        self._path = None
         self._name = None
         self._object = None
 
     def path(self):
-        return self._file_path
+        return self._path
     
     def set_path(self, path):
-        self._file_path = path
+        self._path = path
 
     def name(self):
-        return self._name
+        return os.path.split(self.path())[1]
     
-    def set_name(self, name):
-        self._name = name
-
     def object(self):
         return self._object
     

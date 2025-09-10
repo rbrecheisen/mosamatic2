@@ -7,8 +7,8 @@ import models
 
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.tasks.segmentmusclefatl3tensorflowtask.paramloader import ParamLoader
-from mosamatic2.core.data.multidicomimagedata import MultiDicomImageData
-from mosamatic2.core.data.dicomimagedata import DicomImageData
+from mosamatic2.core.data.multidicomimage import MultiDicomImage
+from mosamatic2.core.data.dicomimage import DicomImage
 from mosamatic2.core.utils import (
     normalize_between,
     get_pixels_from_dicom_object,
@@ -29,7 +29,7 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
         super(SegmentMuscleFatL3TensorFlowTask, self).__init__(inputs, params, output, overwrite)
 
     def load_images(self):
-        image_data = MultiDicomImageData()
+        image_data = MultiDicomImage()
         image_data.set_path(self.input('images'))
         if image_data.load():
             return image_data
@@ -96,7 +96,7 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
         return pred_max
         
     def process_file(self, image, output_dir, model, contour_model, params):
-        assert isinstance(image, DicomImageData)
+        assert isinstance(image, DicomImage)
         pixels = get_pixels_from_dicom_object(image.object(), normalize=True)
         if contour_model:
             mask = self.extract_contour(pixels, contour_model, params)
