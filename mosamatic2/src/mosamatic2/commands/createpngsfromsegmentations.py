@@ -56,11 +56,10 @@ def createpngsfromsegmentations(segmentations, output, fig_width, fig_height, ov
     overwrite : bool
         Overwrite contents output directory true/false
     """
-    # task = CreatePngsFromSegmentationsTask(
-    #     inputs={'segmentations': segmentations},
-    #     params={'fig_width': fig_width, 'fig_height': fig_height},
-    #     output=output,
-    #     overwrite=overwrite,
-    # )
-    # task.run()
-    pass
+    task = CreatePngsFromSegmentationsTask(
+        inputs={'segmentations': segmentations},
+        params={'fig_width': fig_width, 'fig_height': fig_height},
+        output=output,
+        overwrite=overwrite,
+    )
+    task.run()
