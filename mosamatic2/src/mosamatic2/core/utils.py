@@ -37,6 +37,7 @@ def show_doc_command(cli_group: click.Group) -> click.Command:
         if command_name:
             cmd = commands.get(command_name)
             if cmd and hasattr(cmd, 'callback') and cmd.callback.__doc__:
+                print()
                 print(textwrap.dedent(cmd.callback.__doc__).strip())
             else:
                 click.echo(f'No docstring found for command: {command_name}')
