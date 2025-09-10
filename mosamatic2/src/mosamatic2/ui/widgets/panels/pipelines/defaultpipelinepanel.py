@@ -22,7 +22,7 @@ from mosamatic2.ui.widgets.panels.defaultpanel import DefaultPanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
-# from mosamatic2.pipelines import DefaultPipeline
+from mosamatic2.core.pipelines import DefaultPipeline
 
 LOG = LogManager()
 
@@ -226,18 +226,22 @@ class DefaultPipelinePanel(DefaultPanel):
             LOG.info('Running pipeline...')
             self.run_pipeline_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            # self._task = DefaultPipeline(
-            #     images_dir=self.images_dir_line_edit().text(),
-            #     model_files_dir=self.model_files_dir_line_edit().text(),
-            #     output_dir=self.output_dir_line_edit().text(),
-            #     model_type='tensorflow',
-            #     model_version='1.0',
-            #     target_size=512,
-            #     fig_width=10,
-            #     fig_height=10,
-            #     full_scan=False,
-            #     overwrite=self.overwrite_checkbox().isChecked(),
-            # )
+            self._task = DefaultPipeline(
+                inputs={
+                    'images': self.images_dir_line_edit().text(),
+                    'model_files': self.model_files_dir_line_edit().text(),
+                },
+                params={
+                    'file_type': 'npy',
+                    'model_type': 'tensorflow',
+                    'model_version': 1.0,
+                    'target_size': 512,
+                    'fig_width': 10,
+                    'fig_height': 10,
+                },
+                output=self.output_dir_line_edit().text(),
+                overwrite=self.overwrite_checkbox().isChecked(),
+            )
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)

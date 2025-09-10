@@ -67,15 +67,15 @@ class MainWindow(QMainWindow):
         rescale_dicom_images_task_action.triggered.connect(self.handle_rescale_dicom_images_task_action)
         segment_muscle_fat_l3_tensorflow_task_action = QAction('SegmentMuscleAndFatTask (TensorFlow)', self)
         segment_muscle_fat_l3_tensorflow_task_action.triggered.connect(self.handle_segment_muscle_fat_l3_tensorflow_task_action)
-        create_pngs_from_segmentations_task_action = QAction('CreatePngsFromSegmentationsTask', self)
-        create_pngs_from_segmentations_task_action.triggered.connect(self.handle_create_pngs_from_segmentations_task_action)
         calculate_scores_task_action = QAction('CalculateScoresTask', self)
         calculate_scores_task_action.triggered.connect(self.handle_calculate_scores_task_action)
+        create_pngs_from_segmentations_task_action = QAction('CreatePngsFromSegmentationsTask', self)
+        create_pngs_from_segmentations_task_action.triggered.connect(self.handle_create_pngs_from_segmentations_task_action)
         tasks_menu = self.menuBar().addMenu('Tasks')
         tasks_menu.addAction(rescale_dicom_images_task_action)
         tasks_menu.addAction(segment_muscle_fat_l3_tensorflow_task_action)
-        tasks_menu.addAction(create_pngs_from_segmentations_task_action)
         tasks_menu.addAction(calculate_scores_task_action)
+        tasks_menu.addAction(create_pngs_from_segmentations_task_action)
 
     def init_pipelines_menu(self):
         default_pipeline_action = QAction('DefaultPipeline', self)

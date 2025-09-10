@@ -37,7 +37,6 @@ class RescaleDicomImagesTaskPanel(TaskPanel):
         self._images_dir_select_button = None
         self._output_dir_line_edit = None
         self._output_dir_select_button = None
-        self._target_size_spinbox = None
         self._overwrite_checkbox = None
         self._form_layout = None
         self._run_task_button = None
@@ -69,14 +68,6 @@ class RescaleDicomImagesTaskPanel(TaskPanel):
             self._output_dir_select_button.clicked.connect(self.handle_output_dir_select_button)
         return self._output_dir_select_button
     
-    def target_size_spinbox(self):
-        if not self._target_size_spinbox:
-            self._target_size_spinbox = QSpinBox()
-            self._target_size_spinbox.setMinimum(0)
-            self._target_size_spinbox.setMaximum(1024)
-            self._target_size_spinbox.setValue(int(self.settings().get(f'{PANEL_NAME}/target_size', 512)))
-        return self._target_size_spinbox
-
     def overwrite_checkbox(self):
         if not self._overwrite_checkbox:
             self._overwrite_checkbox = QCheckBox('')
@@ -110,7 +101,6 @@ class RescaleDicomImagesTaskPanel(TaskPanel):
         output_dir_layout.addWidget(self.output_dir_select_button())
         self.form_layout().addRow('Images directory', images_dir_layout)
         self.form_layout().addRow('Output directory', output_dir_layout)
-        self.form_layout().addRow('Rescale target size', self.target_size_spinbox())
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
@@ -145,7 +135,7 @@ class RescaleDicomImagesTaskPanel(TaskPanel):
             self.save_inputs_and_parameters()
             self._task = RescaleDicomImagesTask(
                 inputs={'images': self.images_dir_line_edit().text()},
-                params={'target_size': self.target_size_spinbox().value()},
+                params={'target_size': 512},
                 output=self.output_dir_line_edit().text(),
                 overwrite=self.overwrite_checkbox().isChecked(),
             )
