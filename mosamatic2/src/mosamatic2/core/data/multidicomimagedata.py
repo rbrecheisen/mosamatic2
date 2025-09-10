@@ -29,7 +29,6 @@ class MultiDicomImageData:
     def load(self):
         series_instance_uids = []
         if self.path():
-            items = []
             for f in os.listdir(self.path()):
                 f_path = os.path.join(self.path(), f)
                 image = DicomImageData()
@@ -38,6 +37,6 @@ class MultiDicomImageData:
                     series_instance_uid = image.object().SeriesInstanceUID
                     if series_instance_uid in series_instance_uids:
                         RuntimeError('Cannot load DICOM images with identical series instance UID')
-                    items.append(image)
+                    self._images.append(image)
             return True
         return False

@@ -5,7 +5,7 @@ from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.data.multidicomimagedata import MultiDicomImageData
 from mosamatic2.core.data.dicomimagedata import DicomImageData
-from mosamatic2.core.loaders.multidicomimageloader import MultiDicomImageLoader
+from mosamatic2.core.data.multidicomimagedata import MultiDicomImageData
 from scipy.ndimage import zoom
 
 LOG = LogManager()
@@ -39,25 +39,26 @@ class RescaleDicomImagesTask(Task):
         return p
 
     def run(self):
-        loader = MultiDicomImageLoader()
-        loader.set_path(self.input('images'))
-        image_data = loader.load()
-        assert isinstance(image_data, MultiDicomImageData)
-        images = image_data.images()
-        nr_steps = len(images)
-        for step in range(nr_steps):
-            source = images[step]
-            assert isinstance(source, DicomImageData)
-            p = source.object()
-            if len(p.pixel_array.shape) == 2:
-                source_name = os.path.split(source.path())[1]
-                if p.Rows != self.param('target_size') or p.Columns != self.param('target_size'):
-                    p = self.rescale_image(p, self.param('target_size'))
-                    target = os.path.join(self.output(), source_name)
-                    p.save_as(target)
+        image_data = MultiDicomImageData()
+        image_data.set_path(self.input('images'))
+        if image_data.load():
+            images = image_data.images()
+            nr_steps = len(images)
+            for step in range(nr_steps):
+                source = images[step]
+                assert isinstance(source, DicomImageData)
+                p = source.object()
+                if len(p.pixel_array.shape) == 2:
+                    source_name = os.path.split(source.path())[1]
+                    if p.Rows != self.param('target_size') or p.Columns != self.param('target_size'):
+                        p = self.rescale_image(p, self.param('target_size'))
+                        target = os.path.join(self.output(), source_name)
+                        p.save_as(target)
+                    else:
+                        target = os.path.join(self.output(), source_name)
+                        shutil.copy(source.path(), target)
                 else:
-                    target = os.path.join(self.output(), source_name)
-                    shutil.copy(source.path(), target)
-            else:
-                LOG.warning(f'Shape of pixel data in file {source.path()} should be 2D but is {len(p.pixel_array.shape)}D')
-            self.set_progress(step, nr_steps)
+                    LOG.warning(f'Shape of pixel data in file {source.path()} should be 2D but is {len(p.pixel_array.shape)}D')
+                self.set_progress(step, nr_steps)
+        else:
+            LOG.error('Error loading multi-DICOM image data')

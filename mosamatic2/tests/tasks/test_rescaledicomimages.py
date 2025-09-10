@@ -1,6 +1,5 @@
 import os
 from mosamatic2.core.tasks.rescaledicomimagestask.rescaledicomimagestask import RescaleDicomImagesTask
-from mosamatic2.core.utils import mosamatic_output_dir
 from tests.sources import get_sources
 
 SOURCES = get_sources()

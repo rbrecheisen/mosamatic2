@@ -7,10 +7,9 @@ import models
 
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.tasks.segmentmusclefatl3tensorflowtask.paramloader import ParamLoader
+from mosamatic2.core.data.multidicomimagedata import MultiDicomImageData
+from mosamatic2.core.data.dicomimagedata import DicomImageData
 from mosamatic2.core.utils import (
-    is_dicom, 
-    load_dicom,
-    is_jpeg2000_compressed,
     normalize_between,
     get_pixels_from_dicom_object,
     convert_labels_to_157,
@@ -20,21 +19,21 @@ DEVICE = 'cpu'
 
 
 class SegmentMuscleFatL3TensorFlowTask(Task):
-    INPUTS = ['images', 'model_files']
+    INPUTS = [
+        'images', 
+        'model_files'
+    ]
     PARAMS = ['model_version']
 
     def __init__(self, inputs, params, output, overwrite=True):
         super(SegmentMuscleFatL3TensorFlowTask, self).__init__(inputs, params, output, overwrite)
 
     def load_images(self):
-        images = []
-        for f in os.listdir(self.input('images')):
-            f_path = os.path.join(self.input('images'), f)
-            if is_dicom(f_path):
-                images.append(f_path)
-        if len(images) == 0:
-            raise RuntimeError('Images directory is empty')
-        return images
+        image_data = MultiDicomImageData()
+        image_data.set_path(self.input('images'))
+        if image_data.load():
+            return image_data
+        raise RuntimeError('Could not load images')
 
     def load_model_files(self):
         model_files = []
@@ -96,29 +95,27 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
         pred_max = pred_squeeze.argmax(axis=-1)
         return pred_max
         
-    def process_file(self, f_path, output_dir, model, contour_model, params):
-        p = load_dicom(f_path)
-        if is_jpeg2000_compressed(p):
-            p.decompress()
-        image = get_pixels_from_dicom_object(p, normalize=True)
+    def process_file(self, image, output_dir, model, contour_model, params):
+        assert isinstance(image, DicomImageData)
+        pixels = get_pixels_from_dicom_object(image.object(), normalize=True)
         if contour_model:
-            mask = self.extract_contour(image, contour_model, params)
-            image = normalize_between(image, params.dict['min_bound'], params.dict['max_bound'])
-            image = image * mask
-        image = image.astype(np.float32)
-        segmentation = self.segment_muscle_and_fat(image, model)
+            mask = self.extract_contour(pixels, contour_model, params)
+            pixels = normalize_between(pixels, params.dict['min_bound'], params.dict['max_bound'])
+            pixels = pixels * mask
+        pixels = pixels.astype(np.float32)
+        segmentation = self.segment_muscle_and_fat(pixels, model)
         segmentation = convert_labels_to_157(segmentation)
-        segmentation_file_name = os.path.split(f_path)[1]
+        segmentation_file_name = os.path.split(image.path())[1]
         segmentation_file_path = os.path.join(output_dir, f'{segmentation_file_name}.seg.npy')
         np.save(segmentation_file_path, segmentation)
 
     def run(self):
-        images = self.load_images()
+        image_data = self.load_images()
         model_files = self.load_model_files()
         model_version = self.param('model_version')
         model, contour_model, params = self.load_models_and_params(model_files, model_version)
+        images = image_data.images()
         nr_steps = len(images)
         for step in range(nr_steps):
-            source = images[step]
-            self.process_file(source, self.output(), model, contour_model, params)
+            self.process_file(images[step], self.output(), model, contour_model, params)
             self.set_progress(step, nr_steps)
