@@ -20,7 +20,7 @@ from mosamatic2.ui.widgets.panels.taskpanel import TaskPanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
-# from mosamatic2.tasks import SegmentMuscleFatL3TensorFlowTask
+from mosamatic2.core.tasks import SegmentMuscleFatL3TensorFlowTask
 
 LOG = LogManager()
 
@@ -156,13 +156,15 @@ class SegmentMuscleFatL3TensorFlowTaskPanel(TaskPanel):
             LOG.info('Running task...')
             self.run_task_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            # self._task = SegmentMuscleFatL3TensorFlowTask(
-            #     self.images_dir_line_edit().text(), 
-            #     self.model_files_dir_line_edit().text(),
-            #     self.output_dir_line_edit().text(), 
-            #     '1.0',
-            #     self.overwrite_checkbox().isChecked()
-            # )
+            self._task = SegmentMuscleFatL3TensorFlowTask(
+                inputs={
+                    'images': self.images_dir_line_edit().text(),
+                    'model_files': self.model_files_dir_line_edit().text(),
+                },
+                params={'model_version': 1.0},
+                output=self.output_dir_line_edit().text(),
+                overwrite=self.overwrite_checkbox().isChecked(),
+            )
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)

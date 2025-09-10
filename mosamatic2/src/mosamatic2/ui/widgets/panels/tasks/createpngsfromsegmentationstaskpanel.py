@@ -21,7 +21,7 @@ from mosamatic2.ui.widgets.panels.taskpanel import TaskPanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
-# from mosamatic2.core.tasks import CreatePngsFromSegmentationsTask
+from mosamatic2.core.tasks import CreatePngsFromSegmentationsTask
 
 LOG = LogManager()
 
@@ -93,13 +93,13 @@ class CreatePngsFromSegmentationsTaskPanel(TaskPanel):
         return self._settings
     
     def init_layout(self):
-        images_dir_layout = QHBoxLayout()
-        images_dir_layout.addWidget(self.segmentations_dir_line_edit())
-        images_dir_layout.addWidget(self.segmentations_dir_select_button())
+        segmentations_dir_layout = QHBoxLayout()
+        segmentations_dir_layout.addWidget(self.segmentations_dir_line_edit())
+        segmentations_dir_layout.addWidget(self.segmentations_dir_select_button())
         output_dir_layout = QHBoxLayout()
         output_dir_layout.addWidget(self.output_dir_line_edit())
         output_dir_layout.addWidget(self.output_dir_select_button())
-        self.form_layout().addRow('Images directory', images_dir_layout)
+        self.form_layout().addRow('Segmentations directory', segmentations_dir_layout)
         self.form_layout().addRow('Output directory', output_dir_layout)
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
@@ -133,13 +133,15 @@ class CreatePngsFromSegmentationsTaskPanel(TaskPanel):
             LOG.info('Running task...')
             self.run_task_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            # self._task = CreatePngsFromSegmentationsTask(
-            #     self.segmentations_dir_line_edit().text(), 
-            #     self.output_dir_line_edit().text(), 
-            #     10,
-            #     10,
-            #     self.overwrite_checkbox().isChecked()
-            # )
+            self._task = CreatePngsFromSegmentationsTask(
+                inputs={'segmentations': self.segmentations_dir_line_edit().text()},
+                params={
+                    'fig_width': 10,
+                    'fig_height': 10,
+                },
+                output=self.output_dir_line_edit().text(),
+                overwrite=self.overwrite_checkbox().isChecked(),
+            )
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)

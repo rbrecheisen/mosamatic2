@@ -21,7 +21,7 @@ from mosamatic2.ui.widgets.panels.taskpanel import TaskPanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
-# from mosamatic2.core.tasks import CalculateScoresTask
+from mosamatic2.core.tasks import CalculateScoresTask
 
 LOG = LogManager()
 
@@ -157,13 +157,15 @@ class CalculateScoresTaskPanel(TaskPanel):
             LOG.info('Running task...')
             self.run_task_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            # self._task = CalculateScoresTask(
-            #     self.images_dir_line_edit().text(), 
-            #     self.segmentations_dir_line_edit().text(),
-            #     self.output_dir_line_edit().text(), 
-            #     'npy',
-            #     self.overwrite_checkbox().isChecked()
-            # )
+            self._task = CalculateScoresTask(
+                inputs={
+                    'images': self.images_dir_line_edit().text(),
+                    'segmentations': self.segmentations_dir_line_edit().text(),
+                },
+                params={'file_type': 'npy'},
+                output=self.output_dir_line_edit().text(),
+                overwrite=self.overwrite_checkbox().isChecked(),
+            )
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)
