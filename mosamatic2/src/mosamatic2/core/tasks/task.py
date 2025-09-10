@@ -15,9 +15,10 @@ class Task:
         self._inputs = inputs
         self._params = params
         self._output = os.path.join(output, self.__class__.__name__.lower())
-        if overwrite and os.path.isdir(self._output):
+        self._overwrite = overwrite
+        if self._overwrite and os.path.isdir(self._output):
             shutil.rmtree(self._output)
-        os.makedirs(self._output, exist_ok=overwrite)
+        os.makedirs(self._output, exist_ok=self._overwrite)
         # Check that the inputs match specification and type
         assert isinstance(self._inputs, dict)
         assert len(self._inputs.keys()) == len(self.__class__.INPUTS)
@@ -37,6 +38,9 @@ class Task:
     
     def output(self):
         return self._output
+    
+    def overwrite(self):
+        return self._overwrite
     
     def set_progress(self, step, nr_steps):
         LOG.info(f'[{self.__class__.__name__}] step {step} from {nr_steps}')
