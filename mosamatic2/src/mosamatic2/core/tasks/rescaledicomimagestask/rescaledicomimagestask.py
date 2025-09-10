@@ -43,12 +43,12 @@ class RescaleDicomImagesTask(Task):
         loader.set_path(self.input('images'))
         image_data = loader.load()
         assert isinstance(image_data, MultiDicomImageData)
-        images = image_data.items()
+        images = image_data.images()
         nr_steps = len(images)
         for step in range(nr_steps):
             source = images[step]
             assert isinstance(source, DicomImageData)
-            p = source.item()
+            p = source.object()
             if len(p.pixel_array.shape) == 2:
                 source_name = os.path.split(source.path())[1]
                 if p.Rows != self.param('target_size') or p.Columns != self.param('target_size'):

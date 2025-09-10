@@ -1,12 +1,8 @@
-from mosamatic2.core.data.data import Data
-from mosamatic2.core.data.filedata import FileData
-
-
-class DicomSeriesData(Data, FileData):
+class DicomImageSeriesData:
     def __init__(self):
         self._dir_path = None
         self._name = None
-        self._items = []
+        self._images = []
 
     def path(self):
         return self._dir_path
@@ -20,8 +16,8 @@ class DicomSeriesData(Data, FileData):
     def set_name(self, name):
         self._name = name
 
-    def items(self):
-        return self._items
+    def images(self):
+        return self._images
     
-    def add_item(self, item):
-        self._items.append(item)
+    def load(self):
+        pass

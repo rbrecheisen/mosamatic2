@@ -2,7 +2,7 @@ import os
 from mosamatic2.core.loaders.loader import Loader
 from mosamatic2.core.loaders.fileloader import FileLoader
 from mosamatic2.core.loaders.dicomimageloader import DicomImageLoader
-from mosamatic2.core.data.dicomseriesdata import DicomSeriesData
+from mosamatic2.core.data.dicomseriesdata import DicomImageSeriesData
 
 
 class DicomSeriesLoader(Loader, FileLoader):
@@ -17,7 +17,7 @@ class DicomSeriesLoader(Loader, FileLoader):
 
     def load(self):
         if self.path():
-            data = DicomSeriesData()
+            data = DicomImageSeriesData()
             data.set_path(self.path())
             items = []
             for f in os.listdir(self.path()):
@@ -30,6 +30,6 @@ class DicomSeriesLoader(Loader, FileLoader):
             # Sort DICOM objects by instance number
             items_sorted = sorted(items, key=lambda item: int(item.item().get('InstanceNumber')))
             for item in items_sorted:
-                data.add_item(item)
+                data.add_image(item)
             return data
         raise RuntimeError('Directory path not set')

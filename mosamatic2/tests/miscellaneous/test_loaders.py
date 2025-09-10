@@ -4,7 +4,7 @@ from mosamatic2.core.loaders.dicomseriesloader import DicomSeriesLoader
 from mosamatic2.core.loaders.dixonseriesloader import DixonSeriesLoader
 from mosamatic2.core.data.data import Data
 from mosamatic2.core.data.dicomimagedata import DicomImageData
-from mosamatic2.core.data.dicomseriesdata import DicomSeriesData
+from mosamatic2.core.data.dicomseriesdata import DicomImageSeriesData
 from mosamatic2.core.data.dixonseriesdata import DixonSeriesData
 from tests.sources import get_sources
 
@@ -17,8 +17,8 @@ def test_dicomimageloader():
     data = loader.load()
     assert isinstance(data, Data)
     assert isinstance(data, DicomImageData)
-    assert data.item()
-    assert data.item().get('PatientID', False)
+    assert data.object()
+    assert data.object().get('PatientID', False)
     # Try to load a non-DICOM file
     try:
         loader.set_file_path(os.path.join(SOURCES['input'], 'SURG-ZUYD-0001.tag'))
@@ -32,13 +32,13 @@ def test_dicomseriesloader():
     loader.set_path(SOURCES['input']) # There's DICOM and TAG files in this directory
     data = loader.load()
     assert isinstance(data, Data)
-    assert isinstance(data, DicomSeriesData)
-    assert len(data.items()) == 4
-    for item in data.items():
+    assert isinstance(data, DicomImageSeriesData)
+    assert len(data.images()) == 4
+    for item in data.images():
         assert item.item().get('PatientID', False)
     # Make sure they're sorted
     prev_instance_number = -1
-    for item in data.items():
+    for item in data.images():
         instance_number = item.item().get('InstanceNumber')
         assert instance_number > prev_instance_number
 

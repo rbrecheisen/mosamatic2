@@ -1,11 +1,26 @@
-from abc import ABC, abstractmethod
+class FileData:
+    def __init__(self):
+        self._file_path = None
+        self._name = None
+        self._object = None
 
-
-class FileData(ABC):
-    @abstractmethod
     def path(self):
-        pass
-
-    @abstractmethod
+        return self._file_path
+    
     def set_path(self, path):
-        pass
+        self._file_path = path
+
+    def name(self):
+        return self._name
+    
+    def set_name(self, name):
+        self._name = name
+
+    def object(self):
+        return self._object
+    
+    def set_object(self, object):
+        self._object = object
+    
+    def load(self):
+        raise NotImplementedError()

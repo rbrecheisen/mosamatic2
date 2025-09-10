@@ -1,12 +1,8 @@
-from mosamatic2.core.data.data import Data
-from mosamatic2.core.data.filedata import FileData
-
-
-class DixonSeriesData(Data, FileData):
+class DixonSeriesData:
     def __init__(self):
         self._dir_path = None
         self._name = None
-        self._object = None
+        self._series = {'ip': None, 'op': None, 'water': None, 'fat': None}
 
     def path(self):
         return self._dir_path
@@ -20,20 +16,17 @@ class DixonSeriesData(Data, FileData):
     def set_name(self, name):
         self._name = name
 
-    def item(self):
-        return self._object
-    
-    def set_item(self, object):
-        self._object = object
-
     def ip(self):
-        return self.item()['ip']
+        return self._series['ip']
     
     def op(self):
-        return self.item()['op']
+        return self._series['op']
     
     def water(self):
-        return self.item()['water']
+        return self._series['water']
     
     def fat(self):
-        return self.item()['fat']
+        return self._series['fat']
+    
+    def load(self):
+        pass

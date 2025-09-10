@@ -28,12 +28,12 @@ class MultiDicomImageLoader(Loader, FileLoader):
                 loader.set_path(f_path)
                 image = loader.load()
                 if image:
-                    series_instance_uid = image.item().SeriesInstanceUID
+                    series_instance_uid = image.object().SeriesInstanceUID
                     if series_instance_uid in series_instance_uids:
                         RuntimeError('Cannot load DICOM images with identical series instance UID')
                     items.append(image)
             data = MultiDicomImageData()
             for item in items:
-                data.add_item(item)
+                data.add_image(item)
             return data
         raise RuntimeError('Path not set')

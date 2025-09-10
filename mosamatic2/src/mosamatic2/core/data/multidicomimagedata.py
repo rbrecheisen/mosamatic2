@@ -1,22 +1,14 @@
-from mosamatic2.core.data.data import Data
-from mosamatic2.core.data.filedata import FileData
-
-
-class MultiDicomImageData(Data, FileData):
-    """
-    MultiDicomImageData
-    Represents multiple (2D) DICOM images, each of a different patient
-    """
+class MultiDicomImageData:
     def __init__(self):
-        self._file_path = None
+        self._dir_path = None
         self._name = None
-        self._items = []
+        self._images = []
 
     def path(self):
-        return self._file_path
+        return self._dir_path
     
     def set_path(self, path):
-        self._file_path = path
+        self._dir_path = path
 
     def name(self):
         return self._name
@@ -24,8 +16,8 @@ class MultiDicomImageData(Data, FileData):
     def set_name(self, name):
         self._name = name
 
-    def items(self):
-        return self._items
+    def images(self):
+        return self._images
     
-    def add_item(self, item):
-        self._items.append(item)
+    def load(self):
+        pass
