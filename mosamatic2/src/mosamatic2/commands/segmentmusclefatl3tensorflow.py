@@ -34,16 +34,16 @@ def segmentmusclefatl3tensorflow(images, model_files, output, overwrite):
     
     Parameters
     ----------
-    images : str
+    --images : str
         Directory with with input L3 images
 
-    model_files : str
+    --model_files : str
         Directory with AI model files (model-1.0.zip, contour_model-1.0.zip, params-1.0.json)
 
-    output : str
+    --output : str
         Path to output directory
 
-    overwrite : bool
+    --overwrite : bool
         Overwrite contents output directory true/false
     """
     task = SegmentMuscleFatL3TensorFlowTask(

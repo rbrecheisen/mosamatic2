@@ -47,19 +47,21 @@ def calculatescores(images, segmentations, output, file_type, overwrite):
     
     Parameters
     ----------
-    images : str
+    --images : str
         Directory with with input L3 images
 
-    segmentations : str
-        Directory with L3 muscle and fat segmenation files
+    --segmentations : str
+        Directory with L3 muscle and fat segmenation files. Must be output of 
+        "mosamatic2-cli segmentmusclefatl3tensorflow" OR a list of TAG files
+        corresponding to the input images
 
-    output : str
+    --output : str
         Path to output directory
 
-    file_type : str
+    --file_type : str
         Type of segmentation file to use. Can be either "npy" or "tag"
     
-    overwrite : bool
+    --overwrite : bool
         Overwrite contents output directory true/false
     """
     task = CalculateScoresTask(

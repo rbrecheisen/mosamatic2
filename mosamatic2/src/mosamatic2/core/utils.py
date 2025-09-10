@@ -30,7 +30,7 @@ def create_name_with_timestamp(prefix: str='') -> str:
 
 
 def show_doc_command(cli_group: click.Group) -> click.Command:
-    @click.command(name="show-doc")
+    @click.command(name="showdoc")
     @click.argument("command_name", required=False)
     def show_doc(command_name):
         commands = cli_group.commands

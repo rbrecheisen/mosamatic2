@@ -40,20 +40,20 @@ def createpngsfromsegmentations(segmentations, output, fig_width, fig_height, ov
     
     Parameters
     ----------
-    segmentations : str
+    --segmentations : str
         Directory with with input segmentation files. Must be L3 muscle and fat segmentations
-        (output of SegmentMuscleFatL3TensorFlowTask)
+        (output of "mosamatic2-cli segmentmusclefatl3tensorflow")
 
-    output : str
+    --output : str
         Path to output directory
 
-    fig_width : int
+    --fig_width : int
         Width of PNG image
 
-    fig_height : int
+    --fig_height : int
         Height of PNG image
 
-    overwrite : bool
+    --overwrite : bool
         Overwrite contents output directory true/false
     """
     task = CreatePngsFromSegmentationsTask(

@@ -3,6 +3,7 @@ from mosamatic2.commands import (
     calculatescores,
     rescaledicomimages,
     segmentmusclefatl3tensorflow,
+    createpngsfromsegmentations,
 )
 from mosamatic2.core.utils import show_doc_command
 
@@ -27,4 +28,5 @@ def main():
 main.add_command(calculatescores.calculatescores)
 main.add_command(rescaledicomimages.rescaledicomimages)
 main.add_command(segmentmusclefatl3tensorflow.segmentmusclefatl3tensorflow)
+main.add_command(createpngsfromsegmentations.createpngsfromsegmentations)
 main.add_command(show_doc_command(main)) # Special command to show long description for command

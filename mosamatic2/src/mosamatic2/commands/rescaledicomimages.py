@@ -33,16 +33,16 @@ def rescaledicomimages(images, output, target_size, overwrite):
 
     Parameters
     ----------
-    images : str
+    --images : str
         Directory with with input DICOM images
 
-    output : str
+    --output : str
         Path to output directory
 
-    target_size : int
+    --target_size : int
         Target size for rescaled images (default: 512)
     
-    overwrite : bool
+    --overwrite : bool
         Overwrite contents output directory true/false
     """
     task = RescaleDicomImagesTask(
