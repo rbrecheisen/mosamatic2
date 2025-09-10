@@ -12,7 +12,7 @@ SOURCES = {
     },
     'windows': {
         'input': 'G:\\My Drive\\data\\Mosamatic\\testdata\\L3',
-        'scans': 'D:\\Mosamatic\\CLI\\Input\\AutoSelect',
+        'scans': 'D:\\Mosamatic\\CLI\\Input\\AutoSelect\\Patient1',
         'model_files': {
             'pytorch': 'G:\\My Drive\\data\\Mosamatic\\models\\pytorch\\L3\\2.2',
             'tensorflow': 'G:\\My Drive\\data\\Mosamatic\\models\\tensorflow\\L3\\1.0',

@@ -1,24 +1,12 @@
 import os
+from mosamatic2.core.data.filedata import FileData
 from mosamatic2.core.data.dicomimage import DicomImage
 
 
-class DicomImageSeries:
+class DicomImageSeries(FileData):
     def __init__(self):
-        self._dir_path = None
-        self._name = None
+        super(DicomImageSeries, self).__init__()
         self._images = []
-
-    def path(self):
-        return self._dir_path
-    
-    def set_path(self, path):
-        self._dir_path = path
-
-    def name(self):
-        return self._name
-    
-    def set_name(self, name):
-        self._name = name
 
     def images(self):
         return self._images
