@@ -34,7 +34,7 @@ def rescaledicomimages(images, output, target_size, overwrite):
     Parameters
     ----------
     --images : str
-        Directory with with input DICOM images
+        Directory with input DICOM images
 
     --output : str
         Path to output directory

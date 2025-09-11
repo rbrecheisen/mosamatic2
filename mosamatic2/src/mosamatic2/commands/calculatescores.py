@@ -48,7 +48,7 @@ def calculatescores(images, segmentations, output, file_type, overwrite):
     Parameters
     ----------
     --images : str
-        Directory with with input L3 images
+        Directory with input L3 images
 
     --segmentations : str
         Directory with L3 muscle and fat segmenation files. Must be output of 

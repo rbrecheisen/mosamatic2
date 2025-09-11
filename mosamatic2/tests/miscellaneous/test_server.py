@@ -36,3 +36,11 @@
 #         'overwrite': True,
 #     })
 #     assert result.status_code == 200
+#     result = requests.get('http://localhost:8000/dicom2nifti', params={
+#         'segmentations': os.path.join(SOURCES['output'], 'segmentmusclefatl3tensorflowtask'),
+#         'fig_width': 10,
+#         'fig_height': 10,
+#         'output': SOURCES['output'],
+#         'overwrite': True,
+#     })
+#     assert result.status_code == 200

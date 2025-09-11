@@ -18,6 +18,7 @@ from mosamatic2.ui.widgets.panels.tasks.rescaledicomimagestaskpanel import Resca
 from mosamatic2.ui.widgets.panels.tasks.segmentmusclefatl3tensorflowtaskpanel import SegmentMuscleFatL3TensorFlowTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.createpngsfromsegmentationstaskpanel import CreatePngsFromSegmentationsTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.calculatescorestaskpanel import CalculateScoresTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.dicom2niftitaskpanel import Dicom2NiftiTaskPanel
 from mosamatic2.ui.widgets.panels.pipelines.defaultpipelinepanel import DefaultPipelinePanel
 
 LOG = LogManager()
@@ -34,6 +35,7 @@ class MainWindow(QMainWindow):
         self._segment_muscle_fat_l3_tensorflow_task_panel = None
         self._create_pngs_from_segmentations_task_panel = None
         self._calculate_scores_task_panel = None
+        self._dicom2nifti_task_panel = None
         self._default_pipeline_panel = None
         self.init_window()
 
@@ -71,11 +73,14 @@ class MainWindow(QMainWindow):
         calculate_scores_task_action.triggered.connect(self.handle_calculate_scores_task_action)
         create_pngs_from_segmentations_task_action = QAction('CreatePngsFromSegmentationsTask', self)
         create_pngs_from_segmentations_task_action.triggered.connect(self.handle_create_pngs_from_segmentations_task_action)
+        dicom2nifti_task_action = QAction('Dicom2NiftiTask', self)
+        dicom2nifti_task_action.triggered.connect(self.handle_dicom2nifti_task_action)
         tasks_menu = self.menuBar().addMenu('Tasks')
         tasks_menu.addAction(rescale_dicom_images_task_action)
         tasks_menu.addAction(segment_muscle_fat_l3_tensorflow_task_action)
         tasks_menu.addAction(calculate_scores_task_action)
         tasks_menu.addAction(create_pngs_from_segmentations_task_action)
+        tasks_menu.addAction(dicom2nifti_task_action)
 
     def init_pipelines_menu(self):
         default_pipeline_action = QAction('DefaultPipeline', self)
@@ -100,6 +105,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.segment_muscle_fat_l3_tensorflow_task_panel(), 'segmentmusclefatl3tensorflowtaskpanel')
             self._main_panel.add_panel(self.create_pngs_from_segmentations_task_panel(), 'createpngsfromsegmentationstaskpanel')
             self._main_panel.add_panel(self.calculate_scores_task_panel(), 'calculatescorestaskpanel')
+            self._main_panel.add_panel(self.dicom2nifti_task_panel(), 'dicom2niftitaskpanel')
             self._main_panel.add_panel(self.default_pipeline_panel(), 'defaultpipelinepanel')
             self._main_panel.select_panel('defaultpipelinepanel')
         return self._main_panel
@@ -132,6 +138,11 @@ class MainWindow(QMainWindow):
             self._calculate_scores_task_panel = CalculateScoresTaskPanel()
         return self._calculate_scores_task_panel
     
+    def dicom2nifti_task_panel(self):
+        if not self._dicom2nifti_task_panel:
+            self._dicom2nifti_task_panel = Dicom2NiftiTaskPanel()
+        return self._dicom2nifti_task_panel
+    
     def default_pipeline_panel(self):
         if not self._default_pipeline_panel:
             self._default_pipeline_panel = DefaultPipelinePanel()
@@ -156,6 +167,9 @@ class MainWindow(QMainWindow):
     def handle_calculate_scores_task_action(self):
         self.main_panel().select_panel('calculatescorestaskpanel')
 
+    def handle_dicom2nifti_task_action(self):
+        self.main_panel().select_panel('dicom2niftitaskpanel')
+
     def handle_default_pipeline_action(self):
         self.main_panel().select_panel('defaultpipelinepanel')
 
@@ -169,6 +183,7 @@ class MainWindow(QMainWindow):
         self.segment_muscle_fat_l3_tensorflow_task_panel().save_inputs_and_parameters()
         self.create_pngs_from_segmentations_task_panel().save_inputs_and_parameters()
         self.calculate_scores_task_panel().save_inputs_and_parameters()
+        self.dicom2nifti_task_panel().save_inputs_and_parameters()
         self.default_pipeline_panel().save_inputs_and_parameters()
         return super().closeEvent(event)
 

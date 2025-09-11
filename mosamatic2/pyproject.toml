@@ -1,6 +1,6 @@
 [project]
 name = "mosamatic2"
-version = "2.0.3"
+version = "2.0.4"
 description = ""
 authors = [
     {name = "Ralph Brecheisen", email = "r.brecheisen@maastrichtuniversity.nl"}
@@ -10,6 +10,7 @@ requires-python = ">=3.11,<3.12"
 dependencies = [
     "pyside6-essentials>=6.9",
     "pydicom>=3.0.1",
+    "dicom2nifti>=2.6.2",
     "numpy>=1.26.4",
     "pandas>=2.3.2",
     "nibabel>=5.3.2",

@@ -25,3 +25,8 @@ call mosamatic2-cli createpngsfromsegmentations ^
     --fig_height 10 ^
     --output "D:\Mosamatic\CLI\Output" ^
     --overwrite true
+
+call mosamatic2-cli dicom2nifti ^
+    --images "D:\Mosamatic\CLI\Input\CT" ^
+    --output "D:\Mosamatic\CLI\Output" ^
+    --overwrite true

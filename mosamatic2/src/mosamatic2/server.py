@@ -5,6 +5,7 @@ from mosamatic2.core.tasks import RescaleDicomImagesTask
 from mosamatic2.core.tasks import SegmentMuscleFatL3TensorFlowTask
 from mosamatic2.core.tasks import CalculateScoresTask
 from mosamatic2.core.tasks import CreatePngsFromSegmentationsTask
+from mosamatic2.core.tasks import Dicom2NiftiTask
 
 app = Flask(__name__)
 
@@ -88,6 +89,20 @@ def run_createpngsfromsegmentations():
     task.run()
     return 'PASSED'
 
+
+@app.route('/dicom2nifti')
+def run_dicom2nifti():
+    images = request.args.get('images')
+    output = request.args.get('output')
+    overwrite = request.args.get('overwrite', default=True, type=bool)
+    task = Dicom2NiftiTask(
+        inputs={'images': images},
+        params=None,
+        output=output,
+        overwrite=overwrite,
+    )
+    task.run()
+    return 'PASSED'
 
 
 def main():

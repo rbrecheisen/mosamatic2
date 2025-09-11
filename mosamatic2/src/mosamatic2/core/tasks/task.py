@@ -25,10 +25,11 @@ class Task:
         for k, v in self._inputs.items():
             assert k in self.__class__.INPUTS
             assert isinstance(v, str)
-        # Check that param names match specification
-        assert len(self._params.keys()) == len(self.__class__.PARAMS)
-        for k in self._params.keys():
-            assert k in self.__class__.PARAMS
+        # Check that param names match specification (if not None)
+        if self._params:
+            assert len(self._params.keys()) == len(self.__class__.PARAMS)
+            for k in self._params.keys():
+                assert k in self.__class__.PARAMS
 
     def input(self, name):
         return self._inputs[name]
