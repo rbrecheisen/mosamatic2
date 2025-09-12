@@ -28,7 +28,7 @@ def test_dicomseries():
     data = DicomImageSeries()
     data.set_path(SOURCES['scans'])
     assert data.load()
-    assert data.name() == 'Patient1'
+    assert data.name() == 'CT'
     assert len(data.images()) > 0
     assert isinstance(data.images()[0], DicomImage)
     assert isinstance(data.images()[0].object(), pydicom.FileDataset)

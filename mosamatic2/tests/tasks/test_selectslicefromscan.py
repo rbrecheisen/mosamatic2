@@ -1,6 +1,6 @@
 # import os
 
-# from mosamatic.tasks import SelectSliceFromScanTask
+# from mosamatic2.core.tasks import SelectSliceFromScanTask
 # from tests.sources import get_sources
 # SOURCES = get_sources()
 
