@@ -3,7 +3,7 @@ import os
 from PySide6.QtWidgets import (
     QLineEdit,
     QCheckBox,
-    QSpinBox,
+    QComboBox,
     QHBoxLayout,
     QVBoxLayout,
     QFormLayout,
@@ -16,26 +16,26 @@ from PySide6.QtCore import (
     Slot,
 )
 
-from mosamaticdesktop.core.utils.logmanager import LogManager
-from mosamaticdesktop.ui.panels.taskpanel import TaskPanel
-from mosamaticdesktop.ui.settings import Settings
-from mosamaticdesktop.ui.utils import is_macos
-from mosamaticdesktop.ui.worker import Worker
-
-from mosamatic.tasks import SelectSliceFromScanTask
+from mosamatic2.core.managers.logmanager import LogManager
+from mosamatic2.ui.widgets.panels.taskpanel import TaskPanel
+from mosamatic2.ui.settings import Settings
+from mosamatic2.ui.utils import is_macos
+from mosamatic2.ui.worker import Worker
+from mosamatic2.core.tasks import SelectSliceFromScansTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Automatically select L3 or T4 slice from full CT scan'
-PANEL_NAME = 'selectslicefromscantaskpanel'
+PANEL_TITLE = 'Automatically select L3 slice from full CT scan'
+PANEL_NAME = 'selectslicefromscanstaskpanel'
 
 
-class SelectSliceFromScanTaskPanel(TaskPanel):
+class SelectSliceFromScansTaskPanel(TaskPanel):
     def __init__(self):
-        super(SelectSliceFromScanTaskPanel, self).__init__()
+        super(SelectSliceFromScansTaskPanel, self).__init__()
         self.set_title(PANEL_TITLE)
         self._scans_dir_line_edit = None
         self._scans_dir_select_button = None
+        self._vertebra_combobox = None
         self._output_dir_line_edit = None
         self._output_dir_select_button = None
         self._overwrite_checkbox = None
@@ -57,6 +57,13 @@ class SelectSliceFromScanTaskPanel(TaskPanel):
             self._scans_dir_select_button = QPushButton('Select')
             self._scans_dir_select_button.clicked.connect(self.handle_scans_dir_select_button)
         return self._scans_dir_select_button
+    
+    def vertebra_combobox(self):
+        if not self._vertebra_combobox:
+            self._vertebra_combobox = QComboBox()
+            self._vertebra_combobox.addItems(['L3'])
+            self._vertebra_combobox.setCurrentText(self.settings().get(f'{PANEL_NAME}/vertebra'))
+        return self._vertebra_combobox
     
     def output_dir_line_edit(self):
         if not self._output_dir_line_edit:
@@ -101,6 +108,7 @@ class SelectSliceFromScanTaskPanel(TaskPanel):
         output_dir_layout.addWidget(self.output_dir_line_edit())
         output_dir_layout.addWidget(self.output_dir_select_button())
         self.form_layout().addRow('Scans directory', scans_dir_layout)
+        # self.form_layout().addRow('Vertebra', self.vertebra_combobox())
         self.form_layout().addRow('Output directory', output_dir_layout)
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
@@ -134,11 +142,11 @@ class SelectSliceFromScanTaskPanel(TaskPanel):
             LOG.info('Running task...')
             self.run_task_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            self._task = SelectSliceFromScanTask(
-                self.scans_dir_line_edit().text(), 
-                self.output_dir_line_edit().text(), 
-                'vertebrae_L3',
-                self.overwrite_checkbox().isChecked()
+            self._task = SelectSliceFromScansTask(
+                inputs={'scans': self.scans_dir_line_edit().text()},
+                params={'vertebra': 'L3'},
+                output=self.output_dir_line_edit().text(),
+                overwrite=self.overwrite_checkbox().isChecked(),
             )
             self._worker = Worker(self._task)
             self._thread = QThread()
@@ -180,5 +188,6 @@ class SelectSliceFromScanTaskPanel(TaskPanel):
     
     def save_inputs_and_parameters(self):
         self.settings().set(f'{PANEL_NAME}/scans_dir', self.scans_dir_line_edit().text())
+        self.settings().set(f'{PANEL_NAME}/vertebra', self.vertebra_combobox().currentText())
         self.settings().set(f'{PANEL_NAME}/output_dir', self.output_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/overwrite', self.overwrite_checkbox().isChecked())
