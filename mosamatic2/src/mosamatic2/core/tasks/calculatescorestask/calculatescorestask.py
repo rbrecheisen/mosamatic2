@@ -4,10 +4,9 @@ import pandas as pd
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.data.multidicomimage import MultiDicomImage
+from mosamatic2.core.data.multinumpyimage import MultiNumPyImage
+from mosamatic2.core.data.numpyimage import NumPyImage
 from mosamatic2.core.utils import (
-    is_dicom, 
-    load_dicom,
-    is_jpeg2000_compressed,
     get_pixels_from_dicom_object,
     calculate_area,
     calculate_mean_radiation_attenuation,
@@ -54,7 +53,8 @@ class CalculateScoresTask(Task):
         return img_seg_pairs
 
     def load_images(self):
-        image_data = MultiDicomImage()
+        # image_data = MultiDicomImage()
+        image_data = MultiNumPyImage()
         image_data.set_path(self.input('images'))
         if image_data.load():
             return image_data
@@ -78,7 +78,12 @@ class CalculateScoresTask(Task):
 
     def load_segmentation(self, f, file_type='npy'):
         if file_type == 'npy':
-            return np.load(f)
+            segmentation = NumPyImage()
+            segmentation.set_path(f)
+            if segmentation.load():
+                return segmentation.object()
+            LOG.error(f'Could not load segmentation file {f}')
+            # return np.load(f)
         if file_type == 'tag':
             pixels = get_pixels_from_tag_file(f)
             try:

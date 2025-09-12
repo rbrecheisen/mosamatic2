@@ -119,10 +119,18 @@ def is_numpy_array(value):
     return isinstance(value, np.array)
 
 
-def load_numpy_array(f):
+def is_numpy(f):
     try:
+        np.load(f)
+        return True
+    except:
+        return False
+
+
+def load_numpy_array(f):
+    if is_numpy(f):
         return np.load(f)
-    except Exception as e:
+    else:
         return None
 
 
