@@ -1,5 +1,3 @@
-import os
-import dicom2nifti
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
 
