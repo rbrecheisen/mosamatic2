@@ -37,9 +37,14 @@ def test_server():
     })
     assert result.status_code == 200
     result = requests.get('http://localhost:8000/dicom2nifti', params={
-        'segmentations': os.path.join(SOURCES['output'], 'segmentmusclefatl3tensorflowtask'),
-        'fig_width': 10,
-        'fig_height': 10,
+        'images': os.path.join(SOURCES['scans']),
+        'output': SOURCES['output'],
+        'overwrite': True,
+    })
+    assert result.status_code == 200
+    result = requests.get('http://localhost:8000/selectslicefromscans', params={
+        'scans': os.path.join(SOURCES['scans']),
+        'vertebra': 'L3',
         'output': SOURCES['output'],
         'overwrite': True,
     })

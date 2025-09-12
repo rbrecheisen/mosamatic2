@@ -6,6 +6,7 @@ from mosamatic2.core.tasks import SegmentMuscleFatL3TensorFlowTask
 from mosamatic2.core.tasks import CalculateScoresTask
 from mosamatic2.core.tasks import CreatePngsFromSegmentationsTask
 from mosamatic2.core.tasks import Dicom2NiftiTask
+from mosamatic2.core.tasks import SelectSliceFromScansTask
 
 app = Flask(__name__)
 
@@ -98,6 +99,22 @@ def run_dicom2nifti():
     task = Dicom2NiftiTask(
         inputs={'images': images},
         params=None,
+        output=output,
+        overwrite=overwrite,
+    )
+    task.run()
+    return 'PASSED'
+
+
+@app.route('/selectslicefromscans')
+def run_selectslicefromscans():
+    scans = request.args.get('scans')
+    vertebra = request.args.get('vertebra')
+    output = request.args.get('output')
+    overwrite = request.args.get('overwrite', default=True, type=bool)
+    task = SelectSliceFromScansTask(
+        inputs={'scans': scans},
+        params={'vertebra': vertebra},
         output=output,
         overwrite=overwrite,
     )

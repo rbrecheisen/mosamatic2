@@ -16,7 +16,7 @@ def test_tag():
         overwrite=True,
     )
     task.run()
-    output_dir = os.path.join(SOURCES['output'], 'CalculateScoresTask')
+    output_dir = os.path.join(SOURCES['output'], 'calculatescorestask')
     assert os.path.exists(output_dir), 'Output directory does not exist'
     assert len(os.listdir(output_dir)) == 2, 'Output directory does not contain 2 files'
     csv_found, excel_found = False, False

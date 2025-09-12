@@ -1,32 +1,38 @@
 @echo off
 
 call mosamatic2-cli rescaledicomimages ^
-    --images "D:\Mosamatic\CLI\Input\L3" ^
+    --images "G:\My Drive\data\Mosamatic\testdata\L3" ^
     --target_size 512 ^
-    --output "D:\Mosamatic\CLI\Output" ^
+    --output "G:\My Drive\data\Mosamatic\testdata\output" ^
     --overwrite true
 
 call mosamatic2-cli segmentmusclefatl3tensorflow ^
-    --images "D:\Mosamatic\CLI\Output\rescaledicomimagestask" ^
+    --images "G:\My Drive\data\Mosamatic\testdata\output\rescaledicomimagestask" ^
     --model_files "G:\My Drive\data\Mosamatic\models\tensorflow\L3\1.0" ^
-    --output "D:\Mosamatic\CLI\Output" ^
+    --output "G:\My Drive\data\Mosamatic\testdata\output" ^
     --overwrite true
 
 call mosamatic2-cli calculatescores ^
-    --images "D:\Mosamatic\CLI\Output\rescaledicomimagestask" ^
-    --segmentations "D:\Mosamatic\CLI\Output\segmentmusclefatl3tensorflowtask" ^
+    --images "G:\My Drive\data\Mosamatic\testdata\output\rescaledicomimagestask" ^
+    --segmentations "G:\My Drive\data\Mosamatic\testdata\output\segmentmusclefatl3tensorflowtask" ^
     --file_type "npy" ^
-    --output "D:\Mosamatic\CLI\Output" ^
+    --output "G:\My Drive\data\Mosamatic\testdata\output" ^
     --overwrite true
 
 call mosamatic2-cli createpngsfromsegmentations ^
-    --segmentations "D:\Mosamatic\CLI\Output\segmentmusclefatl3tensorflowtask" ^
+    --segmentations "G:\My Drive\data\Mosamatic\testdata\output\segmentmusclefatl3tensorflowtask" ^
     --fig_width 10 ^
     --fig_height 10 ^
-    --output "D:\Mosamatic\CLI\Output" ^
+    --output "G:\My Drive\data\Mosamatic\testdata\output" ^
     --overwrite true
 
 call mosamatic2-cli dicom2nifti ^
-    --images "D:\Mosamatic\CLI\Input\CT" ^
-    --output "D:\Mosamatic\CLI\Output" ^
+    --images "G:\My Drive\data\Mosamatic\testdata\CT" ^
+    --output "G:\My Drive\data\Mosamatic\testdata\output" ^
+    --overwrite true
+
+call mosamatic2-cli selectslicefromscans ^
+    --scans "G:\My Drive\data\Mosamatic\testdata\CT" ^
+    --vertebra "L3" ^
+    --output "G:\My Drive\data\Mosamatic\testdata\output" ^
     --overwrite true

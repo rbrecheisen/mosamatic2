@@ -4,7 +4,6 @@ import pandas as pd
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.data.multidicomimage import MultiDicomImage
-from mosamatic2.core.data.multinumpyimage import MultiNumPyImage
 from mosamatic2.core.data.numpyimage import NumPyImage
 from mosamatic2.core.utils import (
     get_pixels_from_dicom_object,
@@ -40,21 +39,18 @@ class CalculateScoresTask(Task):
                 if file_type == '.seg.npy':
                     f_seg_name = f_seg_name.removesuffix(file_type)
                     if f_seg_name == f_img_name:
-                        # img_seg_pairs.append((f_img_path, f_seg_path))
                         img_seg_pairs.append((image, f_seg_path))
                 elif file_type == '.tag':
                     f_seg_name = f_seg_name.removesuffix(file_type).removesuffix('.dcm')
                     f_img_name = f_img_name.removesuffix('.dcm')
                     if f_seg_name == f_img_name:
-                        # img_seg_pairs.append((f_img_path, f_seg_path))
                         img_seg_pairs.append((image, f_seg_path))
                 else:
                     raise RuntimeError('Unknown file type')
         return img_seg_pairs
 
     def load_images(self):
-        # image_data = MultiDicomImage()
-        image_data = MultiNumPyImage()
+        image_data = MultiDicomImage()
         image_data.set_path(self.input('images'))
         if image_data.load():
             return image_data
@@ -83,7 +79,6 @@ class CalculateScoresTask(Task):
             if segmentation.load():
                 return segmentation.object()
             LOG.error(f'Could not load segmentation file {f}')
-            # return np.load(f)
         if file_type == 'tag':
             pixels = get_pixels_from_tag_file(f)
             try:
