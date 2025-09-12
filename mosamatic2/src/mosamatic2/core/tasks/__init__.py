@@ -3,3 +3,4 @@ from mosamatic2.core.tasks.segmentmusclefatl3tensorflowtask.segmentmusclefatl3te
 from mosamatic2.core.tasks.calculatescorestask.calculatescorestask import CalculateScoresTask
 from mosamatic2.core.tasks.createpngsfromsegmentationstask.createpngsfromsegmentationstask import CreatePngsFromSegmentationsTask
 from mosamatic2.core.tasks.dicom2niftitask.dicom2niftitask import Dicom2NiftiTask
+from mosamatic2.core.tasks.selectslicefromscanstask.selectslicefromscanstask import SelectSliceFromScansTask
