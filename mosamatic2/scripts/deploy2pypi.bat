@@ -3,7 +3,7 @@
 setlocal
 
 if "%~1"=="" (
-    poetry run pytest -s
+    call scripts\test.bat
 )
 
 set /p CONFIRM="Did the tests run without errors? (y/n) "
