@@ -1,16 +1,13 @@
-import os
 from PySide6.QtWidgets import (
     QLineEdit,
-    QCheckBox,
-    QSpinBox,
     QHBoxLayout,
     QVBoxLayout,
     QFormLayout,
     QPushButton,
     QFileDialog,
-    QMessageBox,
 )
 from mosamatic2.ui.widgets.panels.visualizations.visualization import Visualization
+from mosamatic2.ui.widgets.panels.visualizations.niftislicevisualization.niftisliceviewer import NiftiSliceViewer
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
@@ -20,20 +17,13 @@ PANEL_TITLE = 'NiftiSliceVisualization'
 PANEL_NAME = 'niftislicevisualization'
 
 
-
 class NiftiSliceVisualization(Visualization):
-    """
-    NiftiSliceVisualization
-
-    This visualization can load a single NIFTI volume and display it as a stack of slices
-    through which you can scroll. You can also add a mask volume, possibly with multiple
-    labels, that will be shown as an overlay.
-    """
     def __init__(self):
         super(NiftiSliceVisualization, self).__init__()
         self.set_title(PANEL_TITLE)
         self._image_line_edit = None
         self._image_select_button = None
+        self._slice_viewer = None
         self._form_layout = None
         self._settings = None
         self.init_layout()
@@ -48,6 +38,11 @@ class NiftiSliceVisualization(Visualization):
             self._image_select_button = QPushButton('Select')
             self._image_select_button.clicked.connect(self.handle_image_select_button)
         return self._image_select_button
+    
+    def slice_viewer(self):
+        if not self._slice_viewer:
+            self._slice_viewer = NiftiSliceViewer()
+        return self._slice_viewer
 
     def form_layout(self):
         if not self._form_layout:
