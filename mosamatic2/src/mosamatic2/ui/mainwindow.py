@@ -21,6 +21,7 @@ from mosamatic2.ui.widgets.panels.tasks.calculatescorestaskpanel import Calculat
 from mosamatic2.ui.widgets.panels.tasks.dicom2niftitaskpanel import Dicom2NiftiTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.selectslicefromscanstaskpanel import SelectSliceFromScansTaskPanel
 from mosamatic2.ui.widgets.panels.pipelines.defaultpipelinepanel import DefaultPipelinePanel
+from mosamatic2.ui.widgets.panels.visualizations.niftislicevisualization.niftislicevisualization import NiftiSliceVisualization
 
 LOG = LogManager()
 
@@ -39,6 +40,7 @@ class MainWindow(QMainWindow):
         self._dicom2nifti_task_panel = None
         self._select_slice_from_scans_task_panel = None
         self._default_pipeline_panel = None
+        self._nifti_slice_visualization = None
         self.init_window()
 
     def init_window(self):
@@ -57,6 +59,7 @@ class MainWindow(QMainWindow):
         self.init_app_menu()
         self.init_tasks_menu()
         self.init_pipelines_menu()
+        self.init_visualizations_menu()
         if is_macos():            
             self.menuBar().setNativeMenuBar(False)
 
@@ -93,6 +96,12 @@ class MainWindow(QMainWindow):
         pipelines_menu = self.menuBar().addMenu('Pipelines')
         pipelines_menu.addAction(default_pipeline_action)
 
+    def init_visualizations_menu(self):
+        nifti_slice_visualization_action = QAction('NiftiSliceVisualization', self)
+        nifti_slice_visualization_action.triggered.connect(self.handle_nifti_slice_visualization_action)
+        visualizations_menu = self.menuBar().addMenu('Visualizations')
+        visualizations_menu.addAction(nifti_slice_visualization_action)
+
     def init_status_bar(self):
         self.set_status('Ready')
 
@@ -113,6 +122,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.dicom2nifti_task_panel(), 'dicom2niftitaskpanel')
             self._main_panel.add_panel(self.select_slice_from_scans_task_panel(), 'selectslicefromscanstaskpanel')
             self._main_panel.add_panel(self.default_pipeline_panel(), 'defaultpipelinepanel')
+            self._main_panel.add_panel(self.nifti_slice_visualization(), 'niftislicevisualization')
             self._main_panel.select_panel('defaultpipelinepanel')
         return self._main_panel
     
@@ -158,6 +168,11 @@ class MainWindow(QMainWindow):
         if not self._default_pipeline_panel:
             self._default_pipeline_panel = DefaultPipelinePanel()
         return self._default_pipeline_panel
+    
+    def nifti_slice_visualization(self):
+        if not self._nifti_slice_visualization:
+            self._nifti_slice_visualization = NiftiSliceVisualization()
+        return self._nifti_slice_visualization
 
     # SETTERS
 
@@ -187,6 +202,9 @@ class MainWindow(QMainWindow):
     def handle_default_pipeline_action(self):
         self.main_panel().select_panel('defaultpipelinepanel')
 
+    def handle_nifti_slice_visualization_action(self):
+        self.main_panel().select_panel('niftislicevisualization')
+
     def showEvent(self, event):
         return super().showEvent(event)
 
@@ -200,6 +218,7 @@ class MainWindow(QMainWindow):
         self.dicom2nifti_task_panel().save_inputs_and_parameters()
         self.select_slice_from_scans_task_panel().save_inputs_and_parameters()
         self.default_pipeline_panel().save_inputs_and_parameters()
+        self.nifti_slice_visualization().save_inputs_and_parameters()
         return super().closeEvent(event)
 
     def load_geometry_and_state(self):

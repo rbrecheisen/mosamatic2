@@ -42,7 +42,7 @@ class CustomInteractorStyle(vtk.vtkInteractorStyleImage):
             self.move_slice_backward(obj, event)
 
 
-class NiftiAxialViewer:
+class NiftiSliceViewer:
     def __init__(self, nifti_file, view_orientation='axial'):
         self.nifti_file = nifti_file
         self.view_orientation = view_orientation  # New attribute for view orientation
@@ -131,11 +131,11 @@ class NiftiAxialViewer:
         self.image_viewer.GetRenderer().ResetCamera()
         self.image_viewer.GetRenderer().SetBackground(self.colors.GetColor3d('Black'))
         self.image_viewer.GetRenderWindow().SetSize(800, 800)
-        self.image_viewer.GetRenderWindow().SetWindowName('ReadDICOMSeries')
+        self.image_viewer.GetRenderWindow().SetWindowName('NIFTI Viewer')
         self.interactor.Start()
 
 
 if __name__ == '__main__':
     nifti_file = 'G:\\My Drive\\data\\Mosamatic\\testdata\\CT_NIFTI\\patient1_Abdomen_PVP_3.0_Br40_2_20200124092125_2.nii'
-    viewer = NiftiAxialViewer(nifti_file=nifti_file, view_orientation='axial')
+    viewer = NiftiSliceViewer(nifti_file=nifti_file, view_orientation='axial')
     viewer.render()
