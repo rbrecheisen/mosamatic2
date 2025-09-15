@@ -18,7 +18,7 @@ from PySide6.QtCore import (
 )
 
 from mosamatic2.core.managers.logmanager import LogManager
-from mosamatic2.ui.widgets.panels.defaultpanel import DefaultPanel
+from mosamatic2.ui.widgets.panels.pipelines.pipelinepanel import PipelinePanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
@@ -32,7 +32,7 @@ MODEL_TYPE_ITEM_NAMES = ['tensorflow', 'pytorch']
 MODEL_VERSION_ITEM_NAMES = ['1.0', '2.2']
 
 
-class DefaultPipelinePanel(DefaultPanel):
+class DefaultPipelinePanel(PipelinePanel):
     def __init__(self):
         super(DefaultPipelinePanel, self).__init__()
         self.set_title(PANEL_TITLE)

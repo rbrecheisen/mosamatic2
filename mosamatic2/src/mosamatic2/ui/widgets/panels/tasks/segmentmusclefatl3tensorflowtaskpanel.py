@@ -16,7 +16,7 @@ from PySide6.QtCore import (
 )
 
 from mosamatic2.core.managers.logmanager import LogManager
-from mosamatic2.ui.widgets.panels.taskpanel import TaskPanel
+from mosamatic2.ui.widgets.panels.tasks.taskpanel import TaskPanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
