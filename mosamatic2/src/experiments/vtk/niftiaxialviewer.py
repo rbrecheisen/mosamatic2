@@ -42,30 +42,34 @@ class CustomInteractorStyle(vtk.vtkInteractorStyleImage):
             self.move_slice_backward(obj, event)
 
 
-class DICOMViewer:
-    def __init__(self, dicom_folder, view_orientation='axial'):
-        '''
-        The view orientation contols which orientation we want to display, here are the options:\n
-        - axial
-        - coronal
-        - sagittal
-        '''
-        self.dicom_folder = dicom_folder
+class NiftiAxialViewer:
+    def __init__(self, nifti_file, view_orientation='axial'):
+        self.nifti_file = nifti_file
         self.view_orientation = view_orientation  # New attribute for view orientation
+        self.reader = None
+        self.shifted_data = None
         self.colors = vtk.vtkNamedColors()
         self.setup_reader()
+        self.setup_data_shift()
         self.setup_reslice()  # Call setup_reslice instead of setup_viewer directly
         self.setup_text_labels()
         self.configure_interactor()
 
     def setup_reader(self):
-        self.reader = vtk.vtkDICOMImageReader()
-        self.reader.SetDirectoryName(self.dicom_folder)
+        self.reader = vtk.vtkNIFTIImageReader()
+        self.reader.SetFileName(self.nifti_file)
         self.reader.Update()
+
+    def setup_data_shift(self):
+        self.shifted_data = vtk.vtkImageShiftScale()
+        self.shifted_data.SetInputConnection(self.reader.GetOutputPort())
+        self.shifted_data.SetShift(-1000)
+        self.shifted_data.SetScale(1.0)
+        self.shifted_data.Update()
 
     def setup_reslice(self):
         self.reslice = vtk.vtkImageReslice()
-        self.reslice.SetInputConnection(self.reader.GetOutputPort())
+        self.reslice.SetInputConnection(self.shifted_data.GetOutputPort())
 
         # Set the output spacing to be 1, 1, 1. This is not strictly necessary but can be useful.
         self.reslice.SetOutputSpacing(1, 1, 1)
@@ -81,6 +85,8 @@ class DICOMViewer:
     def setup_viewer(self):
         self.image_viewer = vtk.vtkImageViewer2()
         self.image_viewer.SetInputConnection(self.reslice.GetOutputPort())
+        self.image_viewer.SetColorWindow(500)   # like CT WW
+        self.image_viewer.SetColorLevel(50)
         # Rest of the setup_viewer method remains unchanged
 
 
@@ -130,6 +136,6 @@ class DICOMViewer:
 
 
 if __name__ == '__main__':
-    dicom_folder_path = 'G:\\My Drive\\data\\Mosamatic\\testdata\\CT\\patient1'
-    viewer = DICOMViewer(dicom_folder=dicom_folder_path, view_orientation='axial')
+    nifti_file = 'G:\\My Drive\\data\\Mosamatic\\testdata\\CT_NIFTI\\patient1_Abdomen_PVP_3.0_Br40_2_20200124092125_2.nii'
+    viewer = NiftiAxialViewer(nifti_file=nifti_file, view_orientation='axial')
     viewer.render()
