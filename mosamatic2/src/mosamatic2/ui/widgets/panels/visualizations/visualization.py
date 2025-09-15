@@ -1,6 +1,6 @@
 from mosamatic2.ui.widgets.panels.defaultpanel import DefaultPanel
 
 
-class VisualizationPanel(DefaultPanel):
+class Visualization(DefaultPanel):
     def __init__(self):
-        super(VisualizationPanel, self).__init__()
+        super(Visualization, self).__init__()
