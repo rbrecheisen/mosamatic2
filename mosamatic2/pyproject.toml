@@ -32,6 +32,7 @@ dependencies = [
     "flask>=3.1.2",
     "antspyx>=0.5.4",
     "vtk>=9.5.1",
+    "pyqtgraph>=0.13.7",
 ]
 
 [tool.poetry]
