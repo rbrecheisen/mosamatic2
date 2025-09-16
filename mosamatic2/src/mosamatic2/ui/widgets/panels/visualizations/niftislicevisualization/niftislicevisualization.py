@@ -23,6 +23,7 @@ class NiftiSliceVisualization(Visualization):
         self.set_title(PANEL_TITLE)
         self._image_line_edit = None
         self._image_select_button = None
+        self._load_image_button = None
         self._slice_viewer = None
         self._form_layout = None
         self._settings = None
@@ -38,6 +39,12 @@ class NiftiSliceVisualization(Visualization):
             self._image_select_button = QPushButton('Select')
             self._image_select_button.clicked.connect(self.handle_image_select_button)
         return self._image_select_button
+    
+    def load_image_button(self):
+        if not self._load_image_button:
+            self._load_image_button = QPushButton('Load')
+            self._load_image_button.clicked.connect(self.handle_load_image_button)
+        return self._load_image_button
     
     def slice_viewer(self):
         if not self._slice_viewer:
@@ -63,16 +70,23 @@ class NiftiSliceVisualization(Visualization):
         self.form_layout().addRow('NIFTI file', image_layout)
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
+        layout.addWidget(self.load_image_button())
+        layout.addWidget(self.slice_viewer())
         self.setLayout(layout)
         self.setObjectName(PANEL_NAME)
 
     def handle_image_select_button(self):
         last_directory = self.settings().get('last_directory')
-        directory = QFileDialog.getExistingDirectory(dir=last_directory)
-        if directory:
-            self.image_line_edit().setText(directory)
-            # Load the NIFTI image
-            self.settings().set('last_directory', directory)
+        file_path, _ = QFileDialog.getOpenFileName(dir=last_directory)
+        if file_path:
+            self.image_line_edit().setText(file_path)
+            self.settings().set('last_directory', file_path)
+
+    def handle_load_image_button(self):
+        LOG.info('Loading image...')
+        self.slice_viewer().set_nifti_file(self.image_line_edit().text())
+        # self.slice_viewer().set_view_orientation('axial')
+        self.slice_viewer().load_image()
 
     def save_inputs_and_parameters(self):
         self.settings().set(f'{PANEL_NAME}/image', self.image_line_edit().text())
