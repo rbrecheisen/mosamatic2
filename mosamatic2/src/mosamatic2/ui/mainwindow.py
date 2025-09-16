@@ -19,6 +19,7 @@ from mosamatic2.ui.widgets.panels.tasks.segmentmusclefatl3tensorflowtaskpanel im
 from mosamatic2.ui.widgets.panels.tasks.createpngsfromsegmentationstaskpanel import CreatePngsFromSegmentationsTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.calculatescorestaskpanel import CalculateScoresTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.dicom2niftitaskpanel import Dicom2NiftiTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.createdicomsummarytaskpanel import CreateDicomSummaryTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.selectslicefromscanstaskpanel import SelectSliceFromScansTaskPanel
 from mosamatic2.ui.widgets.panels.pipelines.defaultpipelinepanel import DefaultPipelinePanel
 from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.slicevisualization import SliceVisualization
@@ -38,6 +39,7 @@ class MainWindow(QMainWindow):
         self._create_pngs_from_segmentations_task_panel = None
         self._calculate_scores_task_panel = None
         self._dicom2nifti_task_panel = None
+        self._create_dicom_summary_task_panel = None
         self._select_slice_from_scans_task_panel = None
         self._default_pipeline_panel = None
         self._slice_visualization = None
@@ -80,6 +82,8 @@ class MainWindow(QMainWindow):
         create_pngs_from_segmentations_task_action.triggered.connect(self.handle_create_pngs_from_segmentations_task_action)
         dicom2nifti_task_action = QAction('Dicom2NiftiTask', self)
         dicom2nifti_task_action.triggered.connect(self.handle_dicom2nifti_task_action)
+        create_dicom_summary_task_action = QAction('CreateDicomSummaryTask', self)
+        create_dicom_summary_task_action.triggered.connect(self.handle_create_dicom_summary_task_action)
         select_slice_from_scans_task_action = QAction('SelectSliceFromScansTask', self)
         select_slice_from_scans_task_action.triggered.connect(self.handle_select_slice_from_scans_task_action)
         tasks_menu = self.menuBar().addMenu('Tasks')
@@ -88,6 +92,7 @@ class MainWindow(QMainWindow):
         tasks_menu.addAction(calculate_scores_task_action)
         tasks_menu.addAction(create_pngs_from_segmentations_task_action)
         tasks_menu.addAction(dicom2nifti_task_action)
+        tasks_menu.addAction(create_dicom_summary_task_action)
         tasks_menu.addAction(select_slice_from_scans_task_action)
 
     def init_pipelines_menu(self):
@@ -120,6 +125,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.create_pngs_from_segmentations_task_panel(), 'createpngsfromsegmentationstaskpanel')
             self._main_panel.add_panel(self.calculate_scores_task_panel(), 'calculatescorestaskpanel')
             self._main_panel.add_panel(self.dicom2nifti_task_panel(), 'dicom2niftitaskpanel')
+            self._main_panel.add_panel(self.create_dicom_summary_task_panel(), 'createdicomsummarytaskpanel')
             self._main_panel.add_panel(self.select_slice_from_scans_task_panel(), 'selectslicefromscanstaskpanel')
             self._main_panel.add_panel(self.default_pipeline_panel(), 'defaultpipelinepanel')
             self._main_panel.add_panel(self.slice_visualization(), 'slicevisualization')
@@ -158,6 +164,11 @@ class MainWindow(QMainWindow):
         if not self._dicom2nifti_task_panel:
             self._dicom2nifti_task_panel = Dicom2NiftiTaskPanel()
         return self._dicom2nifti_task_panel
+    
+    def create_dicom_summary_task_panel(self):
+        if not self._create_dicom_summary_task_panel:
+            self._create_dicom_summary_task_panel = CreateDicomSummaryTaskPanel()
+        return self._create_dicom_summary_task_panel
 
     def select_slice_from_scans_task_panel(self):
         if not self._select_slice_from_scans_task_panel:
@@ -196,6 +207,9 @@ class MainWindow(QMainWindow):
     def handle_dicom2nifti_task_action(self):
         self.main_panel().select_panel('dicom2niftitaskpanel')
 
+    def handle_create_dicom_summary_task_action(self):
+        self.main_panel().select_panel('createdicomsummarytaskpanel')
+
     def handle_select_slice_from_scans_task_action(self):
         self.main_panel().select_panel('selectslicefromscanstaskpanel')
 
@@ -216,6 +230,7 @@ class MainWindow(QMainWindow):
         self.create_pngs_from_segmentations_task_panel().save_inputs_and_parameters()
         self.calculate_scores_task_panel().save_inputs_and_parameters()
         self.dicom2nifti_task_panel().save_inputs_and_parameters()
+        self.create_dicom_summary_task_panel().save_inputs_and_parameters()
         self.select_slice_from_scans_task_panel().save_inputs_and_parameters()
         self.default_pipeline_panel().save_inputs_and_parameters()
         self.slice_visualization().save_inputs_and_parameters()
