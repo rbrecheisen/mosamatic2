@@ -2,15 +2,17 @@ import vtk
 
 
 class CustomInteractorStyle(vtk.vtkInteractorStyleImage):
-    def __init__(self, image_data, slice_mapper, status_actor, orientation="axial"):
-        super().__init__()
+    def __init__(self, image_data, slice_mapper, status_actor, slice_obj, orientation="axial"):
+        super(CustomInteractorStyle, self).__init__()
         self.AddObserver("MouseWheelForwardEvent", self.move_slice_forward)
         self.AddObserver("MouseWheelBackwardEvent", self.move_slice_backward)
+        self.AddObserver("MouseMoveEvent", self.update_overlay, 1.0)
         self.AddObserver("KeyPressEvent", self.key_press_event)
 
         self.image_data = image_data
         self.slice_mapper = slice_mapper
         self.status_actor = status_actor
+        self.slice_obj = slice_obj
         self.orientation = orientation
 
         xmin, xmax, ymin, ymax, zmin, zmax = image_data.GetExtent()
@@ -28,7 +30,9 @@ class CustomInteractorStyle(vtk.vtkInteractorStyleImage):
         self.update_status_message()
 
     def update_status_message(self):
-        message = f"Slice {self.slice + 1}/{self.max_slice + 1}"
+        window = int(self.slice_obj.GetProperty().GetColorWindow())
+        level = int(self.slice_obj.GetProperty().GetColorLevel())
+        message = f'Slice {self.slice + 1}/{self.max_slice + 1} | W: {window} L: {level}'
         self.status_actor.GetMapper().SetInput(message)
 
     def move_slice_forward(self, obj, event):
@@ -51,3 +55,8 @@ class CustomInteractorStyle(vtk.vtkInteractorStyleImage):
             self.move_slice_forward(obj, event)
         elif key == "Down":
             self.move_slice_backward(obj, event)
+
+    def update_overlay(self, obj, event):
+        super(CustomInteractorStyle, self).OnMouseMove()
+        self.update_status_message()
+        self.GetInteractor().GetRenderWindow().Render()

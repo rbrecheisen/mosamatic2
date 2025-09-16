@@ -83,7 +83,6 @@ class NiftiSliceVisualization(Visualization):
             self.settings().set('last_directory', file_path)
 
     def handle_load_image_button(self):
-        LOG.info('Loading image...')
         self.slice_viewer().set_nifti_file(self.image_line_edit().text())
         # self.slice_viewer().set_view_orientation('axial')
         self.slice_viewer().load_image()

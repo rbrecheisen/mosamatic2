@@ -16,6 +16,7 @@ class NiftiSliceViewer(QWidget):
         self._vtk_widget = QVTKRenderWindowInteractor(self)
         self._render_window = self._vtk_widget.GetRenderWindow()
         self._interactor = self._render_window.GetInteractor()
+        self._interactor_style = None
         layout = QVBoxLayout()
         layout.addWidget(self._vtk_widget)
         self.setLayout(layout)
@@ -60,11 +61,16 @@ class NiftiSliceViewer(QWidget):
         slice_mapper.SetOrientationToZ()  # axial orientation
         slice_mapper.SetSliceNumber(axial_index)
         slice = vtk.vtkImageSlice()
+        slice.GetProperty().SetColorWindow(400)
+        slice.GetProperty().SetColorLevel(40)
         slice.SetMapper(slice_mapper)
-        slice_text_actor = self.create_text_actor("", 15, 10, 20, align_bottom=True)
+        slice_text_actor = self.create_text_actor("", 0.01, 0.01, 12, align_bottom=True, normalized=True)
         usage_text_actor = self.create_text_actor(
-            "- Slice with mouse wheel or Up/Down-Key\n- Zoom with pressed right mouse button while dragging\n- Pan with middle mouse button while dragging",
-            0.05, 0.95, 14, normalized=True)
+            "- Slice with mouse wheel or Up/Down-Key (first click inside viewer)\n"
+            "- Zoom with pressed right mouse button while dragging\n"
+            "- Pan with middle mouse button while dragging\n"
+            "- Change contrast/brightness with pressed left mouse while dragging",
+            0.01, 0.99, 12, normalized=True)
         ren = vtk.vtkRenderer()
         ren.AddActor2D(slice_text_actor)
         ren.AddActor2D(usage_text_actor)
@@ -72,6 +78,7 @@ class NiftiSliceViewer(QWidget):
         ren.ResetCamera()
         self._render_window.RemoveRenderer(self._default_renderer)
         self._render_window.AddRenderer(ren)
-        self._interactor.SetInteractorStyle(CustomInteractorStyle(image_data, slice_mapper, slice_text_actor))
+        self._interactor_style = CustomInteractorStyle(image_data, slice_mapper, slice_text_actor, slice)
+        self._interactor.SetInteractorStyle(self._interactor_style)
         self._interactor.Initialize()
         self._render_window.Render()
