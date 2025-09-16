@@ -1,6 +1,8 @@
+import os
 import vtk
-from PySide6.QtWidgets import QWidget, QVBoxLayout
-from mosamatic2.ui.widgets.panels.visualizations.niftislicevisualization.custominteractorstyle import CustomInteractorStyle
+import pydicom
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QMessageBox
+from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.custominteractorstyle import CustomInteractorStyle
 from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 COLOR_WINDOW = 400
@@ -8,10 +10,10 @@ COLOR_LEVEL = 40
 IMAGE_SHIFT_SCALE = -1000
 
 
-class NiftiSliceViewer(QWidget):
+class SliceViewer(QWidget):
     def __init__(self):
-        super(NiftiSliceViewer, self).__init__()
-        self._nifti_file = None
+        super(SliceViewer, self).__init__()
+        self._nifti_file_or_dicom_dir = None
         self._view_orientation = 'axial'
         self._vtk_widget = QVTKRenderWindowInteractor(self)
         self._render_window = self._vtk_widget.GetRenderWindow()
@@ -25,11 +27,11 @@ class NiftiSliceViewer(QWidget):
         self._render_window.AddRenderer(self._default_renderer)
         self._render_window.Render()
 
-    def nifti_file(self):
-        return self._nifti_file
+    def nifti_file_or_dicom_dir(self):
+        return self._nifti_file_or_dicom_dir
     
-    def set_nifti_file(self, nifti_file):
-        self._nifti_file = nifti_file
+    def set_nifti_file_or_dicom_dir(self, nifti_file_or_dicom_dir):
+        self._nifti_file_or_dicom_dir = nifti_file_or_dicom_dir
 
     def create_text_actor(self, text, x, y, font_size, align_bottom=False, normalized=False):
         text_prop = vtk.vtkTextProperty()
@@ -46,12 +48,24 @@ class NiftiSliceViewer(QWidget):
             text_actor.GetPositionCoordinate().SetCoordinateSystemToNormalizedDisplay()
         text_actor.SetPosition(x, y)
         return text_actor
+    
+    def is_nifti_file(self, file_path):
+        return file_path.endswith('.nii') or file_path.endswith('.nii.gz')
+    
+    def is_dicom_dir(self, dir_path):
+        first_dicom_file = os.path.join(dir_path, os.listdir(dir_path)[0])
+        return pydicom.dcmread(first_dicom_file, stop_before_pixels=True)
 
     def load_image(self):
-        if not self.nifti_file():
-            raise RuntimeError('No NIFTI file set')
-        reader = vtk.vtkNIFTIImageReader()
-        reader.SetFileName(self.nifti_file())
+        if not self.nifti_file_or_dicom_dir():
+            QMessageBox.warning(self, 'Warning', 'No NIFTI file or DICOM directory set')
+            return
+        if self.is_nifti_file(self.nifti_file_or_dicom_dir()):
+            reader = vtk.vtkNIFTIImageReader()
+            reader.SetFileName(self.nifti_file_or_dicom_dir())
+        elif self.is_dicom_dir(self.nifti_file_or_dicom_dir()):
+            reader = vtk.vtkDICOMImageReader()
+            reader.SetDirectoryName(self.nifti_file_or_dicom_dir())
         reader.Update()
         image_data = reader.GetOutput()
         xmin, xmax, ymin, ymax, zmin, zmax = image_data.GetExtent()
