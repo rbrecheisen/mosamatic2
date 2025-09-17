@@ -34,7 +34,13 @@ class CreateDicomSummaryTask(Task):
             self.set_progress(step, nr_steps)
             step += 1
         LOG.info('Building summary...')
-        summary = {}
+        summary = {
+            'nr_series_per_patient': {},
+        }
+        # Calculate nr. of series per patient
+        for patient_dir_name in data.keys():
+            summary['nr_series_per_patient'][patient_dir_name] = len(data[patient_dir_name].keys())
+        # Summarize series data per patient
         for patient_dir_name in data.keys():
             summary[patient_dir_name] = {}
             for series_instance_uid in data[patient_dir_name].keys():
