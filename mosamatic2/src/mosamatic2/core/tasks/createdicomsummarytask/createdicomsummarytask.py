@@ -55,6 +55,6 @@ class CreateDicomSummaryTask(Task):
                 }
             self.set_progress(step, nr_steps)
             step += 1
-        LOG.info('Exporting summary to JSON...')
-        with open(os.path.join(self.output(), 'summary.json'), 'w') as f:
+        LOG.info('Exporting summary...')
+        with open(os.path.join(self.output(), 'summary.txt'), 'w') as f:
             json.dump(summary, f, indent=4)
