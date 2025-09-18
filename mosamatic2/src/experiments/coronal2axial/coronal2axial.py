@@ -1,15 +1,14 @@
 import os
-import pytest
 import shutil
 import numpy as np
 import SimpleITK as sitk
 import matplotlib.pyplot as plt
 from mosamatic2.core.utils import load_dicom
 
-DICOM_DIR = 'D:\\Mosamatic\\NicoleHildebrand\\24-06-2025_coronale_CT\\MUMC004_3_coronaal'
-DICOM_DIR_RENAMED = 'D:\\Mosamatic\\NicoleHildebrand\\24-06-2025_coronale_CT\\MUMC004_3_coronaal_renamed'
-DICOM_DIR_DECOMPRESSED = 'D:\\Mosamatic\\NicoleHildebrand\\24-06-2025_coronale_CT\\MUMC004_3_coronaal_decompressed'
-NIFTI_OUTPUT_FILE = 'D:\\Mosamatic\\NicoleHildebrand\\24-06-2025_coronale_CT\\MUMC004_3_coronaal.nii.gz'
+DICOM_DIR = 'D:\\Mosamatic\\NicoleHildebrand\\24-04-2025_coronale_CT\\MUMC004_3_coronaal'
+DICOM_DIR_RENAMED = 'D:\\Mosamatic\\NicoleHildebrand\\24-04-2025_coronale_CT\\MUMC004_3_coronaal_renamed'
+DICOM_DIR_DECOMPRESSED = 'D:\\Mosamatic\\NicoleHildebrand\\24-04-2025_coronale_CT\\MUMC004_3_coronaal_decompressed'
+NIFTI_OUTPUT_FILE = 'D:\\Mosamatic\\NicoleHildebrand\\24-04-2025_coronale_CT\\MUMC004_3_coronal_to_axial.nii.gz'
 
 
 def load_dicom_series():
@@ -76,11 +75,13 @@ def preview_slices(img, num_slices=6):
     plt.show()
 
 
-@pytest.mark.filterwarnings('ignore::UserWarning')
-@pytest.mark.filterwarnings('ignore::DeprecationWarning')
-def test_coronal2axial():
+def main():
     img = load_dicom_series()
     resampled = resample_isotropic(img, new_spacing=(1.0, 1.0, 1.0))
     axial = reformat_coronal_to_axial(resampled)
     sitk.WriteImage(axial, NIFTI_OUTPUT_FILE)
     preview_slices(axial, num_slices=6)
+
+
+if __name__ == '__main__':
+    main()
