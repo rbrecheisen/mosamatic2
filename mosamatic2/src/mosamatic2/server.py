@@ -7,6 +7,7 @@ from mosamatic2.core.tasks import CalculateScoresTask
 from mosamatic2.core.tasks import CreatePngsFromSegmentationsTask
 from mosamatic2.core.tasks import Dicom2NiftiTask
 from mosamatic2.core.tasks import SelectSliceFromScansTask
+from mosamatic2.core.tasks import CreateDicomSummaryTask
 
 app = Flask(__name__)
 
@@ -115,6 +116,21 @@ def run_selectslicefromscans():
     task = SelectSliceFromScansTask(
         inputs={'scans': scans},
         params={'vertebra': vertebra},
+        output=output,
+        overwrite=overwrite,
+    )
+    task.run()
+    return 'PASSED'
+
+
+@app.route('/createdicomsummary')
+def run_createdicomsummary():
+    directory = request.args.get('directory')
+    output = request.args.get('output')
+    overwrite = request.args.get('overwrite', default=True, type=bool)
+    task = CreateDicomSummaryTask(
+        inputs={'directory': directory},
+        params=None,
         output=output,
         overwrite=overwrite,
     )
