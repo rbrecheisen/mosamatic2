@@ -101,8 +101,7 @@ def duration(seconds):
 
 def is_dicom(f):
     try:
-        pydicom.dcmread(f, stop_before_pixels=True, force=True)
-        return True
+        return pydicom.dcmread(f, stop_before_pixels=True, force=True)
     except pydicom.errors.InvalidDicomError as e:
         LOG.warning(f'Exception occurred loading {f}: {e}')
         return False
@@ -111,9 +110,12 @@ def is_dicom(f):
 def load_dicom(f, stop_before_pixels=False):
     if is_dicom(f):
         p = pydicom.dcmread(f, stop_before_pixels=stop_before_pixels, force=True)
-        if not 'file_meta' in p:
-            LOG.warning(f'DICOM file {f} does not have FileMetaData, trying to fix...')
-            p.file_meta = pydicom.dataset.Dataset()
+        # force=True loads the DICOM image even if FileMetaData is missing. Either way, pydicom
+        # will always create the attribute 'file_meta' on the DICOM object but it could be empty
+        # In that case we explicitly set the TransferSyntaxUID on the file_meta attribute
+        if not hasattr(p.file_meta, 'TransferSyntaxUID'):
+            LOG.warning(f'DICOM file {f} does not have FileMetaData/TransferSyntaxUID, trying to fix...')
+            # p.file_meta = pydicom.dataset.Dataset()
             p.file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
         return p
     return None
