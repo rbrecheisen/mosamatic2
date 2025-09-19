@@ -14,10 +14,12 @@ from pydicom.uid import (
     ExplicitVRLittleEndian, ImplicitVRLittleEndian, ExplicitVRBigEndian
 )
 from PIL import Image
+from mosamatic2.core.managers.logmanager import LogManager
 
 warnings.filterwarnings("ignore", message="Invalid value for VR UI:", category=UserWarning)
 
 MUSCLE, VAT, SAT = 1, 5, 7
+LOG = LogManager()
 
 
 def create_name_with_timestamp(prefix: str='') -> str:
@@ -99,15 +101,21 @@ def duration(seconds):
 
 def is_dicom(f):
     try:
-        pydicom.dcmread(f, stop_before_pixels=True)
+        pydicom.dcmread(f, stop_before_pixels=True, force=True)
         return True
-    except pydicom.errors.InvalidDicomError:
+    except pydicom.errors.InvalidDicomError as e:
+        LOG.warning(f'Exception occurred loading {f}: {e}')
         return False
     
 
 def load_dicom(f, stop_before_pixels=False):
     if is_dicom(f):
-        return pydicom.dcmread(f, stop_before_pixels=stop_before_pixels)
+        p = pydicom.dcmread(f, stop_before_pixels=stop_before_pixels, force=True)
+        if not 'file_meta' in p:
+            LOG.warning(f'DICOM file {f} does not have FileMetaData, trying to fix...')
+            p.file_meta = pydicom.dataset.Dataset()
+            p.file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
+        return p
     return None
 
 

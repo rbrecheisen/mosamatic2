@@ -8,6 +8,9 @@ from mosamatic2.core.tasks import (
     CreatePngsFromSegmentationsTask,
     CalculateScoresTask,
 )
+from mosamatic2.core.managers.logmanager import LogManager
+
+LOG = LogManager()
 
 
 class DefaultPipeline(Pipeline):
@@ -25,6 +28,7 @@ class DefaultPipeline(Pipeline):
     ]
     def __init__(self, inputs, params, output, overwrite):
         super(DefaultPipeline, self).__init__(inputs, params, output, overwrite)
+        LOG.info('Found {} images to process'.format(len(os.listdir(self.input('images')))))
         model_type = self.param('model_type')
         # segmentation_task_class = SegmentMuscleFatL3Task if model_type == 'pytorch' else SegmentMuscleFatL3TensorFlowTask
         segmentation_task_class = SegmentMuscleFatL3TensorFlowTask
