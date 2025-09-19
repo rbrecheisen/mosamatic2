@@ -25,8 +25,9 @@ class CreateDicomSummaryTask(Task):
             for root, dirs, files in os.walk(patient_dir_path):
                 for f in files:
                     f_path = os.path.join(root, f)
-                    if is_dicom(f_path):
-                        p = load_dicom(f_path, stop_before_pixels=True)
+                    # if is_dicom(f_path):
+                    p = load_dicom(f_path, stop_before_pixels=True)
+                    if p:
                         series_instance_uid = p.SeriesInstanceUID
                         if not series_instance_uid in data[patient_dir_name].keys():
                             data[patient_dir_name][series_instance_uid] = []

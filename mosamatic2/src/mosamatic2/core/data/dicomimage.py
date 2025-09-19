@@ -12,12 +12,16 @@ LOG = LogManager()
 class DicomImage(FileData):
     def load(self):
         if self.path():
-            if is_dicom(self.path()):
-                p = load_dicom(self.path())
+            p = load_dicom(self.path())
+            if p:
                 if is_jpeg2000_compressed(p):
                     p.decompress()
                 self.set_object(p)
                 return True
-            else:
-                LOG.warning(f'File {self.path()} is not valid DICOM')
+            # if is_dicom(self.path()):
+            #     p = load_dicom(self.path())
+            #     if is_jpeg2000_compressed(p):
+            #         p.decompress()
+            #     self.set_object(p)
+            #     return True
         return False
