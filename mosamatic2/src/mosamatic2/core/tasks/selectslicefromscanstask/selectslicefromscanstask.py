@@ -97,7 +97,12 @@ class SelectSliceFromScansTask(Task):
         for step in range(nr_steps):
             scan_dir = scan_dirs[step]
             scan_name = os.path.split(scan_dir)[1]
-            self.extract_masks(scan_dir)
+            try:
+                self.extract_masks(scan_dir)
+            except Exception as e:
+                LOG.warning(f'Could not extract masks from {scan_dir} [{str(e)}]')
+                self.set_progress(step, nr_steps)
+                continue
             file_path = self.find_slice(scan_dir, vertebra)
             if file_path is not None:
                 extension = '' if file_path.endswith('.dcm') else '.dcm'
