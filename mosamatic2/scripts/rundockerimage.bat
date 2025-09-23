@@ -1,7 +1,6 @@
 @echo off
 
-FOR /F %%v IN ('poetry version --short') DO SET VERSION=%%v
-
+set VERSION=2.0.10
 set IMAGES=G:\My Drive\data\Mosamatic\testdata\L3
 set MODEL_FILES=G:\My Drive\data\Mosamatic\models\tensorflow\L3\1.0
 set OUTPUT=G:\My Drive\data\Mosamatic\testdata\output
