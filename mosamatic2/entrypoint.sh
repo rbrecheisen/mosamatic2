@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec mosamatic2-cli
+exec mosamatic2-cli "$@"
