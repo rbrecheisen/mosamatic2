@@ -100,7 +100,7 @@ class SelectSliceFromScansTask(Task):
             try:
                 self.extract_masks(scan_dir)
             except Exception as e:
-                LOG.warning(f'Could not extract masks from {scan_dir} [{str(e)}]')
+                LOG.warning(f'Could not extract masks from {scan_dir} [{str(e)}]. Skipping scan...')
                 self.set_progress(step, nr_steps)
                 continue
             file_path = self.find_slice(scan_dir, vertebra)
