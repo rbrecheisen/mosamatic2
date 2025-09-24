@@ -54,25 +54,50 @@ class SelectSliceFromScansTask(Task):
         elif vertebra == 'T4':
             vertebral_level = 'vertebrae_T4'
         else:
-            raise RuntimeError(f'Unknown vertbra {vertebra}. Options are "L3" and "T4"')
+            LOG.error(f'Unknown vertbra {vertebra}. Options are "L3" and "T4"')
+            return None
         # Find Z-positions DICOM images
         z_positions = {}
         for f in os.listdir(scan_dir):
             f_path = os.path.join(scan_dir, f)
-            p = load_dicom(f_path, stop_before_pixels=True)
-            if p is not None:
-                z_positions[p.ImagePositionPatient[2]] = f_path
+            try:
+                p = load_dicom(f_path, stop_before_pixels=True)
+                if p is not None and hasattr(p, "ImagePositionPatient"):
+                    z_positions[p.ImagePositionPatient[2]] = f_path
+            except Exception as e:
+                LOG.warning(f"Failed to load DICOM {f_path}: {e}")
+                continue
+        if not z_positions:
+            LOG.error("No valid DICOM z-positions found.")
+            return None
         # Find Z-position L3 image
         mask_file = os.path.join(TOTAL_SEGMENTATOR_OUTPUT_DIR, f'{vertebral_level}.nii.gz')
-        mask_obj = nib.load(mask_file)
-        mask = mask_obj.get_fdata()
-        affine_transform = mask_obj.affine
+        if not os.path.exists(mask_file):
+            LOG.error(f"Mask file not found: {mask_file}")
+            return None
+        try:
+            mask_obj = nib.load(mask_file)
+            mask = mask_obj.get_fdata()
+            affine_transform = mask_obj.affine
+        except Exception as e:
+            LOG.error(f"Failed to load mask {mask_file}: {e}")
+            return None
         indexes = np.array(np.where(mask == 1))
-        index_min = indexes.min(axis=1)
-        index_max = indexes.max(axis=1)
+        if indexes.size == 0:
+            LOG.error(f"No voxels found in mask {mask_file} for {vertebral_level}")
+            return None        
+        try:
+            index_min = indexes.min(axis=1)
+            index_max = indexes.max(axis=1)
+        except ValueError as e:
+            LOG.error(f"Invalid indexes array for {vertebral_level}: {e}")
+            return None
         world_min = nib.affines.apply_affine(affine_transform, index_min)
         world_max = nib.affines.apply_affine(affine_transform, index_max)
         z_direction = affine_transform[:3, 2][2]
+        if z_direction == 0:
+            LOG.error("Affine z-direction is zero.")
+            return None
         z_sign = math.copysign(1, z_direction)
         z_delta_offset = self.get_z_delta_offset_for_mask(vertebral_level)
         if z_delta_offset is None:
@@ -88,6 +113,8 @@ class SelectSliceFromScansTask(Task):
                 closest_file = z_positions[closest_z]
                 LOG.info(f'Closest image: {closest_file}')
                 break
+        if closest_file is None:
+            LOG.warning("No matching slice found.")
         return closest_file
 
     def run(self):
