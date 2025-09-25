@@ -27,7 +27,10 @@ class SelectSliceFromScansTask(Task):
         super(SelectSliceFromScansTask, self).__init__(inputs, params, output, overwrite)
         self._error_dir = os.path.split(self.output())[0]
         self._error_dir = os.path.join(self._error_dir, 'selectslicefromscanstask_errors')
+        os.makedirs(self._error_dir, exist_ok=True)
         self._error_file = os.path.join(self._error_dir, 'errors.txt')
+        with open(self._error_file, 'w') as f:
+            f.write('Errors:\n')
         LOG.info(f'Error directory: {self._error_dir}')
 
     def write_error(self, message):
