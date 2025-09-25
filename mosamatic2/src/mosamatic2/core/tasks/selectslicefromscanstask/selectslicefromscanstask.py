@@ -159,5 +159,4 @@ class SelectSliceFromScansTask(Task):
                 LOG.info(f'Copying problematic scan {scan_dir} to error directory: {self._error_dir}')
                 scan_error_dir = os.path.join(self._error_dir, scan_name)
                 shutil.copytree(scan_dir, scan_error_dir)
-                break
             self.set_progress(step, nr_steps)
