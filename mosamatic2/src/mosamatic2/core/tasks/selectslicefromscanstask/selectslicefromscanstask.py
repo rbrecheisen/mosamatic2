@@ -25,6 +25,9 @@ class SelectSliceFromScansTask(Task):
 
     def __init__(self, inputs, params, output, overwrite):
         super(SelectSliceFromScansTask, self).__init__(inputs, params, output, overwrite)
+        self._error_dir = os.path.split(self.output())[0]
+        self._error_dir = os.path.join(self._error_dir, 'selectslicefromscanstask_errors')
+        LOG.info(f'Error directory: {self._error_dir}')
 
     def load_scan_dirs(self):
         scan_dirs = []
@@ -37,6 +40,8 @@ class SelectSliceFromScansTask(Task):
     def extract_masks(self, scan_dir):
         os.makedirs(TOTAL_SEGMENTATOR_OUTPUT_DIR, exist_ok=True)
         totalsegmentator(input=scan_dir, output=TOTAL_SEGMENTATOR_OUTPUT_DIR, fast=True)
+        if not os.path.isfile(os.path.join(TOTAL_SEGMENTATOR_OUTPUT_DIR, 'vertebrae_L3.nii.gz')):
+            raise Exception(f'{scan_dir}: vertebrae_L3.nii.gz does not exist')
         # os.system(f'TotalSegmentator -i {scan_dir} -o {TOTAL_SEGMENTATOR_OUTPUT_DIR} --fast')
 
     def delete_total_segmentator_output(self):
@@ -54,7 +59,7 @@ class SelectSliceFromScansTask(Task):
         elif vertebra == 'T4':
             vertebral_level = 'vertebrae_T4'
         else:
-            LOG.error(f'Unknown vertbra {vertebra}. Options are "L3" and "T4"')
+            LOG.error(f'{scan_dir}: Unknown vertbra {vertebra}. Options are "L3" and "T4"')
             return None
         # Find Z-positions DICOM images
         z_positions = {}
@@ -65,38 +70,38 @@ class SelectSliceFromScansTask(Task):
                 if p is not None and hasattr(p, "ImagePositionPatient"):
                     z_positions[p.ImagePositionPatient[2]] = f_path
             except Exception as e:
-                LOG.warning(f"Failed to load DICOM {f_path}: {e}")
+                LOG.warning(f"{scan_dir}: Failed to load DICOM {f_path}: {e}")
                 continue
         if not z_positions:
-            LOG.error("No valid DICOM z-positions found.")
+            LOG.error(f"{scan_dir}: No valid DICOM z-positions found.")
             return None
         # Find Z-position L3 image
         mask_file = os.path.join(TOTAL_SEGMENTATOR_OUTPUT_DIR, f'{vertebral_level}.nii.gz')
         if not os.path.exists(mask_file):
-            LOG.error(f"Mask file not found: {mask_file}")
+            LOG.error(f"{scan_dir}: Mask file not found: {mask_file}")
             return None
         try:
             mask_obj = nib.load(mask_file)
             mask = mask_obj.get_fdata()
             affine_transform = mask_obj.affine
         except Exception as e:
-            LOG.error(f"Failed to load mask {mask_file}: {e}")
+            LOG.error(f"{scan_dir}: Failed to load mask {mask_file}: {e}")
             return None
         indexes = np.array(np.where(mask == 1))
         if indexes.size == 0:
-            LOG.error(f"No voxels found in mask {mask_file} for {vertebral_level}")
+            LOG.error(f"{scan_dir}: No voxels found in mask {mask_file} for {vertebral_level}")
             return None        
         try:
             index_min = indexes.min(axis=1)
             index_max = indexes.max(axis=1)
         except ValueError as e:
-            LOG.error(f"Invalid indexes array for {vertebral_level}: {e}")
+            LOG.error(f"{scan_dir}: Invalid indexes array for {vertebral_level}: {e}")
             return None
         world_min = nib.affines.apply_affine(affine_transform, index_min)
         world_max = nib.affines.apply_affine(affine_transform, index_max)
         z_direction = affine_transform[:3, 2][2]
         if z_direction == 0:
-            LOG.error("Affine z-direction is zero.")
+            LOG.error(f"{scan_dir}: Affine z-direction is zero.")
             return None
         z_sign = math.copysign(1, z_direction)
         z_delta_offset = self.get_z_delta_offset_for_mask(vertebral_level)
@@ -114,7 +119,7 @@ class SelectSliceFromScansTask(Task):
                 LOG.info(f'Closest image: {closest_file}')
                 break
         if closest_file is None:
-            LOG.warning("No matching slice found.")
+            LOG.warning(f"{scan_dir}: No matching slice found.")
         return closest_file
 
     def run(self):
@@ -124,18 +129,26 @@ class SelectSliceFromScansTask(Task):
         for step in range(nr_steps):
             scan_dir = scan_dirs[step]
             scan_name = os.path.split(scan_dir)[1]
+            errors = False
+            LOG.info(f'Processing {scan_dir}...')
             try:
                 self.extract_masks(scan_dir)
             except Exception as e:
-                LOG.warning(f'Could not extract masks from {scan_dir} [{str(e)}]. Skipping scan...')
-                self.set_progress(step, nr_steps)
-                continue
-            file_path = self.find_slice(scan_dir, vertebra)
-            if file_path is not None:
-                extension = '' if file_path.endswith('.dcm') else '.dcm'
-                target_file_path = os.path.join(self.output(), vertebra + '_' + scan_name + extension)
-                shutil.copyfile(file_path, target_file_path)
-            else:
-                LOG.error(f'Could not find slice for vertebral level: {vertebra}')
-            self.delete_total_segmentator_output()
+                LOG.warning(f'{scan_dir}: Could not extract masks [{str(e)}]. Skipping scan...')
+                errors = True
+            if not errors:
+                file_path = self.find_slice(scan_dir, vertebra)
+                if file_path is not None:
+                    extension = '' if file_path.endswith('.dcm') else '.dcm'
+                    target_file_path = os.path.join(self.output(), vertebra + '_' + scan_name + extension)
+                    shutil.copyfile(file_path, target_file_path)
+                else:
+                    LOG.error(f'{scan_dir}: Could not find slice for vertebral level: {vertebra}')
+                    errors = True
+                self.delete_total_segmentator_output()
+            if errors:
+                LOG.info(f'Copying problematic scan {scan_dir} to error directory: {self._error_dir}')
+                scan_error_dir = os.path.join(self._error_dir, scan_name)
+                shutil.copytree(scan_dir, scan_error_dir)
+                break
             self.set_progress(step, nr_steps)
