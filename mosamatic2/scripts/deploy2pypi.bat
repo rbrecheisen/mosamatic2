@@ -2,6 +2,12 @@
 
 setlocal
 
+set /p CONFIRM="Did you update the CHANGELOG? (y/n) "
+if /I NOT "%CONFIRM%"=="y" (
+    echo Aborting deployment
+    exit /b 1
+)
+
 if "%~1"=="" (
     call scripts\test.bat
 )
