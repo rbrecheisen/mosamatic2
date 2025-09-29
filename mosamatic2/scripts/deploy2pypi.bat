@@ -34,13 +34,12 @@ set /p TOKEN=<"G:\My Drive\data\ApiKeysAndPasswordFiles\pypi-token.txt"
 
 poetry publish --build --username __token__ --password %TOKEN%
 
-set /p CONFIRM="Do you also want to build and deploy a Docker image of mosamatic2? (y/n) "
-if /I NOT "%CONFIRM%"=="y" (
-    echo Aborting deployment
-    exit /b 1
-)
-
-call scripts\builddockerimage.bat
-call scripts\deploy2dockerhub.bat
+@REM set /p CONFIRM="Do you also want to build and deploy a Docker image of mosamatic2? (y/n) "
+@REM if /I NOT "%CONFIRM%"=="y" (
+@REM     echo Aborting deployment
+@REM     exit /b 1
+@REM )
+@REM call scripts\builddockerimage.bat
+@REM call scripts\deploy2dockerhub.bat
 
 endlocal
