@@ -22,6 +22,7 @@ from mosamatic2.ui.widgets.panels.tasks.dicom2niftitaskpanel import Dicom2NiftiT
 from mosamatic2.ui.widgets.panels.tasks.createdicomsummarytaskpanel import CreateDicomSummaryTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.selectslicefromscanstaskpanel import SelectSliceFromScansTaskPanel
 from mosamatic2.ui.widgets.panels.pipelines.defaultpipelinepanel import DefaultPipelinePanel
+from mosamatic2.ui.widgets.panels.pipelines.defaultdockerpipelinepanel import DefaultDockerPipelinePanel
 from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.slicevisualization import SliceVisualization
 
 LOG = LogManager()
@@ -42,6 +43,7 @@ class MainWindow(QMainWindow):
         self._create_dicom_summary_task_panel = None
         self._select_slice_from_scans_task_panel = None
         self._default_pipeline_panel = None
+        self._default_docker_pipeline_panel = None
         self._slice_visualization = None
         self.init_window()
 
@@ -98,8 +100,11 @@ class MainWindow(QMainWindow):
     def init_pipelines_menu(self):
         default_pipeline_action = QAction('DefaultPipeline', self)
         default_pipeline_action.triggered.connect(self.handle_default_pipeline_action)
+        default_docker_pipeline_action = QAction('DefaultDockerPipeline', self)
+        default_docker_pipeline_action.triggered.connect(self.handle_default_docker_pipeline_action)
         pipelines_menu = self.menuBar().addMenu('Pipelines')
         pipelines_menu.addAction(default_pipeline_action)
+        pipelines_menu.addAction(default_docker_pipeline_action)
 
     def init_visualizations_menu(self):
         slice_visualization_action = QAction('SliceVisualization', self)
@@ -128,6 +133,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.create_dicom_summary_task_panel(), 'createdicomsummarytaskpanel')
             self._main_panel.add_panel(self.select_slice_from_scans_task_panel(), 'selectslicefromscanstaskpanel')
             self._main_panel.add_panel(self.default_pipeline_panel(), 'defaultpipelinepanel')
+            self._main_panel.add_panel(self.default_docker_pipeline_panel(), 'defaultdockerpipelinepanel')
             self._main_panel.add_panel(self.slice_visualization(), 'slicevisualization')
             self._main_panel.select_panel('defaultpipelinepanel')
         return self._main_panel
@@ -179,6 +185,11 @@ class MainWindow(QMainWindow):
         if not self._default_pipeline_panel:
             self._default_pipeline_panel = DefaultPipelinePanel()
         return self._default_pipeline_panel
+
+    def default_docker_pipeline_panel(self):
+        if not self._default_docker_pipeline_panel:
+            self._default_docker_pipeline_panel = DefaultDockerPipelinePanel()
+        return self._default_docker_pipeline_panel
     
     def slice_visualization(self):
         if not self._slice_visualization:
@@ -216,6 +227,9 @@ class MainWindow(QMainWindow):
     def handle_default_pipeline_action(self):
         self.main_panel().select_panel('defaultpipelinepanel')
 
+    def handle_default_docker_pipeline_action(self):
+        self.main_panel().select_panel('defaultdockerpipelinepanel')
+
     def handle_slice_visualization_action(self):
         self.main_panel().select_panel('slicevisualization')
 
@@ -233,6 +247,7 @@ class MainWindow(QMainWindow):
         self.create_dicom_summary_task_panel().save_inputs_and_parameters()
         self.select_slice_from_scans_task_panel().save_inputs_and_parameters()
         self.default_pipeline_panel().save_inputs_and_parameters()
+        self.default_docker_pipeline_panel().save_inputs_and_parameters()
         self.slice_visualization().save_inputs_and_parameters()
         return super().closeEvent(event)
 
