@@ -9,13 +9,20 @@ from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.tasks.segmentmusclefatl3tensorflowtask.paramloader import ParamLoader
 from mosamatic2.core.data.multidicomimage import MultiDicomImage
 from mosamatic2.core.data.dicomimage import DicomImage
+from mosamatic2.core.data.multiniftiimage import MultiNiftiImage
+from mosamatic2.core.data.niftiimage import NiftiImage
+from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.utils import (
+    is_nifti,
     normalize_between,
     get_pixels_from_dicom_object,
     convert_labels_to_157,
 )
+from scipy.ndimage import zoom
 
 DEVICE = 'cpu'
+L3_INDEX = 167
+LOG = LogManager()
 
 
 class SegmentMuscleFatL3TensorFlowTask(Task):
@@ -28,7 +35,33 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
     def __init__(self, inputs, params, output, overwrite=True):
         super(SegmentMuscleFatL3TensorFlowTask, self).__init__(inputs, params, output, overwrite)
 
+    # def has_nifti_files(self, dir_path):
+    #     for f in os.listdir(dir_path):
+    #         f_path = os.path.join(dir_path, f)
+    #         if is_nifti(f_path):
+    #             return True
+    #     return False
+
+    # def rescale_image(self, pixel_array, target_size=512, hu_air=-1000):
+    #     rows, cols = pixel_array.shape
+    #     # Pad to square with air
+    #     new_dim = max(rows, cols)
+    #     padded = np.full((new_dim, new_dim), hu_air, dtype=np.float32)
+    #     padded[:rows, :cols] = pixel_array
+    #     # Resize to target size with cubic interpolation
+    #     zoom_factor = target_size / new_dim
+    #     resized = zoom(padded, zoom=zoom_factor, order=3)
+    #     print(f'resized: ({np.min(resized)}, {np.max(resized)})')
+    #     return resized
+
     def load_images(self):        
+        # if self.has_nifti_files(self.input('images')):
+        #     LOG.info('Loading NIFTI images')
+        #     image_data = MultiNiftiImage()
+        #     image_data.set_path(self.input('images'))
+        #     if image_data.load():
+        #         return image_data
+        # else:
         image_data = MultiDicomImage()
         image_data.set_path(self.input('images'))
         if image_data.load():
@@ -95,7 +128,13 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
         
     def process_file(self, image, output_dir, model, contour_model, params):
         assert isinstance(image, DicomImage)
+        # if isinstance(image, DicomImage):
         pixels = get_pixels_from_dicom_object(image.object(), normalize=True)
+        # if isinstance(image, NiftiImage):
+        #     pixels = image.object().get_fdata()
+        #     pixels = pixels[L3_INDEX, :, :]
+        #     pixels = self.rescale_image(pixels)
+        #     LOG.info(f'pixels.shape: {pixels.shape}')
         if contour_model:
             mask = self.extract_contour(pixels, contour_model, params)
             pixels = normalize_between(pixels, params.dict['min_bound'], params.dict['max_bound'])

@@ -5,6 +5,7 @@ import textwrap
 import math
 import pendulum
 import numpy as np
+import nibabel as nb
 import struct
 import binascii
 import pydicom
@@ -134,6 +135,16 @@ def is_jpeg2000_compressed(p):
     return False
 
 
+def is_nifti(f):
+    return f.endswith('.nii') or f.endswith('.nii.gz')
+
+
+def load_nifti(f):
+    if is_nifti(f):
+        return nb.load(f)
+    return None
+
+
 def is_numpy_array(value):
     return isinstance(value, np.array)
 
@@ -149,8 +160,7 @@ def is_numpy(f):
 def load_numpy_array(f):
     if is_numpy(f):
         return np.load(f)
-    else:
-        return None
+    return None
 
 
 def get_pixels_from_tag_file(tag_file_path):

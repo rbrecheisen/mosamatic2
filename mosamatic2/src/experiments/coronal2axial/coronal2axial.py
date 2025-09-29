@@ -1,14 +1,17 @@
 import os
 import shutil
 import numpy as np
+import pydicom
 import SimpleITK as sitk
 import matplotlib.pyplot as plt
+from scipy.ndimage import zoom
 from mosamatic2.core.utils import load_dicom
 
 DICOM_DIR = 'D:\\Mosamatic\\NicoleHildebrand\\24-04-2025_coronale_CT\\MUMC004_3_coronaal'
 DICOM_DIR_RENAMED = 'D:\\Mosamatic\\NicoleHildebrand\\24-04-2025_coronale_CT\\MUMC004_3_coronaal_renamed'
 DICOM_DIR_DECOMPRESSED = 'D:\\Mosamatic\\NicoleHildebrand\\24-04-2025_coronale_CT\\MUMC004_3_coronaal_decompressed'
 NIFTI_OUTPUT_FILE = 'D:\\Mosamatic\\NicoleHildebrand\\24-04-2025_coronale_CT\\MUMC004_3_coronal_to_axial.nii.gz'
+L3_INDEX = 167
 
 
 def load_dicom_series():
@@ -61,16 +64,60 @@ def reformat_coronal_to_axial(img):
     return axial_img
 
 
+def apply_hu_scaling(img, dicom_dir):
+    sample_file = next(f for f in os.listdir(dicom_dir) if f.endswith(".dcm"))
+    ds = pydicom.dcmread(os.path.join(dicom_dir, sample_file))
+    slope = getattr(ds, "RescaleSlope", 1.0)
+    intercept = getattr(ds, "RescaleIntercept", 0.0)    
+    arr = sitk.GetArrayFromImage(img).astype(np.float32)
+    hu_arr = arr * slope + intercept
+    hu_img = sitk.GetImageFromArray(hu_arr)
+    hu_img.CopyInformation(img)
+    return hu_img
+
+def rescale_image(pixel_array, target_size=512, hu_air=-1000):
+    rows, cols = pixel_array.shape
+    # Pad to square with air
+    new_dim = max(rows, cols)
+    padded = np.full((new_dim, new_dim), hu_air, dtype=np.float32)
+    padded[:rows, :cols] = pixel_array
+    # Resize to target size with cubic interpolation
+    zoom_factor = target_size / new_dim
+    resized = zoom(padded, zoom=zoom_factor, order=3)
+    print(f'resized: ({np.min(resized)}, {np.max(resized)})')
+    return resized
+
+# def rescale_image(pixel_array, rows=238, columns=470, target_size=512):
+#     rescale_slope = 1
+#     rescale_intercept = -1024
+#     hu_array = pixel_array * rescale_slope + rescale_intercept
+#     hu_air = -1000
+#     new_rows = max(rows, columns)
+#     new_cols = max(rows, columns)
+#     padded_hu_array = np.full((new_rows, new_cols), hu_air, dtype=hu_array.dtype)
+#     padded_hu_array[:pixel_array.shape[0], :pixel_array.shape[1]] = hu_array
+#     pixel_array_padded = (padded_hu_array - rescale_intercept) / rescale_slope
+#     pixel_array_padded = pixel_array_padded.astype(pixel_array.dtype) # Image now has largest dimensions
+#     pixel_array_rescaled = zoom(pixel_array_padded, zoom=(target_size / new_rows), order=3) # Cubic interpolation
+#     pixel_array_rescaled = pixel_array_rescaled.astype(pixel_array.dtype)
+#     print(f'pixel_array_rescaled: ({np.min(pixel_array_rescaled)}, {np.max(pixel_array_rescaled)})')
+#     return pixel_array_rescaled
+
 def preview_slices(img, num_slices=6):
     arr = sitk.GetArrayFromImage(img)  # z,y,x
     z_slices = arr.shape[0]
-    step = max(1, z_slices // num_slices)
-    indices = list(range(0, z_slices, step))[:num_slices]
-    fig, axes = plt.subplots(1, len(indices), figsize=(15, 5))
-    for ax, idx in zip(axes, indices):
-        ax.imshow(arr[idx, :, :], cmap="gray", vmin=-200, vmax=300)
-        ax.set_title(f"Slice {idx}")
-        ax.axis("off")
+    l3_slice = arr[L3_INDEX, :, :]
+    l3_slice = rescale_image(l3_slice)
+    fig, axes = plt.subplots(1, 1, figsize=(15, 5))
+    axes.imshow(l3_slice, cmap="gray", vmin=-200, vmax=300)
+    axes.axis("off")
+    # step = max(1, z_slices // num_slices)
+    # indices = list(range(0, z_slices, step))[:num_slices]
+    # fig, axes = plt.subplots(1, len(indices), figsize=(15, 5))
+    # for ax, idx in zip(axes, indices):
+    #     ax.imshow(arr[idx, :, :], cmap="gray", vmin=-200, vmax=300)
+    #     ax.set_title(f"Slice {idx}")
+    #     ax.axis("off")
     plt.tight_layout()
     plt.show()
 
@@ -79,6 +126,7 @@ def main():
     img = load_dicom_series()
     resampled = resample_isotropic(img, new_spacing=(1.0, 1.0, 1.0))
     axial = reformat_coronal_to_axial(resampled)
+    # axial = apply_hu_scaling(axial, DICOM_DIR_DECOMPRESSED)
     sitk.WriteImage(axial, NIFTI_OUTPUT_FILE)
     preview_slices(axial, num_slices=6)
 
