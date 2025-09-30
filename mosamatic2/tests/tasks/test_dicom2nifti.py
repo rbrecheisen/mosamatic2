@@ -9,7 +9,7 @@ TASK_NAME = 'Dicom2NiftiTask'.lower()
 def test_dicom2nifti():
     task = Dicom2NiftiTask(
         inputs={'scans': SOURCES['scans']}, 
-        params=None,
+        params={'compressed': True},
         output=SOURCES['output'],
         overwrite=True,
     )
