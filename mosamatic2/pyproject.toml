@@ -1,6 +1,6 @@
 [project]
 name = "mosamatic2"
-version = "2.0.11"
+version = "2.0.12"
 description = ""
 authors = [
     {name = "Ralph Brecheisen", email = "r.brecheisen@maastrichtuniversity.nl"}
@@ -34,6 +34,7 @@ dependencies = [
     "vtk>=9.5.1",
     "pyqtgraph>=0.13.7",
     "moosez",
+    "docker",
 ]
 
 [tool.poetry]

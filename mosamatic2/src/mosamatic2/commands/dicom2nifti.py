@@ -3,12 +3,18 @@ import click
 from mosamatic2.core.tasks import Dicom2NiftiTask
 
 
-@click.command(help='Converts DICOM series to NIFTI')
+@click.command(help='Converts root directory with DICOM series to NIFTI format')
 @click.option(
-    '--images', 
+    '--scans', 
     required=True, 
     type=click.Path(exists=True), 
-    help='Directory with images',
+    help='Root directory with DICOM scans (one for each patient)',
+)
+@click.option(
+    '--compressed', 
+    type=click.BOOL, 
+    default=True, 
+    help='Compress with gzip [true|false] (default: True)'
 )
 @click.option(
     '--output', 
@@ -22,14 +28,17 @@ from mosamatic2.core.tasks import Dicom2NiftiTask
     default=False, 
     help='Overwrite [true|false]'
 )
-def dicom2nifti(images, output, overwrite):
+def dicom2nifti(scans, compressed, output, overwrite):
     """
-    Converts single DICOM series (scan) to NIFTI
+    Converts DICOM scans to NIFTI format.
     
     Parameters
     ----------
-    --images : str
-        Directory with DICOM images of a single series
+    --scans : str
+        Root directory with DICOM scans (one subdirectory for each patient)
+
+    --compressed : bool
+        Whether to compress the NIFTI file with gzip or not (default: True)
 
     --output : str
         Path to output directory
@@ -38,8 +47,8 @@ def dicom2nifti(images, output, overwrite):
         Overwrite contents output directory [true|false]
     """
     task = Dicom2NiftiTask(
-        inputs={'images': images},
-        params=None,
+        inputs={'scans': scans},
+        params={'compressed': compressed},
         output=output,
         overwrite=overwrite,
     )

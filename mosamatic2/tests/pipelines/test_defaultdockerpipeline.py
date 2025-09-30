@@ -7,12 +7,12 @@ from tests.sources import get_sources
 SOURCES = get_sources()
 
 
-def test_default_docker_pipeline():
+def test_defaultdockerpipeline():
     assert os.path.exists(SOURCES['input']), 'Input directory does not exist'
     pipeline = DefaultDockerPipeline(
         inputs={
-            'images': SOURCES['input'],
-            'model_files': SOURCES['model_files']['tensorflow'],
+            'images': 'D:\\Mosamatic\\TestData\\Input\\L3',
+            'model_files': 'D:\\Mosamatic\\TensorFlowModelFiles',
         },
         params={
             'target_size': 512,
@@ -23,7 +23,7 @@ def test_default_docker_pipeline():
             'fig_height': 10,
             'version': '2.0.10',
         },
-        output=SOURCES['output'],
+        output='D:\\Mosamatic\\TestData',
         overwrite=True,
     )
     pipeline.run()

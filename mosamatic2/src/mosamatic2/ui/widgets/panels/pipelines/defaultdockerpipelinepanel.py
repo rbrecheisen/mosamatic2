@@ -182,7 +182,6 @@ class DefaultDockerPipelinePanel(PipelinePanel):
         self.form_layout().addRow('Images directory', images_dir_layout)
         self.form_layout().addRow('Model files directory', model_files_dir_layout)
         self.form_layout().addRow('Output directory', output_dir_layout)
-        # self.form_layout().addRow('Version', self.version_line_edit())
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
@@ -289,23 +288,10 @@ class DefaultDockerPipelinePanel(PipelinePanel):
             errors.append('Empty output directory path')
         elif os.path.isdir(self.output_dir_line_edit().text()) and not self.overwrite_checkbox().isChecked():
             errors.append('Output directory exists but overwrite=False. Please remove output directory first')
-        # if self.version_line_edit().text() == '':
-        #     errors.append('Empty version. Should be same as current Mosamatic version')
-        # if self.target_size_spinbox().value() != 512:
-        #     errors.append('Target size must be 512')
-        # if self.full_scan_checkbox().isChecked():
-        #     errors.append('Full scan support is not available yet')
         return errors
     
     def save_inputs_and_parameters(self):
         self.settings().set(f'{PANEL_NAME}/images_dir', self.images_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/model_files_dir', self.model_files_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/output_dir', self.output_dir_line_edit().text())
-        # self.settings().set(f'{PANEL_NAME}/version', self.version_line_edit().text())
-        # self.settings().set(f'{PANEL_NAME}/target_size', self.target_size_spinbox().value())
-        # self.settings().set(f'{PANEL_NAME}/model_type', self.model_type_combobox().currentText())
-        # self.settings().set(f'{PANEL_NAME}/model_version', self.model_version_combobox().currentText())
-        # self.settings().set(f'{PANEL_NAME}/fig_width', self.fig_width_spinbox().value())
-        # self.settings().set(f'{PANEL_NAME}/fig_height', self.fig_height_spinbox().value())
-        # self.settings().set(f'{PANEL_NAME}/full_scan', self.full_scan_checkbox().isChecked())
         self.settings().set(f'{PANEL_NAME}/overwrite', self.overwrite_checkbox().isChecked())

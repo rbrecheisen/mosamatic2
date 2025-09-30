@@ -8,6 +8,8 @@ from mosamatic2.commands import (
     selectslicefromscans,
     createdicomsummary,
     defaultpipeline,
+    defaultdockerpipeline,
+    boadockerpipeline,
 )
 from mosamatic2.core.utils import show_doc_command
 
@@ -37,4 +39,6 @@ main.add_command(dicom2nifti.dicom2nifti)
 main.add_command(selectslicefromscans.selectslicefromscans)
 main.add_command(createdicomsummary.createdicomsummary)
 main.add_command(defaultpipeline.defaultpipeline)
+main.add_command(defaultdockerpipeline.defaultdockerpipeline)
+main.add_command(boadockerpipeline.boadockerpipeline)
 main.add_command(show_doc_command(main)) # Special command to show long description for command

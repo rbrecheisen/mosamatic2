@@ -23,6 +23,7 @@ from mosamatic2.ui.widgets.panels.tasks.createdicomsummarytaskpanel import Creat
 from mosamatic2.ui.widgets.panels.tasks.selectslicefromscanstaskpanel import SelectSliceFromScansTaskPanel
 from mosamatic2.ui.widgets.panels.pipelines.defaultpipelinepanel import DefaultPipelinePanel
 from mosamatic2.ui.widgets.panels.pipelines.defaultdockerpipelinepanel import DefaultDockerPipelinePanel
+from mosamatic2.ui.widgets.panels.pipelines.boadockerpipelinepanel import BoaDockerPipelinePanel
 from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.slicevisualization import SliceVisualization
 
 LOG = LogManager()
@@ -44,6 +45,7 @@ class MainWindow(QMainWindow):
         self._select_slice_from_scans_task_panel = None
         self._default_pipeline_panel = None
         self._default_docker_pipeline_panel = None
+        self._boa_docker_pipeline_panel = None
         self._slice_visualization = None
         self.init_window()
 
@@ -102,9 +104,12 @@ class MainWindow(QMainWindow):
         default_pipeline_action.triggered.connect(self.handle_default_pipeline_action)
         default_docker_pipeline_action = QAction('DefaultDockerPipeline', self)
         default_docker_pipeline_action.triggered.connect(self.handle_default_docker_pipeline_action)
+        boa_docker_pipeline_action = QAction('BoaDockerPipeline', self)
+        boa_docker_pipeline_action.triggered.connect(self.handle_boa_docker_pipeline_action)
         pipelines_menu = self.menuBar().addMenu('Pipelines')
         pipelines_menu.addAction(default_pipeline_action)
         pipelines_menu.addAction(default_docker_pipeline_action)
+        pipelines_menu.addAction(boa_docker_pipeline_action)
 
     def init_visualizations_menu(self):
         slice_visualization_action = QAction('SliceVisualization', self)
@@ -134,6 +139,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.select_slice_from_scans_task_panel(), 'selectslicefromscanstaskpanel')
             self._main_panel.add_panel(self.default_pipeline_panel(), 'defaultpipelinepanel')
             self._main_panel.add_panel(self.default_docker_pipeline_panel(), 'defaultdockerpipelinepanel')
+            self._main_panel.add_panel(self.boa_docker_pipeline_panel(), 'boadockerpipelinepanel')
             self._main_panel.add_panel(self.slice_visualization(), 'slicevisualization')
             self._main_panel.select_panel('defaultpipelinepanel')
         return self._main_panel
@@ -190,6 +196,11 @@ class MainWindow(QMainWindow):
         if not self._default_docker_pipeline_panel:
             self._default_docker_pipeline_panel = DefaultDockerPipelinePanel()
         return self._default_docker_pipeline_panel
+
+    def boa_docker_pipeline_panel(self):
+        if not self._boa_docker_pipeline_panel:
+            self._boa_docker_pipeline_panel = BoaDockerPipelinePanel()
+        return self._boa_docker_pipeline_panel
     
     def slice_visualization(self):
         if not self._slice_visualization:
@@ -230,6 +241,9 @@ class MainWindow(QMainWindow):
     def handle_default_docker_pipeline_action(self):
         self.main_panel().select_panel('defaultdockerpipelinepanel')
 
+    def handle_boa_docker_pipeline_action(self):
+        self.main_panel().select_panel('boadockerpipelinepanel')
+
     def handle_slice_visualization_action(self):
         self.main_panel().select_panel('slicevisualization')
 
@@ -248,6 +262,7 @@ class MainWindow(QMainWindow):
         self.select_slice_from_scans_task_panel().save_inputs_and_parameters()
         self.default_pipeline_panel().save_inputs_and_parameters()
         self.default_docker_pipeline_panel().save_inputs_and_parameters()
+        self.boa_docker_pipeline_panel().save_inputs_and_parameters()
         self.slice_visualization().save_inputs_and_parameters()
         return super().closeEvent(event)
 

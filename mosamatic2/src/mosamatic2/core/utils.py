@@ -351,3 +351,17 @@ def convert_numpy_array_to_png_image(
     png_file_path = os.path.join(output_dir_path, png_file_name)
     image.save(png_file_path)
     return png_file_path
+
+
+def is_docker_running():
+    import docker
+    try:
+        client = docker.from_env()
+        client.ping()
+        return True
+    except Exception:
+        return False
+    
+
+def to_unix_path(path):
+    return path.replace("\\", "/").replace(" ", "\\ ")

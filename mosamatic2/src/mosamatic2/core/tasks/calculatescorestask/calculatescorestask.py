@@ -4,7 +4,7 @@ import pandas as pd
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.data.multidicomimage import MultiDicomImage
-from mosamatic2.core.data.niftiimage import NiftiImage
+from mosamatic2.core.data.numpyimage import NumpyImage
 from mosamatic2.core.utils import (
     get_pixels_from_dicom_object,
     calculate_area,
@@ -74,7 +74,7 @@ class CalculateScoresTask(Task):
 
     def load_segmentation(self, f, file_type='npy'):
         if file_type == 'npy':
-            segmentation = NiftiImage()
+            segmentation = NumpyImage()
             segmentation.set_path(f)
             if segmentation.load():
                 return segmentation.object()

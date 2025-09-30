@@ -3,7 +3,6 @@ import os
 from PySide6.QtWidgets import (
     QLineEdit,
     QCheckBox,
-    QSpinBox,
     QHBoxLayout,
     QVBoxLayout,
     QFormLayout,
@@ -17,29 +16,29 @@ from PySide6.QtCore import (
 )
 
 from mosamatic2.core.managers.logmanager import LogManager
-from mosamatic2.ui.widgets.panels.tasks.taskpanel import TaskPanel
+from mosamatic2.ui.widgets.panels.pipelines.pipelinepanel import PipelinePanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
-from mosamatic2.core.tasks import Dicom2NiftiTask
+from mosamatic2.core.pipelines import BoaDockerPipeline
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Dicom2NiftiTask'
-PANEL_NAME = 'dicom2niftitaskpanel'
+PANEL_TITLE = 'BoaDockerPipeline'
+PANEL_NAME = 'boadockerpipeline'
 
 
-class Dicom2NiftiTaskPanel(TaskPanel):
+class BoaDockerPipelinePanel(PipelinePanel):
     def __init__(self):
-        super(Dicom2NiftiTaskPanel, self).__init__()
+        super(BoaDockerPipelinePanel, self).__init__()
         self.set_title(PANEL_TITLE)
         self._scans_dir_line_edit = None
-        self._scans_dir_select_button = None
+        self._images_dir_select_button = None
         self._output_dir_line_edit = None
         self._output_dir_select_button = None
         self._overwrite_checkbox = None
         self._form_layout = None
-        self._run_task_button = None
+        self._run_pipeline_button = None
         self._settings = None
         self._task = None
         self._worker = None
@@ -48,18 +47,20 @@ class Dicom2NiftiTaskPanel(TaskPanel):
 
     def scans_dir_line_edit(self):
         if not self._scans_dir_line_edit:
-            self._scans_dir_line_edit = QLineEdit(self.settings().get(f'{PANEL_NAME}/scans_dir'))
+            self._scans_dir_line_edit = QLineEdit()
+            self._scans_dir_line_edit.setText(self.settings().get(f'{PANEL_NAME}/scans_dir'))
         return self._scans_dir_line_edit
     
     def scans_dir_select_button(self):
-        if not self._scans_dir_select_button:
-            self._scans_dir_select_button = QPushButton('Select')
-            self._scans_dir_select_button.clicked.connect(self.handle_scans_dir_select_button)
-        return self._scans_dir_select_button
+        if not self._images_dir_select_button:
+            self._images_dir_select_button = QPushButton('Select')
+            self._images_dir_select_button.clicked.connect(self.handle_scans_dir_select_button)
+        return self._images_dir_select_button
     
     def output_dir_line_edit(self):
         if not self._output_dir_line_edit:
-            self._output_dir_line_edit = QLineEdit(self.settings().get(f'{PANEL_NAME}/output_dir'))
+            self._output_dir_line_edit = QLineEdit()
+            self._output_dir_line_edit.setText(self.settings().get(f'{PANEL_NAME}/output_dir'))
         return self._output_dir_line_edit
     
     def output_dir_select_button(self):
@@ -81,16 +82,19 @@ class Dicom2NiftiTaskPanel(TaskPanel):
                 self._form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
         return self._form_layout
     
-    def run_task_button(self):
-        if not self._run_task_button:
-            self._run_task_button = QPushButton('Run task')
-            self._run_task_button.clicked.connect(self.handle_run_task_button)
-        return self._run_task_button
+    def run_pipeline_button(self):
+        if not self._run_pipeline_button:
+            self._run_pipeline_button = QPushButton('Run pipeline')
+            self._run_pipeline_button.clicked.connect(self.handle_run_pipeline_button)
+        return self._run_pipeline_button
     
     def settings(self):
         if not self._settings:
             self._settings = Settings()
         return self._settings
+    
+    def init_help_dialog(self):
+        self.help_dialog().set_text('Show some help information')
     
     def init_layout(self):
         scans_dir_layout = QHBoxLayout()
@@ -104,7 +108,7 @@ class Dicom2NiftiTaskPanel(TaskPanel):
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
-        layout.addWidget(self.run_task_button())
+        layout.addWidget(self.run_pipeline_button())
         self.setLayout(layout)
         self.setObjectName(PANEL_NAME)
 
@@ -122,7 +126,7 @@ class Dicom2NiftiTaskPanel(TaskPanel):
             self.output_dir_line_edit().setText(directory)
             self.settings().set('last_directory', directory)
 
-    def handle_run_task_button(self):
+    def handle_run_pipeline_button(self):
         errors = self.check_inputs_and_parameters()
         if len(errors) > 0:
             error_message = 'Following errors were encountered:\n'
@@ -130,10 +134,10 @@ class Dicom2NiftiTaskPanel(TaskPanel):
                 error_message += f' - {error}\n'
             QMessageBox.information(self, 'Error', error_message)
         else:
-            LOG.info('Running task...')
-            self.run_task_button().setEnabled(False)
+            LOG.info('Running pipeline...')
+            self.run_pipeline_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            self._task = Dicom2NiftiTask(
+            self._task = BoaDockerPipeline(
                 inputs={'scans': self.scans_dir_line_edit().text()},
                 params=None,
                 output=self.output_dir_line_edit().text(),
@@ -161,19 +165,17 @@ class Dicom2NiftiTaskPanel(TaskPanel):
 
     @Slot()
     def handle_finished(self):
-        self.run_task_button().setEnabled(True)
-
-    # HELPERS
+        self.run_pipeline_button().setEnabled(True)
 
     def check_inputs_and_parameters(self):
         errors = []
         if self.scans_dir_line_edit().text() == '':
             errors.append('Empty scans directory path')
-        if not os.path.isdir(self.scans_dir_line_edit().text()):
+        elif not os.path.isdir(self.scans_dir_line_edit().text()):
             errors.append('Scans directory does not exist')
         if self.output_dir_line_edit().text() == '':
             errors.append('Empty output directory path')
-        if os.path.isdir(self.output_dir_line_edit().text()) and not self.overwrite_checkbox().isChecked():
+        elif os.path.isdir(self.output_dir_line_edit().text()) and not self.overwrite_checkbox().isChecked():
             errors.append('Output directory exists but overwrite=False. Please remove output directory first')
         return errors
     
