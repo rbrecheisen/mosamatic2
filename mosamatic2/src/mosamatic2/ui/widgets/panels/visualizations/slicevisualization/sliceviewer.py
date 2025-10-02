@@ -80,9 +80,9 @@ class SliceViewer(QWidget):
         slice.SetMapper(slice_mapper)
         slice_text_actor = self.create_text_actor("", 0.01, 0.01, 12, align_bottom=True, normalized=True)
         usage_text_actor = self.create_text_actor(
-            "- Slice with mouse wheel or Up/Down-Key (first click inside viewer)\n"
+            "- Slice with mouse wheel or Up/Down keys (first click inside viewer)\n"
             "- Zoom with pressed right mouse button while dragging\n"
-            "- Pan with middle mouse button while dragging\n"
+            "- Pan with Shift key and left mouse button while dragging\n"
             "- Change contrast/brightness with pressed left mouse while dragging",
             0.01, 0.99, 12, normalized=True)
         ren = vtk.vtkRenderer()
