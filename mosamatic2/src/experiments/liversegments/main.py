@@ -38,6 +38,22 @@ colors = {
 
 slicer.mrmlScene.Clear()
 
+ctVolume = slicer.util.loadVolume("G:\\My Drive\\data\\Mosamatic\\testdata\\output\\boadockerpipeline\\dicom2niftitask\\patient1.nii.gz")
+# vrLogic = slicer.modules.volumerendering.logic()
+# vrNode = vrLogic.CreateDefaultVolumeRenderingNodes(ctVolume)
+
+# # Adjust rendering preset (e.g. CT-AAA, CT-Bone, etc.)
+# displayNode = vrNode.GetDisplayNode()
+# displayNode.SetVisibility(True)  # Show volume rendering
+# vrLogic.CopyDisplayToVolumeRenderingDisplayNode(vrLogic.GetPresetByName("CT-AAA"), displayNode)
+
+layoutManager = slicer.app.layoutManager()
+layoutManager.setLayout(slicer.vtkMRMLLayoutNode.SlicerLayoutFourUpView)  # show 2D + 3D
+
+for comp in ["Red", "Yellow", "Green"]:
+    sliceWidget = layoutManager.sliceWidget(comp)
+    sliceWidget.sliceController().setSliceVisible(True)
+
 # Create a new segmentation node
 segmentationNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLSegmentationNode", "LiverSegments")
 
