@@ -3530,6 +3530,18 @@ files = [
 ]
 
 [[package]]
+name = "slicer"
+version = "0.0.8"
+description = "A small package for big slicing."
+optional = false
+python-versions = ">=3.6"
+groups = ["main"]
+files = [
+    {file = "slicer-0.0.8-py3-none-any.whl", hash = "sha256:6c206258543aecd010d497dc2eca9d2805860a0b3758673903456b7df7934dc3"},
+    {file = "slicer-0.0.8.tar.gz", hash = "sha256:2e7553af73f0c0c2d355f4afcc3ecf97c6f2156fcf4593955c3f56cf6c4d6eb7"},
+]
+
+[[package]]
 name = "spinners"
 version = "0.0.24"
 description = "Spinners for terminals"
@@ -4363,4 +4375,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.12"
-content-hash = "29b3d6ec128629e00ba4347aaacabf62923e0c6e8a66fdcf1a54e6a3962e72c4"
+content-hash = "7e007da556d7fddc7a236524005a1b87a4e2fc9a7f33bbbf7eccf27ee8600b47"

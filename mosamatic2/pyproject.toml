@@ -35,6 +35,7 @@ dependencies = [
     "pyqtgraph>=0.13.7",
     "moosez",
     "docker",
+    "slicer",
 ]
 
 [tool.poetry]
