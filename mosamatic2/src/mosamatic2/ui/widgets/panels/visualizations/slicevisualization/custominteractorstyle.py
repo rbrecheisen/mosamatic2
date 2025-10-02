@@ -14,6 +14,8 @@ class CustomInteractorStyle(vtk.vtkInteractorStyleImage):
         self.status_actor = status_actor
         self.slice_obj = slice_obj
         self.orientation = orientation
+        self._color_window = 0
+        self._color_level = 0
 
         xmin, xmax, ymin, ymax, zmin, zmax = image_data.GetExtent()
         if orientation == "axial":
@@ -28,6 +30,22 @@ class CustomInteractorStyle(vtk.vtkInteractorStyleImage):
         self.slice = (self.min_slice + self.max_slice) // 2
         self.slice_mapper.SetSliceNumber(self.slice)
         self.update_status_message()
+
+    def color_window(self):
+        return self._color_window
+
+    def set_color_window(self, color_window):
+        self._color_window = color_window
+        self.slice_obj.GetProperty().SetColorWindow(self._color_window)
+        self.GetInteractor().GetRenderWindow().Render()
+
+    def color_level(self):
+        return self._color_level
+
+    def set_color_level(self, color_level):
+        self._color_level = color_level
+        self.slice_obj.GetProperty().SetColorLevel(self._color_level)
+        self.GetInteractor().GetRenderWindow().Render()
 
     def update_status_message(self):
         window = int(self.slice_obj.GetProperty().GetColorWindow())

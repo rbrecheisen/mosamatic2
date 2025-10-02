@@ -1,5 +1,7 @@
 from PySide6.QtWidgets import (
     QLineEdit,
+    QLabel,
+    QSpinBox,
     QHBoxLayout,
     QVBoxLayout,
     QFormLayout,
@@ -24,6 +26,9 @@ class SliceVisualization(Visualization):
         self._image_line_edit = None
         self._image_select_button = None
         self._image_dir_select_button = None
+        self._color_window_spinbox = None
+        self._color_level_spinbox = None
+        self._color_window_and_level_reset_button = None
         self._load_image_button = None
         self._slice_viewer = None
         self._form_layout = None
@@ -47,6 +52,22 @@ class SliceVisualization(Visualization):
             self._image_dir_select_button.clicked.connect(self.handle_image_dir_select_button)
         return self._image_dir_select_button
     
+    def color_window_spinbox(self):
+        if not self._color_window_spinbox:
+            self._color_window_spinbox = QSpinBox(self, minimum=0, maximum=1024, value=400)
+        return self._color_window_spinbox
+    
+    def color_level_spinbox(self):
+        if not self._color_level_spinbox:
+            self._color_level_spinbox = QSpinBox(self, minimum=0, maximum=100, value=40)
+        return self._color_level_spinbox
+    
+    def color_window_and_level_reset_button(self):
+        if not self._color_window_and_level_reset_button:
+            self._color_window_and_level_reset_button = QPushButton('Reset')
+            self._color_window_and_level_reset_button.clicked.connect(self.handle_color_window_and_level_reset_button)
+        return self._color_window_and_level_reset_button
+    
     def load_image_button(self):
         if not self._load_image_button:
             self._load_image_button = QPushButton('Load')
@@ -55,7 +76,10 @@ class SliceVisualization(Visualization):
     
     def slice_viewer(self):
         if not self._slice_viewer:
-            self._slice_viewer = SliceViewer()
+            self._slice_viewer = SliceViewer(
+                color_window=self.color_window_spinbox().value(),
+                color_level=self.color_level_spinbox().value(),
+            )
         return self._slice_viewer
 
     def form_layout(self):
@@ -75,7 +99,14 @@ class SliceVisualization(Visualization):
         image_layout.addWidget(self.image_line_edit())
         image_layout.addWidget(self.image_select_button())
         image_layout.addWidget(self.image_dir_select_button())
+        color_window_and_level_layout = QHBoxLayout()
+        color_window_and_level_layout.addWidget(QLabel('Color window'))
+        color_window_and_level_layout.addWidget(self.color_window_spinbox())
+        color_window_and_level_layout.addWidget(QLabel('Color level'))
+        color_window_and_level_layout.addWidget(self.color_level_spinbox())
+        color_window_and_level_layout.addWidget(self.color_window_and_level_reset_button())
         self.form_layout().addRow('NIFTI file or DICOM directory', image_layout)
+        self.form_layout().addRow('', color_window_and_level_layout)
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
         layout.addWidget(self.load_image_button())
@@ -96,6 +127,10 @@ class SliceVisualization(Visualization):
         if dir_path:
             self.image_line_edit().setText(dir_path)
             self.settings().set('last_directory', dir_path)
+
+    def handle_color_window_and_level_reset_button(self):
+        self.slice_viewer().set_color_window(self.color_window_spinbox().value())
+        self.slice_viewer().set_color_level(self.color_level_spinbox().value())
 
     def handle_load_image_button(self):
         self.slice_viewer().set_nifti_file_or_dicom_dir(self.image_line_edit().text())

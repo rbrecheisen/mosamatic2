@@ -16,6 +16,7 @@ from PySide6.QtCore import (
 )
 
 from mosamatic2.core.managers.logmanager import LogManager
+from mosamatic2.core.utils import is_docker_running, is_path_docker_compatible
 from mosamatic2.ui.widgets.panels.pipelines.pipelinepanel import PipelinePanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
@@ -127,6 +128,15 @@ class BoaDockerPipelinePanel(PipelinePanel):
             self.settings().set('last_directory', directory)
 
     def handle_run_pipeline_button(self):
+        if not is_docker_running():
+            QMessageBox.information(self, 'Error', 'Docker is not running. Please start Docker Desktop first')
+            return
+        if not is_path_docker_compatible(self.scans_dir_line_edit().text()):
+            QMessageBox.information(self, 'Error', 'Path to scans directory contains spaces and is not Docker compatible')
+            return
+        if not is_path_docker_compatible(self.output_dir_line_edit().text()):
+            QMessageBox.information(self, 'Error', 'Path to output directory contains spaces and is not Docker compatible')
+            return
         errors = self.check_inputs_and_parameters()
         if len(errors) > 0:
             error_message = 'Following errors were encountered:\n'

@@ -363,5 +363,9 @@ def is_docker_running():
         return False
     
 
+def is_path_docker_compatible(path):
+    return not ' ' in path
+
+
 def to_unix_path(path):
     return path.replace("\\", "/").replace(" ", "\\ ")

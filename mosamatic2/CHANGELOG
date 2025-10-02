@@ -1,3 +1,12 @@
+2.0.16
+======
+- SliceViewer has configurable default color window and level with reset button
+
+2.0.15
+======
+- DefaultDockerPipeline and BoaDockerPipeline check for paths containing spaces.
+  These are not Docker compatible.
+  
 2.0.14
 ======
 - Added TotalSegmentatorTask (with script for installing educational license)
