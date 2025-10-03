@@ -33,9 +33,9 @@ dependencies = [
     "antspyx>=0.5.4",
     "vtk>=9.5.1",
     "pyqtgraph>=0.13.7",
-    "moosez",
-    "docker",
-    "slicer",
+    "moosez>=3.0.29",
+    "docker>=7.1.0",
+    "slicer>=0.0.8",
 ]
 
 [tool.poetry]
