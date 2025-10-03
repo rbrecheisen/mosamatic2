@@ -17,6 +17,11 @@ from mosamatic2.core.pipelines import DefaultDockerPipeline
     help='Input directory with AI model files (no spaces allowed)'
 )
 @click.option(
+    '--version', 
+    required=True, 
+    help='Docker image version'
+)
+@click.option(
     '--output', 
     required=True, 
     type=click.Path(), 
@@ -28,7 +33,7 @@ from mosamatic2.core.pipelines import DefaultDockerPipeline
     default=False, 
     help='Overwrite [true|false]'
 )
-def defaultdockerpipeline(images, model_files, output, overwrite):
+def defaultdockerpipeline(images, model_files, version, output, overwrite):
     """
     Runs default L3 analysis pipeline through Docker
     
@@ -51,6 +56,11 @@ def defaultdockerpipeline(images, model_files, output, overwrite):
 
         Warning: This directory path cannot contain any spaces!
 
+    --version : str
+        Docker image version, e.g., 2.0.16
+        Check https://hub.docker.com/repository/docker/brecheisen/mosamatic2-cli/general
+        for the latest version and older versions.
+
     --output : str
         Path to output directory (no spaces!)
 
@@ -66,6 +76,7 @@ def defaultdockerpipeline(images, model_files, output, overwrite):
             'file_type': 'npy',
             'fig_width': 10,
             'fig_height': 10,
+            'version': version,
         },
         output=output,
         overwrite=overwrite,

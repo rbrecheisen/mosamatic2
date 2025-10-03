@@ -11,15 +11,8 @@ class DefaultDockerPipeline(Pipeline):
         'images',
         'model_files',
     ]
-    PARAMS = [
-        'target_size',
-        'file_type',
-        'fig_width',
-        'fig_height',
-        'model_type',
-        'model_version',
-        'version',
-    ]
+    PARAMS = ['version']
+    
     def __init__(self, inputs, params, output, overwrite):
         super(DefaultDockerPipeline, self).__init__(inputs, params, output, overwrite)
 
