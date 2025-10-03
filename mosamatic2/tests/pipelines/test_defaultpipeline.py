@@ -7,7 +7,7 @@ from tests.sources import get_sources
 SOURCES = get_sources()
 
 
-def test_default_pipeline():
+def test_defaultpipeline():
     assert os.path.exists(SOURCES['input']), 'Input directory does not exist'
     pipeline = DefaultPipeline(
         inputs={

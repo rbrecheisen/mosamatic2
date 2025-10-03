@@ -42,3 +42,9 @@ call mosamatic2-cli defaultpipeline ^
     --model_files "G:\My Drive\data\Mosamatic\models\tensorflow\L3\1.0" ^
     --output "G:\My Drive\data\Mosamatic\testdata\output" ^
     --overwrite true
+
+call mosamatic2-cli liveranalysispipeline ^
+    --scans "G:\My Drive\data\Mosamatic\testdata\CT" ^
+    --compressed true ^
+    --output "G:\My Drive\data\Mosamatic\testdata\output" ^
+    --overwrite true

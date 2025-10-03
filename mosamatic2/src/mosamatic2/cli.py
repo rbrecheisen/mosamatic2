@@ -1,6 +1,7 @@
 import click
 from mosamatic2.commands import (
     calculatescores,
+    calculatemaskstatistics,
     rescaledicomimages,
     segmentmusclefatl3tensorflow,
     createpngsfromsegmentations,
@@ -10,6 +11,7 @@ from mosamatic2.commands import (
     defaultpipeline,
     defaultdockerpipeline,
     boadockerpipeline,
+    liveranalysispipeline,
     totalsegmentator,
 )
 from mosamatic2.core.utils import show_doc_command
@@ -33,6 +35,7 @@ def main():
 
 
 main.add_command(calculatescores.calculatescores)
+main.add_command(calculatemaskstatistics.calculatemaskstatistics)
 main.add_command(rescaledicomimages.rescaledicomimages)
 main.add_command(segmentmusclefatl3tensorflow.segmentmusclefatl3tensorflow)
 main.add_command(createpngsfromsegmentations.createpngsfromsegmentations)
@@ -42,5 +45,6 @@ main.add_command(createdicomsummary.createdicomsummary)
 main.add_command(defaultpipeline.defaultpipeline)
 main.add_command(defaultdockerpipeline.defaultdockerpipeline)
 main.add_command(boadockerpipeline.boadockerpipeline)
+main.add_command(liveranalysispipeline.liveranalysispipeline)
 main.add_command(totalsegmentator.totalsegmentator)
 main.add_command(show_doc_command(main)) # Special command to show long description for command

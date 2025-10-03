@@ -22,12 +22,17 @@ from mosamatic2.core.tasks import TotalSegmentatorTask
     help='Comma-separated list of Total Segmentator tasks to run (no spaces!)'
 )
 @click.option(
+    '--format',
+    default='dicom',
+    help='Process scans in DICOM or NIFTI format [dicom|nifti] (default: dicom)'
+)
+@click.option(
     '--overwrite', 
     type=click.BOOL, 
     default=False, 
     help='Overwrite [true|false]'
 )
-def totalsegmentator(scans, tasks, output, overwrite):
+def totalsegmentator(scans, tasks, format, output, overwrite):
     """
     Run Total Segmentator on CT scans. If you want to run specialized tasks
     like "liver_segments" or "liver_vessels" you need an educational license.
@@ -56,12 +61,16 @@ def totalsegmentator(scans, tasks, output, overwrite):
     --tasks : str
         Comma-separated list of Total Segmentator tasks to run (no spaces!)
 
+    --format : str
+        Process scans in DICOM or NIFTI format. Options: [dicom|nifti]
+        Default is 'dicom'.
+
     --overwrite : bool
         Overwrite contents output directory [true|false]
     """
     task = TotalSegmentatorTask(
         inputs={'scans': scans},
-        params={'tasks': tasks},
+        params={'tasks': tasks, 'format': format},
         output=output,
         overwrite=overwrite,
     )

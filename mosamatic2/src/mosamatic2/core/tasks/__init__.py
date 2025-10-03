@@ -6,3 +6,4 @@ from mosamatic2.core.tasks.dicom2niftitask.dicom2niftitask import Dicom2NiftiTas
 from mosamatic2.core.tasks.selectslicefromscanstask.selectslicefromscanstask import SelectSliceFromScansTask
 from mosamatic2.core.tasks.createdicomsummarytask.createdicomsummarytask import CreateDicomSummaryTask
 from mosamatic2.core.tasks.totalsegmentatortask.totalsegmentatortask import TotalSegmentatorTask
+from mosamatic2.core.tasks.calculatemaskstatisticstask.calculatemaskstatisticstask import CalculateMaskStatisticsTask
