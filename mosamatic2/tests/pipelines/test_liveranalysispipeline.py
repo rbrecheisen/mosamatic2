@@ -10,7 +10,7 @@ def test_liveranalysispipeline():
     pipeline = LiverAnalysisPipeline(
         inputs={'scans': 'D:\\Mosamatic\\TestData\\CT'},
         params={'compressed': True},
-        output='D:\\Mosamatic\\TestData',
+        output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )
     pipeline.run()

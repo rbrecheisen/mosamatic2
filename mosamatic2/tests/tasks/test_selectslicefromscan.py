@@ -8,12 +8,12 @@ SOURCES = get_sources()
 
 def test_selectslicefromscans():
     task = SelectSliceFromScansTask(
-        inputs={'scans': SOURCES['scans']},
+        inputs={'scans': 'D:\\Mosamatic\\TestData\\CT'},
         params={'vertebra': 'L3'},
-        output=SOURCES['output'],
+        output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )
     task.run()
-    output_dir = os.path.join(SOURCES['output'], 'selectslicefromscanstask')
+    output_dir = os.path.join(task.output())
     assert os.path.exists(output_dir), 'Output directory does not exist'
     assert os.path.isfile(os.path.join(output_dir, 'L3_patient1.dcm'))

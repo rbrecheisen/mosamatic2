@@ -8,9 +8,9 @@ TASK_NAME = 'RescaleDicomImagesTask'.lower()
 
 def test_rescaledicomimages():
     task = RescaleDicomImagesTask(
-        inputs={'images': SOURCES['input']}, 
+        inputs={'images': 'D:\\Mosamatic\\TestData\\L3'}, 
         params={'target_size': 512},
-        output=SOURCES['output'],
+        output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )
     task.run()

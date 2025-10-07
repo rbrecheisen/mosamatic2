@@ -9,11 +9,11 @@ TASK_NAME = 'SegmentMuscleFatL3TensorFlowTask'.lower()
 def test_segmentmusclefatl3tensorflow():
     task = SegmentMuscleFatL3TensorFlowTask(
         inputs={
-            'images': SOURCES['input'],
-            'model_files': SOURCES['model_files']['tensorflow'],
+            'images': 'D:\\Mosamatic\\TestData\\L3',
+            'model_files': 'D:\\Mosamatic\\TensorFlowModelFiles',
         }, 
         params={'model_version': 1.0},
-        output=SOURCES['output'],
+        output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )
     task.run()

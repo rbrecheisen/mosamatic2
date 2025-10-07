@@ -11,8 +11,8 @@ def test_defaultpipeline():
     assert os.path.exists(SOURCES['input']), 'Input directory does not exist'
     pipeline = DefaultPipeline(
         inputs={
-            'images': SOURCES['input'],
-            'model_files': SOURCES['model_files']['tensorflow'],
+            'images': 'D:\\Mosamatic\\TestData\\L3',
+            'model_files': 'D:\\Mosamatic\\TensorFlowModelFiles',
         },
         params={
             'target_size': 512,
@@ -22,7 +22,7 @@ def test_defaultpipeline():
             'fig_width': 10,
             'fig_height': 10,
         },
-        output=SOURCES['output'],
+        output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )
     pipeline.run()

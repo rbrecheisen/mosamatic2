@@ -8,15 +8,15 @@ SOURCES = get_sources()
 def test_tag():
     task = CalculateScoresTask(
         inputs={
-            'images': SOURCES['input'],
-            'segmentations': SOURCES['input'],
+            'images': 'D:\\Mosamatic\\TestData\\L3',
+            'segmentations': 'D:\\Mosamatic\\TestData\\L3',
         },
         params={'file_type': 'tag'},
-        output=SOURCES['output'],
+        output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )
     task.run()
-    output_dir = os.path.join(SOURCES['output'], 'calculatescorestask')
+    output_dir = os.path.join(task.output())
     assert os.path.exists(output_dir), 'Output directory does not exist'
     assert len(os.listdir(output_dir)) == 2, 'Output directory does not contain 2 files'
     csv_found, excel_found = False, False

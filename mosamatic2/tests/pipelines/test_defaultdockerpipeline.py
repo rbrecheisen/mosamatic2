@@ -15,7 +15,7 @@ def test_defaultdockerpipeline():
             'model_files': 'D:\\Mosamatic\\TensorFlowModelFiles',
         },
         params={'version': VERSION},
-        output='D:\\Mosamatic\\TestData',
+        output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )
     pipeline.run()
