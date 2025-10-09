@@ -145,7 +145,7 @@ class DefaultDockerPipelinePanel(PipelinePanel):
     
     def version_line_edit(self):
         if not self._version_line_edit:
-            self._version_line_edit = QLineEdit()
+            self._version_line_edit = QLineEdit('2.0.10')
             self._version_line_edit.setText(self.settings().get(f'{PANEL_NAME}/version'))
         return self._version_line_edit
     
@@ -182,6 +182,7 @@ class DefaultDockerPipelinePanel(PipelinePanel):
         output_dir_layout.addWidget(self.output_dir_select_button())
         self.form_layout().addRow('Images directory', images_dir_layout)
         self.form_layout().addRow('Model files directory', model_files_dir_layout)
+        self.form_layout().addRow('Docker image version', self.version_line_edit())
         self.form_layout().addRow('Output directory', output_dir_layout)
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
@@ -297,6 +298,8 @@ class DefaultDockerPipelinePanel(PipelinePanel):
             errors.append('Empty model files directory path')
         elif not os.path.isdir(self.model_files_dir_line_edit().text()):
             errors.append('Model files directory does not exist')
+        if self.version_line_edit().text() == '':
+            errors.append('Empty Docker image version')
         if self.output_dir_line_edit().text() == '':
             errors.append('Empty output directory path')
         elif os.path.isdir(self.output_dir_line_edit().text()) and not self.overwrite_checkbox().isChecked():
@@ -306,5 +309,6 @@ class DefaultDockerPipelinePanel(PipelinePanel):
     def save_inputs_and_parameters(self):
         self.settings().set(f'{PANEL_NAME}/images_dir', self.images_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/model_files_dir', self.model_files_dir_line_edit().text())
+        self.settings().set(f'{PANEL_NAME}/version', self.version_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/output_dir', self.output_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/overwrite', self.overwrite_checkbox().isChecked())
