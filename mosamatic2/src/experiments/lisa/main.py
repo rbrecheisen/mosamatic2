@@ -21,3 +21,4 @@ for f in os.listdir(DATA_DIR):
             new_dicom_file_path = os.path.join(RENAMED_DIR, new_dicom_file)
             shutil.copyfile(dicom_file_path, new_dicom_file_path)
             print(new_dicom_file_path)
+            print(new_dicom_file_path)
