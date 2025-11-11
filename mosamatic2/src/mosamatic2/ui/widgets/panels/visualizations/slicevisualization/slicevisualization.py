@@ -42,7 +42,7 @@ class SliceVisualization(Visualization):
     
     def image_select_button(self):
         if not self._image_select_button:
-            self._image_select_button = QPushButton('Select Image')
+            self._image_select_button = QPushButton('Select File')
             self._image_select_button.clicked.connect(self.handle_image_select_button)
         return self._image_select_button
     
