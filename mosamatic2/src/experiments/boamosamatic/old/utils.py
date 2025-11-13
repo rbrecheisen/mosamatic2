@@ -1,8 +1,5 @@
 import os
-import time
-import math
 import json
-import pydicom
 import constants
 from pathlib import Path
 from webdav3.client import Client
@@ -47,8 +44,8 @@ def load_dictionary(file_name, reverse=False):
     dictionary = None
     with open(get_path(file_name), 'r') as f:
         dictionary = json.load(f)
-    if reverse:
-        return {v: k for k, v in dictionary.items()}
+    if not reverse:
+        dictionary = {v: k for k, v in dictionary.items()}
     return dictionary
 
 
@@ -57,39 +54,10 @@ def save_dictionary(dictionary, file_name):
         json.dump(dictionary, f, indent=4)
 
 
-def is_number(value):
+def is_number(file_name):
     try:
-        int(value)
+        patient_nr = file_name.split('.')[0]
+        int(patient_nr)
         return True
     except:
         return False
-    
-
-def get_series_instance_uid(file_path):
-    p = pydicom.dcmread(file_path, stop_before_pixels=True)
-    return p.SeriesInstanceUID
-
-
-def current_time_in_milliseconds():
-    return int(round(time.time() * 1000))
-
-
-def current_time_in_seconds() -> int:
-    return int(round(current_time_in_milliseconds() / 1000.0))
-
-
-def elapsed_time_in_milliseconds(start_time_in_milliseconds):
-    return current_time_in_milliseconds() - start_time_in_milliseconds
-
-
-def elapsed_time_in_seconds(start_time_in_seconds):
-    return current_time_in_seconds() - start_time_in_seconds
-
-
-def duration(seconds):
-    h = int(math.floor(seconds/3600.0))
-    remainder = seconds - h * 3600
-    m = int(math.floor(remainder/60.0))
-    remainder = remainder - m * 60
-    s = int(math.floor(remainder))
-    return '{} hours, {} minutes, {} seconds'.format(h, m, s)
