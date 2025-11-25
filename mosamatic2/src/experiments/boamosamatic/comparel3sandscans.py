@@ -7,12 +7,12 @@ import dicom2nifti
 
 DONE = [
     "Amphia Ziekenhuis (18)",
+    "AUMC",
+    "Catharina Ziekenhuis (24)",
 ]
 
 HOSPITAL_NAMES = [
-    "AUMC",
-    # "Catharina Ziekenhuis (24)",
-    # "Erasmus MC (17)",
+    "Erasmus MC (17)",
     # "Isala Ziekenhuis (21)",
     # "Jeroen Bosch Ziekenhuis (27)",
     # "LUMC (28)",
@@ -31,6 +31,8 @@ def process_file(client, l3_file_path, remote_zip_file_path):
     patient_id = os.path.split(l3_file_path)[1][:-4]
     remote_zip_file_name = os.path.split(remote_zip_file_path)[1]
     local_zip_file_path = os.path.join(constants.LOCAL_ZIP_DIR, remote_zip_file_name)
+    local_unzipped_dir_path = None
+    local_scan_dir_path = None
 
     try:
         client.download_sync(remote_path=remote_zip_file_path, local_path=local_zip_file_path)
@@ -39,7 +41,6 @@ def process_file(client, l3_file_path, remote_zip_file_path):
             zip_ref.extractall(constants.LOCAL_UNZIPPED_DIR)
         local_unzipped_dir_path = os.path.join(constants.LOCAL_UNZIPPED_DIR, patient_id)
 
-        local_scan_dir_path = None
         l3_series_instance_uid = utils.get_series_instance_uid(l3_file_path)
 
         for root, dirs, files in os.walk(local_unzipped_dir_path):
@@ -62,7 +63,8 @@ def process_file(client, l3_file_path, remote_zip_file_path):
         print(f'Error occurred: {e}. l3_file_path={l3_file_path}')
     finally:        
         os.remove(local_zip_file_path)
-        shutil.rmtree(local_unzipped_dir_path)
+        if local_unzipped_dir_path:
+            shutil.rmtree(local_unzipped_dir_path)
         if local_scan_dir_path:
             shutil.rmtree(local_scan_dir_path)
 
