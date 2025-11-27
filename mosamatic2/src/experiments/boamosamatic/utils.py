@@ -3,6 +3,7 @@ import time
 import math
 import json
 import pydicom
+import pydicom.errors
 import constants
 from pathlib import Path
 from webdav3.client import Client
@@ -62,6 +63,14 @@ def is_number(value):
         int(value)
         return True
     except:
+        return False
+    
+
+def is_dicom(f_path):
+    try:
+        pydicom.dcmread(f_path, stop_before_pixels=True)
+        return True
+    except pydicom.errors.InvalidDicomError:
         return False
     
 

@@ -1,0 +1,181 @@
+Jeroen Bosch Ziekenhuis (27)
+----------------------------
+
+(mosamatic2) D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic>python comparel3sandscans.py                                              
+Found 37 scans to process
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Jeroen Bosch Ziekenhuis (27)\270001.dcm...
+Error occurred: expected str, bytes or os.PathLike object, not NoneType. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Jeroen Bosch Ziekenhuis (27)\270001.dcm
+Traceback (most recent call last):
+  File "D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic\comparel3sandscans.py", line 104, in <module>
+    main()
+  File "D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic\comparel3sandscans.py", line 95, in main
+    process_file(client, l3_file_path, remote_zip_file_path)
+  File "D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic\comparel3sandscans.py", line 67, in process_file
+    shutil.rmtree(local_unzipped_dir_path)
+  File "C:\Users\r.brecheisen\.pyenv\pyenv-win\versions\3.11.0\Lib\shutil.py", line 758, in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\r.brecheisen\.pyenv\pyenv-win\versions\3.11.0\Lib\shutil.py", line 602, in _rmtree_unsafe
+    onerror(os.scandir, path, sys.exc_info())
+  File "C:\Users\r.brecheisen\.pyenv\pyenv-win\versions\3.11.0\Lib\shutil.py", line 599, in _rmtree_unsafe
+    with os.scandir(path) as scandir_it:
+         ^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'D:\\Mosamatic\\NicoleHildebrand\\PORSCH\\UNZIPPED\\270001'
+
+Isala Ziekenhuis (21)
+---------------------
+
+(mosamatic2) D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic>python comparel3sandscans.py
+Found 86 scans to process
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210001.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210001.dcm
+Elapsed time: 0 hours, 0 minutes, 22 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210002.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210002.dcm
+Elapsed time: 0 hours, 0 minutes, 41 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210003.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210003.dcm
+Elapsed time: 0 hours, 0 minutes, 13 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210004.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210004.dcm
+Elapsed time: 0 hours, 0 minutes, 17 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210005.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210005.dcm
+Elapsed time: 0 hours, 0 minutes, 48 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210006.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210006.dcm
+Elapsed time: 0 hours, 0 minutes, 46 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210007.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210007.dcm
+Elapsed time: 0 hours, 0 minutes, 20 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210008.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210008.dcm
+Elapsed time: 0 hours, 0 minutes, 26 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210009.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210009.dcm
+Elapsed time: 0 hours, 0 minutes, 45 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210010.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210010.dcm
+Elapsed time: 0 hours, 0 minutes, 51 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210011.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210011.dcm
+Elapsed time: 0 hours, 0 minutes, 11 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210012.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210012.dcm
+Elapsed time: 0 hours, 0 minutes, 20 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210013.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210013.dcm
+Elapsed time: 0 hours, 0 minutes, 8 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210014.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210014.dcm
+Elapsed time: 0 hours, 0 minutes, 16 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210015.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210015.dcm
+Elapsed time: 0 hours, 0 minutes, 47 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210016.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210016.dcm
+Elapsed time: 0 hours, 0 minutes, 12 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210017.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210017.dcm
+Elapsed time: 0 hours, 0 minutes, 36 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210018.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210018.dcm
+Elapsed time: 0 hours, 0 minutes, 14 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210019.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210019.dcm
+Elapsed time: 0 hours, 0 minutes, 25 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210020.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210020.dcm
+Elapsed time: 0 hours, 0 minutes, 38 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210021.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210021.dcm
+Elapsed time: 0 hours, 0 minutes, 42 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210022.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210022.dcm
+Elapsed time: 0 hours, 0 minutes, 11 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210023.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210023.dcm
+Elapsed time: 0 hours, 0 minutes, 13 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210024.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210024.dcm
+Elapsed time: 0 hours, 1 minutes, 2 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210025.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210025.dcm
+Elapsed time: 0 hours, 0 minutes, 22 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210026.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210026.dcm
+Elapsed time: 0 hours, 0 minutes, 15 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210027.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210027.dcm
+Elapsed time: 0 hours, 0 minutes, 40 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210028.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210028.dcm
+Elapsed time: 0 hours, 0 minutes, 13 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210029.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210029.dcm
+Elapsed time: 0 hours, 0 minutes, 44 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210030.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210030.dcm
+Elapsed time: 0 hours, 0 minutes, 47 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210032.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210032.dcm
+Elapsed time: 0 hours, 0 minutes, 17 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210033.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210033.dcm
+Elapsed time: 0 hours, 0 minutes, 42 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210034.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210034.dcm
+Elapsed time: 0 hours, 0 minutes, 12 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210035.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210035.dcm
+Elapsed time: 0 hours, 0 minutes, 13 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210036.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210036.dcm
+Elapsed time: 0 hours, 0 minutes, 25 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210037.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210037.dcm
+Elapsed time: 0 hours, 0 minutes, 10 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210038.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210038.dcm
+Elapsed time: 0 hours, 0 minutes, 11 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210039.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210039.dcm
+Elapsed time: 0 hours, 1 minutes, 0 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210040.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210040.dcm
+Elapsed time: 0 hours, 0 minutes, 43 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210041.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210041.dcm
+Elapsed time: 0 hours, 0 minutes, 39 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210042.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210042.dcm
+Elapsed time: 0 hours, 0 minutes, 41 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210043.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210043.dcm
+Elapsed time: 0 hours, 0 minutes, 22 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210044.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210044.dcm
+Elapsed time: 0 hours, 0 minutes, 10 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210045.dcm...
+Error occurred: File is missing DICOM File Meta Information header or the 'DICM' prefix is missing from the header. Use force=True to force reading.. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210045.dcm
+Elapsed time: 0 hours, 0 minutes, 11 seconds
+Processing D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210046.dcm...
+Error occurred: expected str, bytes or os.PathLike object, not NoneType. l3_file_path=D:\Mosamatic\NicoleHildebrand\PORSCH\L3\Isala Ziekenhuis (21)\210046.dcm
+Traceback (most recent call last):
+  File "D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic\comparel3sandscans.py", line 104, in <module>
+    main()
+  File "D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic\comparel3sandscans.py", line 95, in main
+    process_file(client, l3_file_path, remote_zip_file_path)
+  File "D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic\comparel3sandscans.py", line 67, in process_file
+    shutil.rmtree(local_unzipped_dir_path)
+  File "C:\Users\r.brecheisen\.pyenv\pyenv-win\versions\3.11.0\Lib\shutil.py", line 758, in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\r.brecheisen\.pyenv\pyenv-win\versions\3.11.0\Lib\shutil.py", line 602, in _rmtree_unsafe
+    onerror(os.scandir, path, sys.exc_info())
+  File "C:\Users\r.brecheisen\.pyenv\pyenv-win\versions\3.11.0\Lib\shutil.py", line 599, in _rmtree_unsafe
+    with os.scandir(path) as scandir_it:
+         ^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'D:\\Mosamatic\\NicoleHildebrand\\PORSCH\\UNZIPPED\\210046'
+
+(mosamatic2) D:\SoftwareDevelopment\GitHub\mosamatic2\mosamatic2\src\experiments\boamosamatic>  
