@@ -11,12 +11,12 @@ DONE = [
     "Catharina Ziekenhuis (24)",
     "Erasmus MC (17)",
     "LUMC (28)",
+    "Isala Ziekenhuis (21)",
     "Jeroen Bosch Ziekenhuis (27)",
 ]
 
 HOSPITAL_NAMES = [
-    "Isala Ziekenhuis (21)",
-    # "Medisch Spectrum Twente (22)",
+    "Medisch Spectrum Twente (22)",
     # "MUMC+ (26)",
     # "OLVG Amsterdam (15)",
     # "Radboud UMC (23)",
@@ -57,13 +57,13 @@ def process_file(client, l3_file_path, remote_zip_file_path):
             print(f'Error retrieving SeriesInstanceUID from L3 (l3_file_path={l3_file_path})')
             ok = False
 
+    found = False
     if ok:
         try:
             for root, dirs, files in os.walk(local_unzipped_dir_path):
-                found = False
                 for f in files:
                     f_path = os.path.join(root, f)
-                    if utils.is_dicom(f_path) and f != 'DICOMDIR':
+                    if utils.is_valid_dicom(f_path):
                         series_instance_uid = utils.get_series_instance_uid(f_path)
                         if series_instance_uid == l3_series_instance_uid:
                             parent_dir_path = utils.get_parent_path(f_path)
@@ -73,8 +73,10 @@ def process_file(client, l3_file_path, remote_zip_file_path):
                             break
                 if found:
                     break
+            if not found:
+                raise Exception(f'CT scan not found in {local_unzipped_dir_path}')
         except Exception as e:
-            print(f'Error searching or copying CT scan corresponding to L3 (local_unzipped_dir_path={local_unzipped_dir_path})')
+            print(f'Error searching or copying CT scan corresponding to L3 (local_unzipped_dir_path={local_unzipped_dir_path}) [{e}]')
             ok = False
 
     if ok:

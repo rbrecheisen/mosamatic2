@@ -66,10 +66,12 @@ def is_number(value):
         return False
     
 
-def is_dicom(f_path):
+def is_valid_dicom(f_path):
     try:
-        pydicom.dcmread(f_path, stop_before_pixels=True)
-        return True
+        p = pydicom.dcmread(f_path, stop_before_pixels=True)
+        if 'Modality' in p and p.Modality == 'CT' and 'SeriesInstanceUID' in p:
+            return True
+        return False
     except pydicom.errors.InvalidDicomError:
         return False
     
