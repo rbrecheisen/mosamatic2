@@ -13,11 +13,11 @@ DONE = [
     "LUMC (28)",
     "Isala Ziekenhuis (21)",
     "Jeroen Bosch Ziekenhuis (27)",
+    "Medisch Spectrum Twente (22)",
 ]
 
 HOSPITAL_NAMES = [
-    "Medisch Spectrum Twente (22)",
-    # "MUMC+ (26)",
+    "MUMC+ (26)",
     # "OLVG Amsterdam (15)",
     # "Radboud UMC (23)",
     # "St. Antonius (13)",
@@ -87,14 +87,14 @@ def process_file(client, l3_file_path, remote_zip_file_path):
             print(f'Error converting CT scan to NIFTI (local_scan_dir_path={local_scan_dir_path}, local_nifti_file_path={local_nifti_file_path})')
             ok = False
 
-    try:
-        os.remove(local_zip_file_path)
-        if local_unzipped_dir_path:
-            shutil.rmtree(local_unzipped_dir_path)
-        if local_scan_dir_path:
-            shutil.rmtree(local_scan_dir_path)
-    except Exception as e:
-        print(f'Error cleaning up')
+    # try:
+    #     os.remove(local_zip_file_path)
+    #     if local_unzipped_dir_path:
+    #         shutil.rmtree(local_unzipped_dir_path)
+    #     if local_scan_dir_path:
+    #         shutil.rmtree(local_scan_dir_path)
+    # except Exception as e:
+    #     print(f'Error cleaning up')
 
 
 def count_nr_scans_to_process(file_mapping):
