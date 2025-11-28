@@ -78,7 +78,9 @@ def is_valid_dicom(f_path):
 
 def get_series_instance_uid(file_path):
     p = pydicom.dcmread(file_path, stop_before_pixels=True)
-    return p.SeriesInstanceUID
+    if 'SeriesInstanceUID' in p:
+        return p.SeriesInstanceUID
+    return None
 
 
 def current_time_in_milliseconds():
