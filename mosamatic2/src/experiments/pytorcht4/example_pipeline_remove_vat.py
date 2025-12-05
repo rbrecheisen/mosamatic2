@@ -52,10 +52,9 @@ params = Params(param_path)
 #     os.getcwd(),
 #     "assets/logs/20250325-122319Contour/saved_models/highest_val.pt",
 # )
-model_path = "D:\\Mosamatic\\PyTorchModelFiles\\leroyvolmer\\T4_VAT_and_remote_VAT_script\\T4\\model-1.0.pt"
+model_path = "D:\\Mosamatic\\PyTorchModelFiles\\leroyvolmer\\T4_VAT_and_remote_VAT_script\\T4\\contour_model-1.0.pt"
 
-# model_c = UNet(params, 2).to(device=DEVICE)
-model_c = UNet(params, 4).to(device=DEVICE)
+model_c = UNet(params, 2).to(device=DEVICE)
 model_c.load_state_dict(torch.load(model_path, weights_only=False, map_location=torch.device(DEVICE)))
 model_c.eval()
 
@@ -146,9 +145,9 @@ with torch.no_grad():
     prediction = prediction.squeeze()
     prediction = prediction.detach().cpu().numpy()
 
-# Remove VAT prediction by setting label 2 to 0.
-prediction_no_vat = np.copy(prediction)
-prediction_no_vat[prediction_no_vat == 2] = 0
+# # Remove VAT prediction by setting label 2 to 0.
+# prediction_no_vat = np.copy(prediction)
+# prediction_no_vat[prediction_no_vat == 2] = 0
 
 # Plt example
 fig, ax = plt.subplots(1, 4, figsize=(20, 20))
@@ -157,8 +156,8 @@ ax[1].imshow(label)
 ax[1].title.set_text("Label")
 ax[2].imshow(prediction)
 ax[2].title.set_text("Prediction")
-ax[3].imshow(prediction_no_vat)
-ax[3].title.set_text("Prediction VAT removed")
+# ax[3].imshow(prediction_no_vat)
+# ax[3].title.set_text("Prediction VAT removed")
 
 plt.show()
 

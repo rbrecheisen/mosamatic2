@@ -41,8 +41,8 @@ class SegmentMuscleFatPyTorchTask(Task):
             f_path = os.path.join(self.input('model_files'), f)
             if f_path.endswith('.pt') or f_path.endswith('.json'):
                 model_files.append(f_path)
-        if len(model_files) != 2:
-            raise RuntimeError(f'Found {len(model_files)} model files. This should be 2!')
+        if len(model_files) != 3:
+            raise RuntimeError(f'Found {len(model_files)} model files. This should be 3!')
         return model_files
 
     def load_models_and_params(self, model_files, model_version):
@@ -109,8 +109,8 @@ class SegmentMuscleFatPyTorchTask(Task):
         assert isinstance(image, DicomImage)
         pixels = get_pixels_from_dicom_object(image.object(), normalize=True)
         if contour_model:
-            mask = self.extract_contour(pixels, contour_model, params)
-            pixels = normalize_between(pixels, params.dict['min_bound'], params.dict['max_bound'])
+            mask = self.extract_contour(pixels, contour_model)
+            pixels = normalize_between(pixels, params.dict['lower_bound'], params.dict['upper_bound'])
             pixels = pixels * mask
         pixels = pixels.astype(np.float32)
         segmentation = self.segment_muscle_and_fat(pixels, model)

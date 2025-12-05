@@ -201,8 +201,8 @@ class SegmentMuscleFatPyTorchTaskPanel(TaskPanel):
             errors.append('Empty model files directory path')
         if not os.path.isdir(self.model_files_dir_line_edit().text()):
             errors.append('Model files directory does not exist')
-        if len(os.listdir(self.model_files_dir_line_edit().text())) != 2:
-            errors.append('Model files directory should ONLY contain "model-1.0.pt", and "params-1.0.json", nothing else!')
+        if len(os.listdir(self.model_files_dir_line_edit().text())) != 3:
+            errors.append('Model files directory should ONLY contain "model-1.0.pt", "contour_model-1.0.pt" and "params-1.0.json", nothing else!')
         if self.output_dir_line_edit().text() == '':
             errors.append('Empty output directory path')
         if os.path.isdir(self.output_dir_line_edit().text()) and not self.overwrite_checkbox().isChecked():
