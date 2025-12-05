@@ -1,0 +1,25 @@
+{
+	"data_path_train": "/mnt/localscratch/maastro/Leroy/bodycomposition/training.h5",
+    "data_path_val": "/mnt/localscratch/maastro/Leroy/bodycomposition/validation.h5",
+    "contour_model_path": "/mnt/localscratch/maastro/Leroy/bodycomposition/logs/gradient_tape/contour_model/saved_models/model_100000",
+
+	"log_path": "/mnt/localscratch/maastro/Leroy/bodycomposition/logs",
+	"lower_bound": -200,
+	"upper_bound": 200,
+	"lower_bound_contour": -200,
+	"upper_bound_contour": 200,
+
+	"num_classes": 4,
+	"num_classes_bc": 2,
+	"batch_size": 4,
+	"num_epochs": 50,
+	"num_mini_epochs": 5,
+	"train_eval_step": 1,
+	"val_eval_step": 1,
+	"save_model_step": 1,
+
+	"learning_rate": 0.0001,
+	"weight_decay": 0.001,
+	"opt_momentum": 0.9,
+	"dropout_rate": 0.2
+}

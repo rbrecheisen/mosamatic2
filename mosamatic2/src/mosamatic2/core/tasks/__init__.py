@@ -7,3 +7,4 @@ from mosamatic2.core.tasks.selectslicefromscanstask.selectslicefromscanstask imp
 from mosamatic2.core.tasks.createdicomsummarytask.createdicomsummarytask import CreateDicomSummaryTask
 from mosamatic2.core.tasks.totalsegmentatortask.totalsegmentatortask import TotalSegmentatorTask
 from mosamatic2.core.tasks.calculatemaskstatisticstask.calculatemaskstatisticstask import CalculateMaskStatisticsTask
+from mosamatic2.core.tasks.segmentmusclefatpytorchtask.segmentmusclefatpytorchtask import SegmentMuscleFatPyTorchTask

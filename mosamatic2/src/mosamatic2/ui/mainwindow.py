@@ -16,6 +16,7 @@ from mosamatic2.ui.widgets.panels.mainpanel import MainPanel
 from mosamatic2.ui.widgets.panels.logpanel import LogPanel
 from mosamatic2.ui.widgets.panels.tasks.rescaledicomimagestaskpanel import RescaleDicomImagesTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.segmentmusclefatl3tensorflowtaskpanel import SegmentMuscleFatL3TensorFlowTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.segmentmusclefatpytorchtaskpanel import SegmentMuscleFatPyTorchTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.createpngsfromsegmentationstaskpanel import CreatePngsFromSegmentationsTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.calculatescorestaskpanel import CalculateScoresTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.dicom2niftitaskpanel import Dicom2NiftiTaskPanel
@@ -41,6 +42,7 @@ class MainWindow(QMainWindow):
         self._decompress_dicom_files_task_panel = None
         self._rescale_dicom_images_task_panel = None
         self._segment_muscle_fat_l3_tensorflow_task_panel = None
+        self._segment_muscle_fat_pytorch_task_panel = None
         self._create_pngs_from_segmentations_task_panel = None
         self._calculate_scores_task_panel = None
         self._dicom2nifti_task_panel = None
@@ -84,8 +86,10 @@ class MainWindow(QMainWindow):
     def init_tasks_menu(self):
         rescale_dicom_images_task_action = QAction('RescaleDicomImagesTask', self)
         rescale_dicom_images_task_action.triggered.connect(self.handle_rescale_dicom_images_task_action)
-        segment_muscle_fat_l3_tensorflow_task_action = QAction('SegmentMuscleAndFatTask (TensorFlow)', self)
+        segment_muscle_fat_l3_tensorflow_task_action = QAction('SegmentMuscleAndFatTensorFlowTask', self)
         segment_muscle_fat_l3_tensorflow_task_action.triggered.connect(self.handle_segment_muscle_fat_l3_tensorflow_task_action)
+        segment_muscle_fat_pytorch_task_action = QAction("SegmentMuscleFatPytorchTask", self)
+        segment_muscle_fat_pytorch_task_action.triggered.connect(self.handle_segment_muscle_fat_pytorch_task_action)
         calculate_scores_task_action = QAction('CalculateScoresTask', self)
         calculate_scores_task_action.triggered.connect(self.handle_calculate_scores_task_action)
         create_pngs_from_segmentations_task_action = QAction('CreatePngsFromSegmentationsTask', self)
@@ -103,6 +107,7 @@ class MainWindow(QMainWindow):
         tasks_menu = self.menuBar().addMenu('Tasks')
         tasks_menu.addAction(rescale_dicom_images_task_action)
         tasks_menu.addAction(segment_muscle_fat_l3_tensorflow_task_action)
+        tasks_menu.addAction(segment_muscle_fat_pytorch_task_action)
         tasks_menu.addAction(calculate_scores_task_action)
         tasks_menu.addAction(create_pngs_from_segmentations_task_action)
         tasks_menu.addAction(dicom2nifti_task_action)
@@ -147,6 +152,7 @@ class MainWindow(QMainWindow):
             self._main_panel = MainPanel(self)
             self._main_panel.add_panel(self.rescale_dicom_images_task_panel(), 'rescaledicomimagestaskpanel')
             self._main_panel.add_panel(self.segment_muscle_fat_l3_tensorflow_task_panel(), 'segmentmusclefatl3tensorflowtaskpanel')
+            self._main_panel.add_panel(self.segment_muscle_fat_pytorch_task_panel(), 'segmentmusclefatpytorchtaskpanel')
             self._main_panel.add_panel(self.create_pngs_from_segmentations_task_panel(), 'createpngsfromsegmentationstaskpanel')
             self._main_panel.add_panel(self.calculate_scores_task_panel(), 'calculatescorestaskpanel')
             self._main_panel.add_panel(self.dicom2nifti_task_panel(), 'dicom2niftitaskpanel')
@@ -179,6 +185,11 @@ class MainWindow(QMainWindow):
         if not self._segment_muscle_fat_l3_tensorflow_task_panel:
             self._segment_muscle_fat_l3_tensorflow_task_panel = SegmentMuscleFatL3TensorFlowTaskPanel()
         return self._segment_muscle_fat_l3_tensorflow_task_panel
+
+    def segment_muscle_fat_pytorch_task_panel(self):
+        if not self._segment_muscle_fat_pytorch_task_panel:
+            self._segment_muscle_fat_pytorch_task_panel = SegmentMuscleFatPyTorchTaskPanel()
+        return self._segment_muscle_fat_pytorch_task_panel
 
     def create_pngs_from_segmentations_task_panel(self):
         if not self._create_pngs_from_segmentations_task_panel:
@@ -253,6 +264,9 @@ class MainWindow(QMainWindow):
     def handle_segment_muscle_fat_l3_tensorflow_task_action(self):
         self.main_panel().select_panel('segmentmusclefatl3tensorflowtaskpanel')
 
+    def handle_segment_muscle_fat_pytorch_task_action(self):
+        self.main_panel().select_panel('segmentmusclefatpytorchtaskpanel')
+
     def handle_create_pngs_from_segmentations_task_action(self):
         self.main_panel().select_panel('createpngsfromsegmentationstaskpanel')
 
@@ -297,6 +311,7 @@ class MainWindow(QMainWindow):
         # Save inputs and parameters of relevant panels
         self.rescale_dicom_images_task_panel().save_inputs_and_parameters()
         self.segment_muscle_fat_l3_tensorflow_task_panel().save_inputs_and_parameters()
+        self.segment_muscle_fat_pytorch_task_panel().save_inputs_and_parameters()
         self.create_pngs_from_segmentations_task_panel().save_inputs_and_parameters()
         self.calculate_scores_task_panel().save_inputs_and_parameters()
         self.dicom2nifti_task_panel().save_inputs_and_parameters()

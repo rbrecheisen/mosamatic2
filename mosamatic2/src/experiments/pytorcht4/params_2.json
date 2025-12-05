@@ -1,0 +1,32 @@
+{
+	"image_shape": [512, 512, 1],
+	"patch_shape": [512, 512, 1],
+	"data_path_train": "E:/Data/body_composition_data/training.h5",
+    "data_path_val": "E:/Data/body_composition_data/validation.h5",
+    "contour_model_path": "/mnt/localscratch/maastro/Leroy/bodycomposition/logs/gradient_tape/contour_model/saved_models/model_100000",
+
+	"log_path": "/mnt/localscratch/maastro/Leroy/bodycomposition/logs",
+	"shift": "False",
+	"translate": "False",
+
+	"lower_bound": -200,
+	"upper_bound": 200,
+	"lower_bound_contour": -200,
+	"upper_bound_contour": 200,
+
+	"num_classes": 4,
+	"num_classes_bc": 4,
+	"batch_size": 4,
+	"num_epochs": 250,
+	"num_mini_epochs": 5,
+	"train_eval_step": 1,
+	"val_eval_step": 1,
+	"save_model_step": 10,
+
+	"learning_rate": 0.001,
+	"weight_decay": 0.0001,
+	"opt_momentum": 0.9,
+	"dropout_rate": 0.2
+
+
+}
