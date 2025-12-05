@@ -21,6 +21,7 @@ dependencies = [
     "scipy>=1.15.3",
     "torch==2.5.1",
     "torchvision>=0.20.1",
+    "torchsummary",
     "tensorflow==2.15.*; platform_system == 'Linux'",
     "tensorflow-intel==2.15.0; platform_system == 'Windows'",
     "tensorflow-macos==2.15.0; platform_system == 'Darwin' and platform_machine == 'arm64'",

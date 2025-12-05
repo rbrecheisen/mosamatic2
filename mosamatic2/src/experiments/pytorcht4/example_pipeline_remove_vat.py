@@ -8,7 +8,7 @@ import numpy as np
 import torch
 
 from models import UNet
-from models2 import AttentionUNet
+# from models2 import AttentionUNet
 
 # from models_ import AttentionUNet, UNet
 from param_loader import Params
@@ -39,7 +39,8 @@ def normalize(data: np.ndarray, lower_bound: int, upper_bound: int) -> np.ndarra
     return data
 
 
-DEVICE = "cuda"
+# DEVICE = "cuda"
+DEVICE = "cpu"
 
 # Load params.json
 param_path = pathlib.Path(os.getcwd()) / "params.json"
@@ -47,20 +48,23 @@ param_path = pathlib.Path(os.getcwd()) / "params.json"
 params = Params(param_path)
 
 # Load Contour model
-model_path = os.path.join(
-    os.getcwd(),
-    "assets/logs/20250325-122319Contour/saved_models/highest_val.pt",
-)
+# model_path = os.path.join(
+#     os.getcwd(),
+#     "assets/logs/20250325-122319Contour/saved_models/highest_val.pt",
+# )
+model_path = "D:\\Mosamatic\\PyTorchModelFiles\\leroyvolmer\\T4_VAT_and_remote_VAT_script\\T4\\model-1.0.pt"
 
-model_c = UNet(params, 2).to(device=DEVICE)
-model_c.load_state_dict(torch.load(model_path, weights_only=False))
+# model_c = UNet(params, 2).to(device=DEVICE)
+model_c = UNet(params, 4).to(device=DEVICE)
+model_c.load_state_dict(torch.load(model_path, weights_only=False, map_location=torch.device(DEVICE)))
 model_c.eval()
 
 # Data path
-test_path = os.path.join(
-    os.getcwd(),
-    "assets/data/T4-val/KU_Leuven.h5",
-)
+# test_path = os.path.join(
+#     os.getcwd(),
+#     "assets/data/T4-val/KU_Leuven.h5",
+# )
+test_path = "D:\\Mosamatic\\T4\\Test\\h5\\KU_Leuven.h5"
 
 # Load data
 with h5py.File(test_path, "r") as f:
@@ -120,12 +124,13 @@ image *= prediction
 # del model_c
 
 # Load body composition model
-model_path = os.path.join(
-    os.getcwd(),
-    "assets/logs/20250422-102951_lungVAT-lung1-lung3/saved_models/highest_val.pt",
-)
+# model_path = os.path.join(
+#     os.getcwd(),
+#     "assets/logs/20250422-102951_lungVAT-lung1-lung3/saved_models/highest_val.pt",
+# )
+model_path = "D:\\Mosamatic\\PyTorchModelFiles\\leroyvolmer\\T4_VAT_and_remote_VAT_script\\T4\\model-1.0.pt"
 model = UNet(params, 4).to(device=DEVICE)
-model.load_state_dict(torch.load(model_path, weights_only=False))
+model.load_state_dict(torch.load(model_path, weights_only=False, map_location=torch.device(DEVICE)))
 model.eval()
 
 # Predict body composition
@@ -154,5 +159,7 @@ ax[2].imshow(prediction)
 ax[2].title.set_text("Prediction")
 ax[3].imshow(prediction_no_vat)
 ax[3].title.set_text("Prediction VAT removed")
+
+plt.show()
 
 # %%
