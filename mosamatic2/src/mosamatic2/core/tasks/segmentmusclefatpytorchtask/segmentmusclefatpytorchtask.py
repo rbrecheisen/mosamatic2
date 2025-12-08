@@ -10,7 +10,6 @@ from mosamatic2.core.utils import (
     get_pixels_from_dicom_object,
     convert_labels_to_157,
 )
-# from ...utils import load_dicom, is_jpeg2000_compressed, normalize_between, get_pixels_from_dicom_object, convert_labels_to_157
 from mosamatic2.core.data.multidicomimage import MultiDicomImage
 from mosamatic2.core.data.dicomimage import DicomImage
 from mosamatic2.core.tasks.segmentmusclefatpytorchtask.paramloader import ParamLoader
@@ -98,14 +97,6 @@ class SegmentMuscleFatPyTorchTask(Task):
         return segmentation
     
     def process_file(self, image, output_dir, model, contour_model, params):
-        # pixels = get_pixels_from_dicom_object(image, normalize=True)
-        # pixels = normalize_between(pixels, params.dict['lower_bound'], params.dict['upper_bound'])
-        # pixels = self.extract_contour(pixels, contour_model)
-        # segmentation = self.segment_muscle_and_fat(image, model)
-        # segmentation = convert_labels_to_157(segmentation)
-        # segmentation_file_name = os.path.split(f_path)[1]
-        # segmentation_file_path = os.path.join(output_dir, f'{segmentation_file_name}.seg.npy')
-        # np.save(segmentation_file_path, segmentation)
         assert isinstance(image, DicomImage)
         pixels = get_pixels_from_dicom_object(image.object(), normalize=True)
         if contour_model:
@@ -128,16 +119,4 @@ class SegmentMuscleFatPyTorchTask(Task):
         nr_steps = len(images)
         for step in range(nr_steps):
             self.process_file(images[step], self.output(), model, contour_model, params)
-        #     self.set_progress(step, nr_steps)        input_files = self.input('images')
-        # model_files = self.input('model_files')
-        # model_version = self.param('model_version', 1.0)
-        # model, contour_model, params = self.load_models_and_params(model_files, model_version)
-        # if model is None:
-        #     raise RuntimeError('Model, contour model or parameters could not be loaded')
-        # nr_steps = len(input_files)
-        # for step in range(nr_steps):
-        #     if self.is_canceled():
-        #         break
-        #     source = input_files[step]
-        #     self.process_file(source, self.output('segmentations'), model, contour_model, params)
-        #     self.set_progress(step, nr_steps)
+            self.set_progress(step, nr_steps)
