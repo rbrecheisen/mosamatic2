@@ -2,12 +2,11 @@ import os
 import shutil
 import pydicom
 import pydicom.errors
+import pandas as pd
 
-# SOURCE_DIR = "L:\\FHML_SURGERY\\Mosamatic\\Projects\\P0031_NIK_PELZER_L1_L5\\L1-L5\\Original\\CT slices 21-06 (post bibi)"
-SOURCE_DIR = "D:\\Mosamatic\\L1-L5\\Original"
-TARGET_DIR = "D:\\Mosamatic\\L1-L5\\OriginalCollected"
-
-# os.makedirs(TARGET_DIR, exist_ok=False)
+ORIGINAL_DIR = "D:\\Mosamatic\\L1-L5\\Original"
+ORIGINAL_COLLECTED_DIR = "D:\\Mosamatic\\L1-L5\\OriginalCollected"
+SCORES_FILE_PATH = "D:\\Mosamatic\\L1-L5\\Out\\defaultpipeline\\calculatescorestask\\bc_scores.csv"
 
 
 def is_dicom(f_path):
@@ -19,9 +18,9 @@ def is_dicom(f_path):
     
 
 def collect_files():
-    for d in os.listdir(SOURCE_DIR):
+    for d in os.listdir(ORIGINAL_DIR):
         if d.startswith('Patient '):
-            d_path = os.path.join(SOURCE_DIR, d)
+            d_path = os.path.join(ORIGINAL_DIR, d)
             for f in os.listdir(d_path):
                 f_path = os.path.join(d_path, f)
                 if os.path.isfile(f_path):
@@ -29,7 +28,7 @@ def collect_files():
                         f_name = os.path.split(f_path)[1]
                         d_name = d.replace(' ', '_')
                         target_f_name = f'{d_name}_{f_name}'
-                        target_f_path = os.path.join(TARGET_DIR, target_f_name)
+                        target_f_path = os.path.join(ORIGINAL_COLLECTED_DIR, target_f_name)
                         shutil.copy(f_path, target_f_path)
                         print(target_f_path)
 
