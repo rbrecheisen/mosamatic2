@@ -165,6 +165,7 @@ class SegmentMuscleFatPyTorchTaskPanel(TaskPanel):
                 output=self.output_dir_line_edit().text(),
                 overwrite=self.overwrite_checkbox().isChecked(),
             )
+            # self._task.run()
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)

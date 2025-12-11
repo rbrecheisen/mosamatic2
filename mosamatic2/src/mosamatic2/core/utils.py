@@ -224,8 +224,9 @@ def convert_labels_to_157(label_image: np.array) -> np.array:
 
 def normalize_between(img: np.array, min_bound: int, max_bound: int) -> np.array:
     img = (img - min_bound) / (max_bound - min_bound)
-    img[img > 1] = 0
+    # img[img > 1] = 1
     img[img < 0] = 0
+    img[img > 1] = 0
     c = (img - np.min(img))
     d = (np.max(img) - np.min(img))
     img = np.divide(c, d, np.zeros_like(c), where=d != 0)
