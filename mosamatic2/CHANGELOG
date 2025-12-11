@@ -1,3 +1,7 @@
+2.0.19
+======
+- Fixed bug in PyTorch segmentation task for T4 images
+
 2.0.18
 ======
 - DefaultDockerPipeline has Docker image version field (default: 2.0.10)
