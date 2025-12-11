@@ -75,7 +75,6 @@ class SegmentMuscleFatPyTorchTask(Task):
     def extract_contour(self, image, contour_model):
         with torch.no_grad():
             # Create 4D Tensor input
-            # self.show_result(image)
             input = np.expand_dims(image, 0)
             input = np.expand_dims(input, 0)
             input = torch.Tensor(input)
@@ -85,9 +84,7 @@ class SegmentMuscleFatPyTorchTask(Task):
             prediction = torch.argmax(prediction, axis=1)
             prediction = prediction.squeeze()
             prediction = prediction.detach().cpu().numpy()
-            # self.show_result(prediction)
             result = image * prediction
-            # self.show_result(result)
         return result
     
     def show_result(self, result):
@@ -111,12 +108,7 @@ class SegmentMuscleFatPyTorchTask(Task):
         pixels = get_pixels_from_dicom_object(image.object(), normalize=True)
         if contour_model:
             pixels = normalize_between(pixels, params.dict['lower_bound'], params.dict['upper_bound'])
-            # self.show_result(pixels)
-            # mask = self.extract_contour(pixels, contour_model)
             pixels = self.extract_contour(pixels, contour_model)
-            self.show_result(pixels)
-            # pixels = pixels * mask
-            # self.show_result(pixels)
         pixels = pixels.astype(np.float32)
         segmentation = self.segment_muscle_and_fat(pixels, model)
         segmentation = convert_labels_to_157(segmentation)
