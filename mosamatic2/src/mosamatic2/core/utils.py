@@ -274,7 +274,7 @@ def calculate_lama_percentage(image: np.ndarray, labels: np.ndarray, label: int,
         return 0.0
     lama = roi & (image < threshold)
     lama_pct = (np.count_nonzero(lama) / n_roi) * 100.0
-    return float(lama_pct)
+    return int(lama_pct)
 
 
 def calculate_dice_score(ground_truth: np.array, prediction: np.array, label: int) -> float:
