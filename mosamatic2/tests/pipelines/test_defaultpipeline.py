@@ -52,6 +52,4 @@ def check_output(pipeline):
 
     output_dir = os.path.join(pipeline.output(), 'createpngsfromsegmentationstask')
     assert os.path.exists(output_dir), 'Output directory does not exist'
-    assert len(os.listdir(output_dir)) == 4, 'Output directory does not contain 4 files'
-    for f in os.listdir(output_dir):
-        assert f.endswith('.seg.npy.png'), f'File {f} is not a PNG file'
+    assert len(os.listdir(output_dir)) == 8, 'Output directory does not contain 8 files'

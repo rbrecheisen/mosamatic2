@@ -8,7 +8,10 @@ TASK_NAME = 'CreatePngsFromSegmentationsTask'.lower()
 
 def test_createpngsfromsegmentationstask():
     task = CreatePngsFromSegmentationsTask(
-        inputs={'segmentations': 'D:\\Mosamatic\\TestData\\L3'}, 
+        inputs={
+            'images': 'D:\\Mosamatic\\TestData\\L3',
+            'segmentations': 'D:\\Mosamatic\\TestData\\L3'
+        }, 
         params={'fig_width': 10, 'fig_height': 10},
         output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
