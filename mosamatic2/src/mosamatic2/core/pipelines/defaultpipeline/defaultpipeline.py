@@ -68,6 +68,7 @@ class DefaultPipeline(Pipeline):
         self.add_task(
             CreatePngsFromSegmentationsTask(
                 inputs={
+                    'images': os.path.join(self.output(), 'rescaledicomimagestask'),
                     'segmentations': os.path.join(
                         self.output(),
                         'segmentmusclefatl3pytorchtask' if model_type == 'pytorch' else 'segmentmusclefatl3tensorflowtask',
