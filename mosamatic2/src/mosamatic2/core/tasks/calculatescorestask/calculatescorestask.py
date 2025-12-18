@@ -99,7 +99,7 @@ class CalculateScoresTask(Task):
         # Create empty data dictionary
         data = {
             'file': [], 
-            'muscle_area': [], 'muscle_idx': [], 'muscle_ra': [], 'muscle_lama': [],
+            'muscle_area': [], 'muscle_idx': [], 'muscle_ra': [], 'muscle_lama_perc': [],
             'vat_area': [], 'vat_idx': [], 'vat_ra': [],
             'sat_area': [], 'sat_idx': [], 'sat_ra': []
         }
@@ -119,7 +119,7 @@ class CalculateScoresTask(Task):
             muscle_area = calculate_area(segmentation, MUSCLE, pixel_spacing)
             muscle_idx = 0
             muscle_ra = calculate_mean_radiation_attenuation(image, segmentation, MUSCLE)
-            muscle_lama = calculate_lama_percentage(image, segmentation, MUSCLE)
+            muscle_lama_perc = calculate_lama_percentage(image, segmentation, MUSCLE)
             vat_area = calculate_area(segmentation, VAT, pixel_spacing)
             vat_idx = 0
             vat_ra = calculate_mean_radiation_attenuation(image, segmentation, VAT)
@@ -135,7 +135,7 @@ class CalculateScoresTask(Task):
             data['muscle_area'].append(muscle_area)
             data['muscle_idx'].append(muscle_idx)
             data['muscle_ra'].append(muscle_ra)
-            data['muscle_lama'].append(muscle_lama)
+            data['muscle_lama_perc'].append(muscle_lama_perc)
             data['vat_area'].append(vat_area)
             data['vat_idx'].append(vat_idx)
             data['vat_ra'].append(vat_ra)
