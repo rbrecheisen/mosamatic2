@@ -9,6 +9,7 @@ from mosamatic2.core.utils import (
     get_pixels_from_dicom_object,
     calculate_area,
     calculate_mean_radiation_attenuation,
+    calculate_lama_percentage,
     get_pixels_from_tag_file,
     MUSCLE,
     SAT,
@@ -98,7 +99,7 @@ class CalculateScoresTask(Task):
         # Create empty data dictionary
         data = {
             'file': [], 
-            'muscle_area': [], 'muscle_idx': [], 'muscle_ra': [],
+            'muscle_area': [], 'muscle_idx': [], 'muscle_ra': [], 'muscle_lama': [],
             'vat_area': [], 'vat_idx': [], 'vat_ra': [],
             'sat_area': [], 'sat_idx': [], 'sat_ra': []
         }
@@ -118,6 +119,7 @@ class CalculateScoresTask(Task):
             muscle_area = calculate_area(segmentation, MUSCLE, pixel_spacing)
             muscle_idx = 0
             muscle_ra = calculate_mean_radiation_attenuation(image, segmentation, MUSCLE)
+            muscle_lama = calculate_lama_percentage(image, segmentation, MUSCLE)
             vat_area = calculate_area(segmentation, VAT, pixel_spacing)
             vat_idx = 0
             vat_ra = calculate_mean_radiation_attenuation(image, segmentation, VAT)
@@ -133,6 +135,7 @@ class CalculateScoresTask(Task):
             data['muscle_area'].append(muscle_area)
             data['muscle_idx'].append(muscle_idx)
             data['muscle_ra'].append(muscle_ra)
+            data['muscle_lama'].append(muscle_lama)
             data['vat_area'].append(vat_area)
             data['vat_idx'].append(vat_idx)
             data['vat_ra'].append(vat_ra)

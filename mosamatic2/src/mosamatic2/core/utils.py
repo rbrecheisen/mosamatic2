@@ -267,6 +267,16 @@ def calculate_mean_radiation_attenuation(image: np.array, labels: np.array, labe
     return mean_radiation_attenuation
 
 
+def calculate_lama_percentage(image: np.ndarray, labels: np.ndarray, label: int, threshold: float = 30.0) -> float:
+    roi = (labels == label)
+    n_roi = int(np.count_nonzero(roi))
+    if n_roi == 0:
+        return 0.0
+    lama = roi & (image < threshold)
+    lama_pct = (np.count_nonzero(lama) / n_roi) * 100.0
+    return float(lama_pct)
+
+
 def calculate_dice_score(ground_truth: np.array, prediction: np.array, label: int) -> float:
     numerator = prediction[ground_truth == label]
     numerator[numerator != label] = 0
@@ -352,6 +362,22 @@ def convert_numpy_array_to_png_image(
     png_file_path = os.path.join(output_dir_path, png_file_name)
     image.save(png_file_path)
     return png_file_path
+
+
+def convert_muscle_mask_to_myosteatosis_map(hu: np.array, mask: np.array, output_dir: str, png_file_name: str, hu_low: int = 30, hu_high: int = 200, alpha: float = 1.0) -> str:
+    muscle_mask = (mask == 1)
+    red = muscle_mask & (hu >= hu_low) & (hu <= hu_high)
+    yellow = muscle_mask & (hu < hu_low)
+    overlay = np.zeros((*hu.shape, 4), dtype=np.float32)
+    overlay[..., 3] = 1.0
+    overlay[red] = (1.0, 0.0, 0.0, alpha)
+    overlay[yellow] = (1.0, 1.0, 0.0, alpha)
+    overlay_u8 = (np.clip(overlay, 0.0, 1.0) * 255).astype(np.uint8)
+    png_file_path = os.path.join(output_dir, png_file_name)
+    # image = Image.fromarray(overlay)
+    image = Image.fromarray(overlay_u8, mode="RGBA")
+    image.save(png_file_path)
+    return overlay
 
 
 def is_docker_running():
