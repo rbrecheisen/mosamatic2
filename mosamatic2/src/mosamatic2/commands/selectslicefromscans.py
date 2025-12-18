@@ -19,13 +19,14 @@ from mosamatic2.core.tasks import SelectSliceFromScansTask
 @click.option(
     '--vertebra', 
     required=True,
+    default='L3',
     help='Vertebral level for selecting slice (default: "L3")'
 )
 @click.option(
     '--overwrite', 
     type=click.BOOL, 
-    default=False, 
-    help='Overwrite [true|false]'
+    default=True, 
+    help='Overwrite [true|false] (default: true)'
 )
 def selectslicefromscans(scans, vertebra, output, overwrite):
     """
@@ -51,10 +52,10 @@ def selectslicefromscans(scans, vertebra, output, overwrite):
         the example above that would be "patient1", "patient2", etc.
 
     --vertebra : str
-        Vertebral level where to take slice [L3|T4]
+        Vertebral level where to take slice [L3|T4] (default: L3)
 
     --overwrite : bool
-        Overwrite contents output directory [true|false]
+        Overwrite contents output directory [true|false] (default: true)
     """
     task = SelectSliceFromScansTask(
         inputs={'scans': scans},
