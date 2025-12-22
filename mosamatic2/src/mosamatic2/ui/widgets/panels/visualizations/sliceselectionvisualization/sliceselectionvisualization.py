@@ -120,7 +120,9 @@ class SliceSelectionVisualization(Visualization):
         self.slice_selection_viewer().load_images(self.images_line_edit().text())
 
     def handle_copy_selected_images_button(self):
-        pass
+        selected_paths = self.slice_selection_viewer().selected_paths()
+        for p in selected_paths:
+            LOG.info(p)
 
     def save_inputs_and_parameters(self):
         self.settings().set(f'{PANEL_NAME}/images', self.images_line_edit().text())
