@@ -225,8 +225,7 @@ class SelectSliceFromScansTask(Task):
             errors = False
             LOG.info(f'Processing {scan_dir}...')
             try:
-                # self.extract_masks(scan_dir)
-                pass
+                self.extract_masks(scan_dir)
             except Exception as e:
                 self.write_error(f'{scan_dir}: Could not extract masks [{str(e)}]. Skipping scan...')
                 errors = True
@@ -242,7 +241,7 @@ class SelectSliceFromScansTask(Task):
                 else:
                     self.write_error(f'{scan_dir}: Could not find slice for vertebral level: {vertebra}')
                     errors = True
-                # self.delete_total_segmentator_output()
+                self.delete_total_segmentator_output()
             if errors:
                 LOG.info(f'Copying problematic scan {scan_dir} to error directory: {self._error_dir}')
                 scan_error_dir = os.path.join(self._error_dir, scan_name)
