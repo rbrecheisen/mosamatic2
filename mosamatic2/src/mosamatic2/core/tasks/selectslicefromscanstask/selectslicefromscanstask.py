@@ -236,7 +236,7 @@ class SelectSliceFromScansTask(Task):
                     target_file_path = os.path.join(self.output(), vertebra + '_' + scan_name + extension)
                     shutil.copyfile(file_path, target_file_path)
                     mask_file = os.path.join(TOTAL_SEGMENTATOR_OUTPUT_DIR, f'vertebrae_{vertebra}.nii.gz')
-                    output_png = os.path.join(self.output(), f"{vertebra}_{scan_name}_saggital.png")
+                    output_png = os.path.join(self.output(), f"{vertebra}_{scan_name}_sagittal.png")
                     self.plot_sagittal_with_vertebra_overlay(scan_dir, mask_file, z_vert, output_png)
                 else:
                     self.write_error(f'{scan_dir}: Could not find slice for vertebral level: {vertebra}')
