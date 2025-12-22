@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
 )
 from mosamatic2.ui.widgets.panels.visualizations.visualization import Visualization
-from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.sliceviewer import SliceViewer
+from mosamatic2.ui.widgets.panels.visualizations.sliceselectionvisualization.sliceselectionviewer import SliceSelectionViewer
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
@@ -26,6 +26,7 @@ class SliceSelectionVisualization(Visualization):
         self._images_line_edit = None
         self._images_dir_select_button = None
         self._load_images_button = None
+        self._slice_selection_viewer = None
         self._form_layout = None
         self._settings = None
         self.init_layout()
@@ -47,6 +48,11 @@ class SliceSelectionVisualization(Visualization):
             self._load_images_button.clicked.connect(self.handle_load_images_button)
         return self._load_images_button
     
+    def slice_selection_viewer(self):
+        if not self._slice_selection_viewer:
+            self._slice_selection_viewer = SliceSelectionViewer()
+        return self._slice_selection_viewer
+    
     def form_layout(self):
         if not self._form_layout:
             self._form_layout = QFormLayout()
@@ -67,6 +73,7 @@ class SliceSelectionVisualization(Visualization):
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
         layout.addWidget(self.load_images_button())
+        layout.addWidget(self.slice_selection_viewer())
         self.setLayout(layout)
         self.setObjectName(PANEL_NAME)
 
