@@ -27,12 +27,13 @@ OPACITY_NOT_SELECTED = 0.25
 
 
 class MultiActorPicker:
-    def __init__(self, renderer, interactor, actors, volumes):
+    def __init__(self, renderer, interactor, actors, volumes, selected_volume_actor):
         self.ren = renderer
         self.iren = interactor
         self.actors = actors
         self.actor_keys = {v: k for k, v in actors.items()}
         self.volumes = volumes
+        self.selected_volume_actor = selected_volume_actor
         self.selected = set()
         self._orig = {}
 
@@ -78,7 +79,7 @@ class MultiActorPicker:
             a_key = self.actor_keys[a]
             volume = int(self.volumes[a_key])
             total_selected_volume += volume
-        print(f'total_selected_volume: {total_selected_volume}')
+        self.selected_volume_actor.SetInput(f'Selected volume: {total_selected_volume} mL')
             
 
     def on_left_down(self, iren, evt):
@@ -161,6 +162,7 @@ def main():
     liver_segments_dir_path = SEGMENTS_DIR_PATH
     liver_segments_stats_file_path = SEGMENTS_STATISTICS_FILE_PATH
     volumes = build_liver_volume_dict(liver_segments_stats_file_path)
+    total_volume = sum(volumes.values())
 
     renderer = vtk.vtkRenderer()
     render_window = vtk.vtkRenderWindow()
@@ -168,6 +170,21 @@ def main():
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(render_window)
     interactor.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
+
+    selected_volume_actor = vtk.vtkTextActor()
+    selected_volume_actor.SetInput('Selected volume: 0 mL')
+    selected_volume_actor.GetTextProperty().SetFontSize(18)
+    selected_volume_actor.GetTextProperty().SetColor(1, 1, 1)  # RGB 0–1
+    selected_volume_actor.SetDisplayPosition(20, 50)
+
+    total_volume_actor = vtk.vtkTextActor()
+    total_volume_actor.SetInput(f'Total volume: {total_volume} mL')
+    total_volume_actor.GetTextProperty().SetFontSize(18)
+    total_volume_actor.GetTextProperty().SetColor(1, 1, 1)  # RGB 0–1
+    total_volume_actor.SetDisplayPosition(20, 20)
+
+    renderer.AddViewProp(total_volume_actor)
+    renderer.AddViewProp(selected_volume_actor)
 
     i = 0
     actors = {}
@@ -191,7 +208,7 @@ def main():
         actors[segment_name] = actor
         i += 1
 
-    picker = MultiActorPicker(renderer, interactor, actors, volumes)
+    picker = MultiActorPicker(renderer, interactor, actors, volumes, selected_volume_actor)
 
     renderer.SetBackground(0.1, 0.1, 0.12)
     renderer.ResetCamera()
