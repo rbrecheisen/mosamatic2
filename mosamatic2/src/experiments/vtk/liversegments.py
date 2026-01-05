@@ -149,8 +149,8 @@ def build_liver_volume_dict(f_path):
 
 
 def main():
-    liver_segments_dir_path = 'D:\\Mosamatic\\TestData\\new_output\\liveranalysispipeline\\totalsegmentatortask'
-    liver_segments_stats_file_path = 'D:\\Mosamatic\\TestData\\new_output\\liveranalysispipeline\\calculatemaskstatisticstask\\statistics.csv'
+    liver_segments_dir_path = '/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/mosamatic2/data/liveranalysispipeline/totalsegmentatortask'
+    liver_segments_stats_file_path = '/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/mosamatic2/data/liveranalysispipeline/calculatemaskstatisticstask/statistics.csv'
     volumes = build_liver_volume_dict(liver_segments_stats_file_path)
 
     renderer = vtk.vtkRenderer()
