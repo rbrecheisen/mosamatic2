@@ -1,6 +1,7 @@
 import os
 import vtk
 import platform
+import pandas as pd
 
 PLATFORM = platform.system()
 if PLATFORM == 'Windows':
@@ -149,7 +150,6 @@ def polydata_actor(polydata: vtk.vtkPolyData, opacity=1.0) -> vtk.vtkActor:
 
 
 def build_liver_volume_dict(f_path):
-    import pandas as pd
     volumes = {}
     df = pd.read_csv(f_path, sep=';')
     for _, row in df.iterrows():
