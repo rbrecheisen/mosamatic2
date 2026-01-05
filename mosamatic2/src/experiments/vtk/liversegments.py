@@ -1,5 +1,14 @@
 import os
 import vtk
+import platform
+
+PLATFORM = platform.system()
+if PLATFORM == 'Windows':
+    BASE_DIR_PATH = 'G:/My Drive'
+elif PLATFORM == 'Darwin':
+    BASE_DIR_PATH = '/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive'
+SEGMENTS_DIR_PATH = f'{BASE_DIR_PATH}/data/mosamatic2/data/liveranalysispipeline/totalsegmentatortask'
+SEGMENTS_STATISTICS_FILE_PATH = f'{BASE_DIR_PATH}/data/mosamatic2/data/liveranalysispipeline/calculatemaskstatisticstask/statistics.csv'
 
 SEGMENT_COLORS = [
     (0.80, 0.25, 0.25),  # muted red
@@ -149,8 +158,8 @@ def build_liver_volume_dict(f_path):
 
 
 def main():
-    liver_segments_dir_path = '/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/mosamatic2/data/liveranalysispipeline/totalsegmentatortask'
-    liver_segments_stats_file_path = '/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/mosamatic2/data/liveranalysispipeline/calculatemaskstatisticstask/statistics.csv'
+    liver_segments_dir_path = SEGMENTS_DIR_PATH
+    liver_segments_stats_file_path = SEGMENTS_STATISTICS_FILE_PATH
     volumes = build_liver_volume_dict(liver_segments_stats_file_path)
 
     renderer = vtk.vtkRenderer()
