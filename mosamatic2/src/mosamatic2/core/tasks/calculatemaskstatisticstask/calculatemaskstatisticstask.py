@@ -28,7 +28,7 @@ class CalculateMaskStatisticsTask(Task):
     def load_mask_files(self):
         mask_files = []
         for f in os.listdir(self.input('masks')):
-            if f.endswith('.nii.gz'):
+            if f.endswith('.nii.gz') and 'liver_segment' in f:
                 mask_file = os.path.join(self.input('masks'), f)
                 if os.path.isfile(mask_file):
                     mask_files.append(mask_file)

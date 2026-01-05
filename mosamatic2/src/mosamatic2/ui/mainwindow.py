@@ -30,6 +30,7 @@ from mosamatic2.ui.widgets.panels.pipelines.boadockerpipelinepanel import BoaDoc
 from mosamatic2.ui.widgets.panels.pipelines.liveranalysispipelinepanel import LiverAnalysisPipelinePanel
 from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.slicevisualization import SliceVisualization
 from mosamatic2.ui.widgets.panels.visualizations.sliceselectionvisualization.sliceselectionvisualization import SliceSelectionVisualization
+from mosamatic2.ui.widgets.panels.visualizations.liversegmentvisualization.liversegmentvisualization import LiverSegmentVisualization
 
 LOG = LogManager()
 
@@ -57,6 +58,7 @@ class MainWindow(QMainWindow):
         self._liver_analysis_pipeline_panel = None
         self._slice_visualization = None
         self._slice_selection_visualization = None
+        self._liver_segment_visualization = None
         self.init_window()
 
     def init_window(self):
@@ -138,9 +140,12 @@ class MainWindow(QMainWindow):
         slice_visualization_action.triggered.connect(self.handle_slice_visualization_action)
         slice_selection_visualization_action = QAction('SliceSelectionVisualization', self)
         slice_selection_visualization_action.triggered.connect(self.handle_slice_selection_visualization_action)
+        liver_segment_visualization_action = QAction('LiverSegmentVisualization', self)
+        liver_segment_visualization_action.triggered.connect(self.handle_liver_segment_visualization_action)
         visualizations_menu = self.menuBar().addMenu('Visualizations')
         visualizations_menu.addAction(slice_visualization_action)
         visualizations_menu.addAction(slice_selection_visualization_action)
+        visualizations_menu.addAction(liver_segment_visualization_action)
 
     def init_status_bar(self):
         self.set_status('Ready')
@@ -171,6 +176,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.liver_analysis_pipeline_panel(), 'liveranalysispipelinepanel')
             self._main_panel.add_panel(self.slice_visualization(), 'slicevisualization')
             self._main_panel.add_panel(self.slice_selection_visualization(), 'sliceselectionvisualization')
+            self._main_panel.add_panel(self.liver_segment_visualization(), 'liversegmentvisualization')
             self._main_panel.select_panel('defaultpipelinepanel')
         return self._main_panel
     
@@ -262,6 +268,11 @@ class MainWindow(QMainWindow):
             self._slice_selection_visualization = SliceSelectionVisualization()
         return self._slice_selection_visualization
 
+    def liver_segment_visualization(self):
+        if not self._liver_segment_visualization:
+            self._liver_segment_visualization = LiverSegmentVisualization()
+        return self._liver_segment_visualization
+
     # SETTERS
 
     def set_status(self, message):
@@ -317,6 +328,9 @@ class MainWindow(QMainWindow):
     def handle_slice_selection_visualization_action(self):
         self.main_panel().select_panel('sliceselectionvisualization')
 
+    def handle_liver_segment_visualization_action(self):
+        self.main_panel().select_panel('liversegmentvisualization')
+
     def showEvent(self, event):
         return super().showEvent(event)
 
@@ -339,6 +353,7 @@ class MainWindow(QMainWindow):
         self.liver_analysis_pipeline_panel().save_inputs_and_parameters()
         self.slice_visualization().save_inputs_and_parameters()
         self.slice_selection_visualization().save_inputs_and_parameters()
+        self.liver_segment_visualization().save_inputs_and_paramters()
         return super().closeEvent(event)
 
     def load_geometry_and_state(self):
