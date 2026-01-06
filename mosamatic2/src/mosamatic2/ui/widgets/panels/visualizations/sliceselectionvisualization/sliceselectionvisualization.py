@@ -1,3 +1,4 @@
+import shutil
 from PySide6.QtWidgets import (
     QLineEdit,
     QLabel,
@@ -122,7 +123,10 @@ class SliceSelectionVisualization(Visualization):
     def handle_copy_selected_images_button(self):
         selected_paths = self.slice_selection_viewer().selected_paths()
         for p in selected_paths:
-            LOG.info(p)
+            p_dcm = p[:-13] + '.dcm'
+            target_dir = self.output_dir_line_edit().text()
+            LOG.info(f'Copying {p_dcm} to {target_dir}')
+            shutil.copy(p_dcm, target_dir)
 
     def save_inputs_and_parameters(self):
         self.settings().set(f'{PANEL_NAME}/images', self.images_line_edit().text())

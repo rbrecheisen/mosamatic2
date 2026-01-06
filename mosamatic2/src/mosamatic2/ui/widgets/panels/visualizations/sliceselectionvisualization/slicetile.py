@@ -27,7 +27,9 @@ class SliceTile(QWidget):
         self.image_label.setFixedSize(display_size)
         self.image_label.setStyleSheet("QLabel { background: #222; border: 1px solid #444; }")
 
-        self.checkbox = QCheckBox(os.path.basename(item.path))
+        dcm_name = os.path.basename(item.path)[:-13] + '.dcm'
+        self.checkbox = QCheckBox(dcm_name)
+        self.checkbox.setChecked(True)
         self.checkbox.toggled.connect(self._on_toggled)
 
         layout = QVBoxLayout(self)
