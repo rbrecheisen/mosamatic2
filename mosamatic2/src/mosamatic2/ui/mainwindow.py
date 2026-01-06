@@ -353,7 +353,7 @@ class MainWindow(QMainWindow):
         self.liver_analysis_pipeline_panel().save_inputs_and_parameters()
         self.slice_visualization().save_inputs_and_parameters()
         self.slice_selection_visualization().save_inputs_and_parameters()
-        self.liver_segment_visualization().save_inputs_and_paramters()
+        self.liver_segment_visualization().save_inputs_and_parameters()
         return super().closeEvent(event)
 
     def load_geometry_and_state(self):
