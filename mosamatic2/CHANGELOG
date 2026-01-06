@@ -1,3 +1,7 @@
+2.0.22
+======
+- Implemented SliceSelectionViewer with sagittal view check and copy
+
 2.0.21
 ======
 - Implemented LiverSegmentVisualization using VTK
