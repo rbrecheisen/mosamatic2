@@ -20,6 +20,8 @@ from mosamatic2.ui.widgets.panels.tasks.segmentmusclefatt4pytorchtaskpanel impor
 from mosamatic2.ui.widgets.panels.tasks.createpngsfromsegmentationstaskpanel import CreatePngsFromSegmentationsTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.calculatescorestaskpanel import CalculateScoresTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.dicom2niftitaskpanel import Dicom2NiftiTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.segmentationnifti2numpytaskpanel import SegmentationNifti2NumpyTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.segmentationnumpy2niftitaskpanel import SegmentationNumpy2NiftiTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.createdicomsummarytaskpanel import CreateDicomSummaryTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.selectslicefromscanstaskpanel import SelectSliceFromScansTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.totalsegmentatortaskpanel import TotalSegmentatorTaskPanel
@@ -48,6 +50,8 @@ class MainWindow(QMainWindow):
         self._create_pngs_from_segmentations_task_panel = None
         self._calculate_scores_task_panel = None
         self._dicom2nifti_task_panel = None
+        self._segmentation_numpy_to_nifti_task_panel = None
+        self._segmentation_nifti_to_numpy_task_panel = None
         self._create_dicom_summary_task_panel = None
         self._select_slice_from_scans_task_panel = None
         self._total_segmentator_task_panel = None
@@ -100,6 +104,10 @@ class MainWindow(QMainWindow):
         create_pngs_from_segmentations_task_action.triggered.connect(self.handle_create_pngs_from_segmentations_task_action)
         dicom2nifti_task_action = QAction('Dicom2NiftiTask', self)
         dicom2nifti_task_action.triggered.connect(self.handle_dicom2nifti_task_action)
+        segmentation_numpy_to_nifti_task_action = QAction('SegmentationNumpy2NiftiTask', self)
+        segmentation_numpy_to_nifti_task_action.triggered.connect(self.handle_segmentation_numpy_to_nifti_task_action)
+        segmentation_nifti_to_numpy_task_action = QAction('SegmentationNifti2NumpyTask', self)
+        segmentation_nifti_to_numpy_task_action.triggered.connect(self.handle_segmentation_nifti_to_numpy_task_action)
         create_dicom_summary_task_action = QAction('CreateDicomSummaryTask', self)
         create_dicom_summary_task_action.triggered.connect(self.handle_create_dicom_summary_task_action)
         select_slice_from_scans_task_action = QAction('SelectSliceFromScansTask', self)
@@ -115,6 +123,8 @@ class MainWindow(QMainWindow):
         tasks_menu.addAction(calculate_scores_task_action)
         tasks_menu.addAction(create_pngs_from_segmentations_task_action)
         tasks_menu.addAction(dicom2nifti_task_action)
+        tasks_menu.addAction(segmentation_numpy_to_nifti_task_action)
+        tasks_menu.addAction(segmentation_nifti_to_numpy_task_action)
         tasks_menu.addAction(create_dicom_summary_task_action)
         tasks_menu.addAction(select_slice_from_scans_task_action)
         tasks_menu.addAction(total_segmentator_task_action)
@@ -166,6 +176,8 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.create_pngs_from_segmentations_task_panel(), 'createpngsfromsegmentationstaskpanel')
             self._main_panel.add_panel(self.calculate_scores_task_panel(), 'calculatescorestaskpanel')
             self._main_panel.add_panel(self.dicom2nifti_task_panel(), 'dicom2niftitaskpanel')
+            self._main_panel.add_panel(self.segmentation_numpy_to_nifti_task_panel(), 'segmentationnumpy2niftitaskpanel')
+            self._main_panel.add_panel(self.segmentation_nifti_to_numpy_task_panel(), 'segmentationnifti2numpytaskpanel')
             self._main_panel.add_panel(self.create_dicom_summary_task_panel(), 'createdicomsummarytaskpanel')
             self._main_panel.add_panel(self.select_slice_from_scans_task_panel(), 'selectslicefromscanstaskpanel')
             self._main_panel.add_panel(self.total_segmentator_task_panel(), 'totalsegmentatortaskpanel')
@@ -217,6 +229,16 @@ class MainWindow(QMainWindow):
         if not self._dicom2nifti_task_panel:
             self._dicom2nifti_task_panel = Dicom2NiftiTaskPanel()
         return self._dicom2nifti_task_panel
+
+    def segmentation_numpy_to_nifti_task_panel(self):
+        if not self._segmentation_numpy_to_nifti_task_panel:
+            self._segmentation_numpy_to_nifti_task_panel = SegmentationNumpy2NiftiTaskPanel()
+        return self._segmentation_numpy_to_nifti_task_panel
+    
+    def segmentation_nifti_to_numpy_task_panel(self):
+        if not self._segmentation_nifti_to_numpy_task_panel:
+            self._segmentation_nifti_to_numpy_task_panel = SegmentationNifti2NumpyTaskPanel()
+        return self._segmentation_nifti_to_numpy_task_panel
     
     def create_dicom_summary_task_panel(self):
         if not self._create_dicom_summary_task_panel:
@@ -298,6 +320,12 @@ class MainWindow(QMainWindow):
     def handle_dicom2nifti_task_action(self):
         self.main_panel().select_panel('dicom2niftitaskpanel')
 
+    def handle_segmentation_numpy_to_nifti_task_action(self):
+        self.main_panel().select_panel('segmentationnumpy2niftitaskpanel')
+
+    def handle_segmentation_nifti_to_numpy_task_action(self):
+        self.main_panel().select_panel('segmentationnifti2numpytaskpanel')
+
     def handle_create_dicom_summary_task_action(self):
         self.main_panel().select_panel('createdicomsummarytaskpanel')
 
@@ -343,6 +371,8 @@ class MainWindow(QMainWindow):
         self.create_pngs_from_segmentations_task_panel().save_inputs_and_parameters()
         self.calculate_scores_task_panel().save_inputs_and_parameters()
         self.dicom2nifti_task_panel().save_inputs_and_parameters()
+        self.segmentation_numpy_to_nifti_task_panel().save_inputs_and_parameters()
+        self.segmentation_nifti_to_numpy_task_panel().save_inputs_and_parameters()
         self.create_dicom_summary_task_panel().save_inputs_and_parameters()
         self.select_slice_from_scans_task_panel().save_inputs_and_parameters()
         self.total_segmentator_task_panel().save_inputs_and_parameters()

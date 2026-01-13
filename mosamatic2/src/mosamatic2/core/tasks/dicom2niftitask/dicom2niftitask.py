@@ -8,6 +8,10 @@ LOG = LogManager()
 
 
 class Dicom2NiftiTask(Task):
+    """
+    This task converts DICOM scans to NIFTI. Each scan should be stored in a separate 
+    directory (scan_dir). This task does not convert a single DICOM image!!
+    """
     INPUTS = ['scans']
     PARAMS = ['compressed']
 
