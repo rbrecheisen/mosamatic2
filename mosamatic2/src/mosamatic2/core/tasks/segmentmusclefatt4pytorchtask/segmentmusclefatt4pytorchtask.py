@@ -13,12 +13,12 @@ from mosamatic2.core.utils import (
 )
 from mosamatic2.core.data.multidicomimage import MultiDicomImage
 from mosamatic2.core.data.dicomimage import DicomImage
-from mosamatic2.core.tasks.segmentmusclefatpytorchtask.paramloader import ParamLoader
+from mosamatic2.core.tasks.segmentmusclefatt4pytorchtask.paramloader import ParamLoader
 
 DEVICE = 'cpu'
 
 
-class SegmentMuscleFatPyTorchTask(Task):
+class SegmentMuscleFatT4PyTorchTask(Task):
     INPUTS = [
         'images', 
         'model_files'
@@ -26,7 +26,7 @@ class SegmentMuscleFatPyTorchTask(Task):
     PARAMS = ['model_version']
 
     def __init__(self, inputs, params, output, overwrite=True):
-        super(SegmentMuscleFatPyTorchTask, self).__init__(inputs, params, output, overwrite)
+        super(SegmentMuscleFatT4PyTorchTask, self).__init__(inputs, params, output, overwrite)
 
     def load_images(self):        
         image_data = MultiDicomImage()

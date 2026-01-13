@@ -20,17 +20,17 @@ from mosamatic2.ui.widgets.panels.tasks.taskpanel import TaskPanel
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 from mosamatic2.ui.worker import Worker
-from mosamatic2.core.tasks import SegmentMuscleFatPyTorchTask
+from mosamatic2.core.tasks import SegmentMuscleFatT4PyTorchTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'SegmentMuscleFatPyTorchTask'
-PANEL_NAME = 'segmentmusclefatpytorchtaskpanel'
+PANEL_TITLE = 'SegmentMuscleFatT4PyTorchTask'
+PANEL_NAME = 'segmentmusclefatt4pytorchtaskpanel'
 
 
-class SegmentMuscleFatPyTorchTaskPanel(TaskPanel):
+class SegmentMuscleFatT4PyTorchTaskPanel(TaskPanel):
     def __init__(self):
-        super(SegmentMuscleFatPyTorchTaskPanel, self).__init__()
+        super(SegmentMuscleFatT4PyTorchTaskPanel, self).__init__()
         self.set_title(PANEL_TITLE)
         self._images_dir_line_edit = None
         self._images_dir_select_button = None
@@ -156,7 +156,7 @@ class SegmentMuscleFatPyTorchTaskPanel(TaskPanel):
             LOG.info('Running task...')
             self.run_task_button().setEnabled(False)
             self.save_inputs_and_parameters()
-            self._task = SegmentMuscleFatPyTorchTask(
+            self._task = SegmentMuscleFatT4PyTorchTask(
                 inputs={
                     'images': self.images_dir_line_edit().text(),
                     'model_files': self.model_files_dir_line_edit().text(),
