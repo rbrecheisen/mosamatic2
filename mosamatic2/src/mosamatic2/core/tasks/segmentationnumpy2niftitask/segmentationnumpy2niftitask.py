@@ -50,7 +50,8 @@ class SegmentationNumpy2NiftiTask(Task):
     def affine_from_image(self, image, slice_spacing=1.0):
 
         # Replace with SimpleITK!!!
-        
+        # https://chatgpt.com/c/6966273b-bb3c-8331-9156-7b459615610a
+
         ds = pydicom.dcmread(image, stop_before_pixels=True)
         ipp = np.array(ds.ImagePositionPatient, dtype=float)          # (x,y,z) in LPS
         iop = np.array(ds.ImageOrientationPatient, dtype=float)
