@@ -105,11 +105,7 @@ def is_dicom(f):
         pydicom.dcmread(f, stop_before_pixels=True)
         return True
     except pydicom.errors.InvalidDicomError:
-        try:
-            pydicom.dcmread(f, stop_before_pixels=True, force=True)
-            return True
-        except pydicom.errors.InvalidDicomError:
-            pass
+        pass
     return False
     
 

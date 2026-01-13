@@ -31,7 +31,7 @@ class SegmentationNifti2NumpyTask(Task):
         LOG.info(f'Loading {segmentation} as NIFTI')
         narray = np.asanyarray(nifti.dataobj)
         narray = narray[..., 0]
-        narray = np.rot90(narray, k=1, axes=(0, 1))
+        narray = np.rot90(narray, k=3, axes=(0, 1))
         return narray
     
     def create_png(self, data, file_name):
@@ -50,7 +50,7 @@ class SegmentationNifti2NumpyTask(Task):
         for step in range(nr_steps):
             segmentation = segmentations[step]
             segmentation_narray = self.load_segmentation_as_nifti(segmentation)
-            segmentation_narray_name = os.path.split(segmentation)[1] + '.npy'
+            segmentation_narray_name = os.path.split(segmentation)[1][:-7]
             np.save(os.path.join(self.output(), segmentation_narray_name), segmentation_narray)
             if self.param('png'):
                 self.create_png(segmentation_narray, segmentation_narray_name)
