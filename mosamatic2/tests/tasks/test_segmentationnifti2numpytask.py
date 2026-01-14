@@ -9,7 +9,7 @@ TASK_NAME = 'SegmentationNumpy2NiftiTask'.lower()
 def test_segmentationnifti2numpy():
     task = SegmentationNifti2NumpyTask(
         inputs={'segmentations': 'D:\\Mosamatic\\TestData\\output\\segmentationnumpy2niftitask'}, 
-        params={'png': False},
+        params={'png': True},
         output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )

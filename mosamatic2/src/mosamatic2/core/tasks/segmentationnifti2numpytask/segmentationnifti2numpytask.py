@@ -28,14 +28,13 @@ class SegmentationNifti2NumpyTask(Task):
     
     def load_segmentation_as_nifti(self, segmentation):
         nifti = nib.load(segmentation)
-        LOG.info(f'Loading {segmentation} as NIFTI')
         narray = np.asanyarray(nifti.dataobj)
         narray = narray[..., 0]
         narray = np.rot90(narray, k=3, axes=(0, 1))
         return narray
     
-    def create_png(self, data, file_name):
-        png_file_name = file_name + '.png'
+    def create_png_from_array(self, data, file_path):
+        png_file_name = os.path.split(file_path)[1] + '.png'
         convert_numpy_array_to_png_image(
             data, 
             self.output(),
@@ -51,7 +50,8 @@ class SegmentationNifti2NumpyTask(Task):
             segmentation = segmentations[step]
             segmentation_narray = self.load_segmentation_as_nifti(segmentation)
             segmentation_narray_name = os.path.split(segmentation)[1][:-7]
-            np.save(os.path.join(self.output(), segmentation_narray_name), segmentation_narray)
+            segmentation_narray_path = os.path.join(self.output(), segmentation_narray_name)
+            np.save(segmentation_narray_path, segmentation_narray)
             if self.param('png'):
-                self.create_png(segmentation_narray, segmentation_narray_name)
+                self.create_png_from_array(segmentation_narray, segmentation_narray_path)
             self.set_progress(step, nr_steps)

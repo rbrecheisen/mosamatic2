@@ -297,6 +297,17 @@ def convert_dicom_to_numpy_array(dicom_file_path: str, window_level: int=50, win
     return pixels
 
 
+def convert_dicom_to_png_image(dicom_file_path: str, output_dir_path: str, window_level: int=50, window_width: int=400, normalize=True) -> str:
+    array = convert_dicom_to_numpy_array(dicom_file_path, window_level, window_width, normalize)
+    convert_numpy_array_to_png_image(
+        array,
+        output_dir_path,
+        None,
+        os.path.split(dicom_file_path)[1] + '.png',
+        10, 10,
+    )
+
+
 class ColorMap:
     def __init__(self, name: str) -> None:
         self._name = name
