@@ -1,3 +1,8 @@
+2.0.23
+======
+- Implemented Numpy to NIFTI and NIFTI to Numpy conversion task so the segmentation
+  output can be edited outside Mosamatic, e.g., using ITK-SNAP
+  
 2.0.22
 ======
 - Implemented SliceSelectionViewer with sagittal view check and copy
