@@ -2,7 +2,13 @@ import os
 import pandas as pd
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
-from mosamatic2.core.utils import is_dicom, load_dicom
+from mosamatic2.core.utils import (
+    is_dicom, 
+    load_dicom,
+    current_time_in_seconds,
+    elapsed_time_in_seconds,
+    duration,
+)
 
 LOG = LogManager()
 
@@ -27,6 +33,7 @@ class CreateDicomSummaryTask(Task):
     
     def run(self):
         series = {}
+        start_time = current_time_in_seconds()
         for root, dirs, files in os.walk(self.input('directory')):
             for f in files:
                 f_path = os.path.join(root, f)
@@ -77,4 +84,5 @@ class CreateDicomSummaryTask(Task):
         df = pd.DataFrame(data=data)
         df.to_csv(os.path.join(self.output(), 'summary.csv'), index=False, sep=';')
         df.to_excel(os.path.join(self.output(), 'summary.xlsx'), index=False, engine='openpyxl')
-        print(df)
+        LOG.info(df)
+        LOG.info(f'Elapsed time: {duration(elapsed_time_in_seconds(start_time))}')

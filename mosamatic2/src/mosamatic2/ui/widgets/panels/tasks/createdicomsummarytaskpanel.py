@@ -1,4 +1,7 @@
 import os
+import subprocess
+import pathlib
+import sys
 
 from PySide6.QtWidgets import (
     QLineEdit,
@@ -40,6 +43,7 @@ class CreateDicomSummaryTaskPanel(TaskPanel):
         self._overwrite_checkbox = None
         self._form_layout = None
         self._run_task_button = None
+        self._open_excel_button = None
         self._settings = None
         self._task = None
         self._worker = None
@@ -87,6 +91,12 @@ class CreateDicomSummaryTaskPanel(TaskPanel):
             self._run_task_button.clicked.connect(self.handle_run_task_button)
         return self._run_task_button
     
+    def open_excel_button(self):
+        if not self._open_excel_button:
+            self._open_excel_button = QPushButton('Open output in Excel')
+            self._open_excel_button.clicked.connect(self.handle_open_excel_button)
+        return self._open_excel_button
+    
     def settings(self):
         if not self._settings:
             self._settings = Settings()
@@ -105,6 +115,7 @@ class CreateDicomSummaryTaskPanel(TaskPanel):
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
         layout.addWidget(self.run_task_button())
+        layout.addWidget(self.open_excel_button())
         self.setLayout(layout)
         self.setObjectName(PANEL_NAME)
 
@@ -150,6 +161,18 @@ class CreateDicomSummaryTaskPanel(TaskPanel):
             self._worker.finished.connect(self._worker.deleteLater)
             self._thread.finished.connect(self._thread.deleteLater)
             self._thread.start()
+
+    def handle_open_excel_button(self):
+        file_path = os.path.join(self.output_dir_line_edit().text(), 'createdicomsummarytask', 'summary.xlsx')
+        file_path = pathlib.Path(file_path).expanduser().resolve()
+        if not file_path.exists():
+            raise FileNotFoundError(file_path)
+        if sys.platform.startswith('win'):
+            os.startfile(str(file_path))
+        elif sys.platform == 'darwin':
+            subprocess.run(['open', str(file_path)], check=True)
+        else:
+            subprocess.run(["xdg-open", str(file_path)], check=True)
 
     @Slot(int)
     def handle_progress(self, progress):
