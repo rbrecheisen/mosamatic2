@@ -1,0 +1,12 @@
+- Prepare data Lieke
+
+- Run Mosamatic on L3s Lieke
+
+- Create regression equations (and graphs)
+
+- Run L3 slice selection on CTs Lisa
+
+- Analyze phases in CTs Lisa using CreateDicomSummaryTask
+
+- Prepare L3s Lisa (organize by phase: unenhanced, arterial, venous)
+    You may need to inspect the series description to find out what phase it is
