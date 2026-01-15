@@ -1,5 +1,5 @@
 import os
-import json
+import pandas as pd
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.utils import is_dicom, load_dicom
@@ -14,48 +14,67 @@ class CreateDicomSummaryTask(Task):
     def __init__(self, inputs, params, output, overwrite):
         super(CreateDicomSummaryTask, self).__init__(inputs, params, output, overwrite)
 
+    def get_values(self, files, tag_name):
+        values = []
+        for f in files:
+            if tag_name in f.keys():
+                if f[tag_name] not in values:
+                    values.append(f[tag_name])
+        return values
+    
+    def get_tag_value(self, p, tag_name):
+        return p.data_element(tag_name).value
+    
     def run(self):
-        nr_steps = len(os.listdir(self.input('directory'))) * 2
-        LOG.info('Collecting data...')
-        data = {}
-        step = 0
-        for patient_dir_name in os.listdir(self.input('directory')):
-            data[patient_dir_name] = {}
-            patient_dir_path = os.path.join(self.input('directory'), patient_dir_name)
-            for root, dirs, files in os.walk(patient_dir_path):
-                for f in files:
-                    f_path = os.path.join(root, f)
-                    # if is_dicom(f_path):
+        series = {}
+        for root, dirs, files in os.walk(self.input('directory')):
+            for f in files:
+                f_path = os.path.join(root, f)
+                if is_dicom(f_path):
                     p = load_dicom(f_path, stop_before_pixels=True)
                     if p:
-                        series_instance_uid = p.SeriesInstanceUID
-                        if not series_instance_uid in data[patient_dir_name].keys():
-                            data[patient_dir_name][series_instance_uid] = []
-                        data[patient_dir_name][series_instance_uid].append(p)
-            self.set_progress(step, nr_steps)
-            step += 1
-        LOG.info('Building summary...')
-        summary = {
-            'nr_series_per_patient': {},
+                        patient_id = self.get_tag_value(p, 'PatientID')
+                        if patient_id:
+                            if patient_id not in series.keys():
+                                series[patient_id] = {}
+                            series_instance_uid = self.get_tag_value(p, 'SeriesInstanceUID')
+                            if series_instance_uid:
+                                if series_instance_uid not in series[patient_id].keys():
+                                    series[patient_id][series_instance_uid] = []
+                                series[patient_id][series_instance_uid].append({
+                                    'series_description': self.get_tag_value(p, 'SeriesDescription'),
+                                    'slice_thickness': self.get_tag_value(p, 'SliceThickness'),
+                                    'rows': self.get_tag_value(p, 'Rows'),
+                                    'columns': self.get_tag_value(p, 'Columns'),
+                                    'pixel_spacing': self.get_tag_value(p, 'PixelSpacing'),
+                                    'modality': self.get_tag_value(p, 'Modality'),
+                                    'image_type': self.get_tag_value(p, 'ImageType'),
+                                })
+        data = {
+            'patient_id': [],
+            'series_description': [],
+            'nr_images': [],
+            'slice_thickness': [],
+            'rows': [],
+            'columns': [],
+            'pixel_spacing': [],
+            'modality': [],
+            'image_type': [],
+            'series_instance_uid': [],
         }
-        # Calculate nr. of series per patient
-        for patient_dir_name in data.keys():
-            summary['nr_series_per_patient'][patient_dir_name] = len(data[patient_dir_name].keys())
-        # Summarize series data per patient
-        for patient_dir_name in data.keys():
-            summary[patient_dir_name] = {}
-            for series_instance_uid in data[patient_dir_name].keys():
-                summary[patient_dir_name][series_instance_uid] = {
-                    'nr_images': len(data[patient_dir_name][series_instance_uid]),
-                    'modality': data[patient_dir_name][series_instance_uid][0].Modality,
-                    'image_type': str(data[patient_dir_name][series_instance_uid][0].ImageType),
-                    'rows': data[patient_dir_name][series_instance_uid][0].Rows,
-                    'columns': data[patient_dir_name][series_instance_uid][0].Columns,
-                    'pixel_spacing': str(data[patient_dir_name][series_instance_uid][0].PixelSpacing),
-                    'slice_thickness': data[patient_dir_name][series_instance_uid][0].SliceThickness,
-                }
-            self.set_progress(step, nr_steps)
-            step += 1
-        LOG.info('Exporting summary...')
-        with open(os.path.join(self.output(), 'summary.txt'), 'w') as f:
-            json.dump(summary, f, indent=4)
+        for patient_id, v1 in series.items():
+            for series_instance_uid, v2 in v1.items():
+                data['patient_id'].append(patient_id)
+                data['series_description'].append(self.get_values(v2, tag_name='series_description'))
+                data['nr_images'].append(len(v2))
+                data['slice_thickness'].append(self.get_values(v2, tag_name='slice_thickness'))
+                data['rows'].append(self.get_values(v2, tag_name='rows'))
+                data['columns'].append(self.get_values(v2, tag_name='columns'))
+                data['pixel_spacing'].append(self.get_values(v2, tag_name='pixel_spacing'))
+                data['modality'].append(self.get_values(v2, tag_name='modality'))
+                data['image_type'].append(self.get_values(v2, tag_name='image_type'))
+                data['series_instance_uid'].append(series_instance_uid)
+        df = pd.DataFrame(data=data)
+        df.to_csv(os.path.join(self.output(), 'summary.csv'), index=False, sep=';')
+        df.to_excel(os.path.join(self.output(), 'summary.xlsx'), index=False, engine='openpyxl')
+        print(df)
