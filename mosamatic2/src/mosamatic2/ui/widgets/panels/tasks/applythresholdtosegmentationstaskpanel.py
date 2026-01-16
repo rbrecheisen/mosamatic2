@@ -158,7 +158,7 @@ class ApplyThresholdToSegmentationsTaskPanel(TaskPanel):
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
         layout.addWidget(self.run_task_button())
-        layout.addWidget(self.open_excel_button())
+        # layout.addWidget(self.open_excel_button())
         self.setLayout(layout)
         self.setObjectName(PANEL_NAME)
 
