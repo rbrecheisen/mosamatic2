@@ -17,7 +17,10 @@ class CreatePngsFromSegmentationsTask(Task):
     INPUTS = ['images', 'segmentations']
     PARAMS = [
         'fig_width', 
-        'fig_height'
+        'fig_height',
+        'hu_low',
+        'hu_high',
+        'alpha',
     ]
 
     def __init__(self, inputs, params, output, overwrite=True):
@@ -89,6 +92,9 @@ class CreatePngsFromSegmentationsTask(Task):
                     segmentation_image,
                     self.output(),
                     png_file_name,
+                    hu_low=self.param('hu_low'),
+                    hu_high=self.param('hu_high'),
+                    alpha=self.param('alpha'),
                 )
             else:
                 LOG.warning(f'File {segmentation} is not a valid NumPy array file')

@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QCheckBox,
     QSpinBox,
+    QDoubleSpinBox,
     QHBoxLayout,
     QVBoxLayout,
     QFormLayout,
@@ -39,6 +40,9 @@ class CreatePngsFromSegmentationsTaskPanel(TaskPanel):
         self._segmentations_dir_select_button = None
         self._output_dir_line_edit = None
         self._output_dir_select_button = None
+        self._hu_low_spinbox = None
+        self._hu_high_spinbox = None
+        self._alpha_spinbox = None
         self._overwrite_checkbox = None
         self._form_layout = None
         self._run_task_button = None
@@ -81,6 +85,24 @@ class CreatePngsFromSegmentationsTaskPanel(TaskPanel):
             self._output_dir_select_button.clicked.connect(self.handle_output_dir_select_button)
         return self._output_dir_select_button
     
+    def hu_low_spinbox(self):
+        if not self._hu_low_spinbox:
+            self._hu_low_spinbox = QSpinBox(minimum=-200, maximum=150, value=-29)
+            self._hu_low_spinbox.setValue(self.settings().get_int(f'{PANEL_NAME}/hu_low', -29))
+        return self._hu_low_spinbox
+    
+    def hu_high_spinbox(self):
+        if not self._hu_high_spinbox:
+            self._hu_high_spinbox = QSpinBox(minimum=-200, maximum=150, value=150)
+            self._hu_high_spinbox.setValue(self.settings().get_int(f'{PANEL_NAME}/hu_high', 150))
+        return self._hu_high_spinbox
+    
+    def alpha_spinbox(self):
+        if not self._alpha_spinbox:
+            self._alpha_spinbox = QDoubleSpinBox(minimum=0.0, maximum=1.0, value=1.0)
+            self._alpha_spinbox.setValue(self.settings().get_float(f'{PANEL_NAME}/alpha', 1.0))
+        return self._alpha_spinbox
+
     def overwrite_checkbox(self):
         if not self._overwrite_checkbox:
             self._overwrite_checkbox = QCheckBox('')
@@ -118,6 +140,9 @@ class CreatePngsFromSegmentationsTaskPanel(TaskPanel):
         self.form_layout().addRow('Images directory', images_dir_layout)
         self.form_layout().addRow('Segmentations directory', segmentations_dir_layout)
         self.form_layout().addRow('Output directory', output_dir_layout)
+        self.form_layout().addRow('HU low', self.hu_low_spinbox())
+        self.form_layout().addRow('HU high', self.hu_high_spinbox())
+        self.form_layout().addRow('Alpha', self.alpha_spinbox())
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
@@ -165,6 +190,9 @@ class CreatePngsFromSegmentationsTaskPanel(TaskPanel):
                 params={
                     'fig_width': 10,
                     'fig_height': 10,
+                    'hu_low': self.hu_low_spinbox().value(),
+                    'hu_high': self.hu_high_spinbox().value(),
+                    'alpha': self.alpha_spinbox().value(),
                 },
                 output=self.output_dir_line_edit().text(),
                 overwrite=self.overwrite_checkbox().isChecked(),
@@ -213,4 +241,7 @@ class CreatePngsFromSegmentationsTaskPanel(TaskPanel):
         self.settings().set(f'{PANEL_NAME}/images_dir', self.images_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/segmentations_dir', self.segmentations_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/output_dir', self.output_dir_line_edit().text())
+        self.settings().set(f'{PANEL_NAME}/hu_low', self.hu_low_spinbox().value())
+        self.settings().set(f'{PANEL_NAME}/hu_high', self.hu_high_spinbox().value())
+        self.settings().set(f'{PANEL_NAME}/alpha', self.alpha_spinbox().value())
         self.settings().set(f'{PANEL_NAME}/overwrite', self.overwrite_checkbox().isChecked())

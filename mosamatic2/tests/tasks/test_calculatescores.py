@@ -5,11 +5,12 @@ from tests.sources import get_sources
 SOURCES = get_sources()
 
 
-def test_tag():
+def test_calculatescores():
     task = CalculateScoresTask(
         inputs={
             'images': 'D:\\Mosamatic\\TestData\\L3',
             'segmentations': 'D:\\Mosamatic\\TestData\\L3',
+            'heights': 'D:\\Mosamatic\\TestData\\L3_heights\\heights.csv',
         },
         params={'file_type': 'tag'},
         output='D:\\Mosamatic\\TestData\\output',

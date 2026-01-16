@@ -1,4 +1,5 @@
 import os
+import csv
 import numpy as np
 import pandas as pd
 from mosamatic2.core.tasks.task import Task
@@ -8,6 +9,7 @@ from mosamatic2.core.data.numpyimage import NumpyImage
 from mosamatic2.core.utils import (
     get_pixels_from_dicom_object,
     calculate_area,
+    calculate_index,
     calculate_mean_radiation_attenuation,
     calculate_lama_percentage,
     get_pixels_from_tag_file,
@@ -22,7 +24,8 @@ LOG = LogManager()
 class CalculateScoresTask(Task):
     INPUTS = [
         'images', 
-        'segmentations'
+        'segmentations',
+        'heights',
     ]
     PARAMS = ['file_type']
 
@@ -90,12 +93,27 @@ class CalculateScoresTask(Task):
                 return None
         raise RuntimeError('Unknown file type')
 
+    def load_patient_heights(self, f):
+        with open(f, mode='r', encoding='utf-8') as f_obj:
+            reader = csv.DictReader(f_obj)
+            return [row for row in reader]
+        
+    def get_patient_height(self, file_name, patient_heights):
+        for row in patient_heights:
+            if row['file'] in file_name:
+                return float(row['height'])
+        return None
+    
     def run(self):
         image_data = self.load_images()
         images = image_data.images()
         file_type = self.param('file_type')
         segmentations = self.load_segmentations(file_type)
         img_seg_pairs = self.collect_img_seg_pairs(images, segmentations, file_type)
+        patient_heights = None
+        patient_heights_file = self.input('heights')
+        if patient_heights_file:
+            patient_heights = self.load_patient_heights(patient_heights_file)
         # Create empty data dictionary
         data = {
             'file': [], 
@@ -118,13 +136,19 @@ class CalculateScoresTask(Task):
             file_name = os.path.split(img_seg_pairs[step][0].path())[1]
             muscle_area = calculate_area(segmentation, MUSCLE, pixel_spacing)
             muscle_idx = 0
+            if patient_heights:
+                muscle_idx = calculate_index(muscle_area, self.get_patient_height(file_name, patient_heights))
             muscle_ra = calculate_mean_radiation_attenuation(image, segmentation, MUSCLE)
             muscle_lama_perc = calculate_lama_percentage(image, segmentation, MUSCLE)
             vat_area = calculate_area(segmentation, VAT, pixel_spacing)
             vat_idx = 0
+            if patient_heights:
+                vat_idx = calculate_index(vat_area, self.get_patient_height(file_name, patient_heights))
             vat_ra = calculate_mean_radiation_attenuation(image, segmentation, VAT)
             sat_area = calculate_area(segmentation, SAT, pixel_spacing)
             sat_idx = 0
+            if patient_heights:
+                sat_idx = calculate_index(sat_area, self.get_patient_height(file_name, patient_heights))
             sat_ra = calculate_mean_radiation_attenuation(image, segmentation, SAT)
             LOG.info(f'file: {file_name}, ' +
                     f'muscle_area: {muscle_area}, muscle_idx: {muscle_idx}, muscle_ra: {muscle_ra}, ' +

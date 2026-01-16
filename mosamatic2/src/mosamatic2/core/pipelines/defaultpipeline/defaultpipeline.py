@@ -25,6 +25,9 @@ class DefaultPipeline(Pipeline):
         'fig_height',
         'model_type',
         'model_version',
+        'hu_low',
+        'hu_high',
+        'alpha',
     ]
     def __init__(self, inputs, params, output, overwrite):
         super(DefaultPipeline, self).__init__(inputs, params, output, overwrite)
@@ -58,7 +61,8 @@ class DefaultPipeline(Pipeline):
                     'segmentations': os.path.join(
                         self.output(),
                         'segmentmusclefatl3pytorchtask' if model_type == 'pytorch' else 'segmentmusclefatl3tensorflowtask',
-                    )
+                    ),
+                    'heights': None,
                 },
                 params={'file_type': self.param('file_type')},
                 output=self.output(),
@@ -77,6 +81,9 @@ class DefaultPipeline(Pipeline):
                 params={
                     'fig_width': self.param('fig_width'),
                     'fig_height': self.param('fig_height'),
+                    'hu_low': self.param('hu_low'),
+                    'hu_high': self.param('hu_high'),
+                    'alpha': self.param('alpha'),
                 },
                 output=self.output(),
                 overwrite=self.overwrite(),

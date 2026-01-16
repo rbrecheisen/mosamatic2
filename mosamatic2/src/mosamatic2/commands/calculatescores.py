@@ -17,6 +17,12 @@ from mosamatic2.core.tasks import CalculateScoresTask
     help='Directory with segmentations',
 )
 @click.option(
+    '--heights',
+    required=False,
+    type=click.Path(exists=True),
+    help='CSV file with patient heights in meters',
+)
+@click.option(
     '--output', 
     required=True, 
     type=click.Path(), 
@@ -33,7 +39,7 @@ from mosamatic2.core.tasks import CalculateScoresTask
     default=False, 
     help='Overwrite [true|false]'
 )
-def calculatescores(images, segmentations, output, file_type, overwrite):
+def calculatescores(images, segmentations, heights, output, file_type, overwrite):
     """
     Calculates the following body composition metrics from the muscle and fat 
     images and segmentation files:
@@ -55,6 +61,9 @@ def calculatescores(images, segmentations, output, file_type, overwrite):
         "mosamatic2-cli segmentmusclefatl3tensorflow" OR a list of TAG files
         corresponding to the input images
 
+    --heights : str
+        CSV file with patient heights in meters. Optional
+
     --output : str
         Path to output directory
 
@@ -65,7 +74,7 @@ def calculatescores(images, segmentations, output, file_type, overwrite):
         Overwrite contents output directory [true|false]
     """
     task = CalculateScoresTask(
-        inputs={'images': images, 'segmentations': segmentations},
+        inputs={'images': images, 'segmentations': segmentations, 'heights': heights},
         params={'file_type': file_type},
         output=output,
         overwrite=overwrite,

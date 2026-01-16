@@ -1,8 +1,17 @@
+2.0.25
+======
+- Updated CalculateScoresTask to allow specification of patient heights file in
+  CSV format. Heights must be specified in meters.
+
 2.0.24
 ======
 - Added ApplyThresholdToSegmentationsTask for adjusting segmentation masks based
   on image HU thresholds. This is particularly useful to remove edema from muscle
   segmentations.
+- Updated CreatePngsFromSegmentationsTaskPanel to allow setting of low/high HU
+  threshold for myosteatosis map, as well as alpha
+- Updated DefaultPipeline to also set low/high HU threshold and alpha for the 
+  myosteatosis maps
 
 2.0.23
 ======
