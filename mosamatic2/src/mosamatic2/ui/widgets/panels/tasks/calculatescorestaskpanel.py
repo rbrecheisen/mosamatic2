@@ -40,8 +40,8 @@ class CalculateScoresTaskPanel(TaskPanel):
         self._images_dir_select_button = None
         self._segmentations_dir_line_edit = None
         self._segmentations_dir_select_button = None
-        self._heights_file_line_edit = None
-        self._heights_file_select_button = None
+        self._info_file_line_edit = None
+        self._info_file_select_button = None
         self._output_dir_line_edit = None
         self._output_dir_select_button = None
         self._overwrite_checkbox = None
@@ -76,16 +76,16 @@ class CalculateScoresTaskPanel(TaskPanel):
             self._segmentations_dir_select_button.clicked.connect(self.handle_segmentations_dir_select_button)
         return self._segmentations_dir_select_button
     
-    def heights_file_line_edit(self):
-        if not self._heights_file_line_edit:
-            self._heights_file_line_edit = QLineEdit(self.settings().get(f'{PANEL_NAME}/heights_file'))
-        return self._heights_file_line_edit
+    def info_file_line_edit(self):
+        if not self._info_file_line_edit:
+            self._info_file_line_edit = QLineEdit(self.settings().get(f'{PANEL_NAME}/info_file'))
+        return self._info_file_line_edit
     
-    def heights_file_select_button(self):
-        if not self._heights_file_select_button:
-            self._heights_file_select_button = QPushButton('Select')
-            self._heights_file_select_button.clicked.connect(self.handle_heights_file_select_button)
-        return self._heights_file_select_button
+    def info_file_select_button(self):
+        if not self._info_file_select_button:
+            self._info_file_select_button = QPushButton('Select')
+            self._info_file_select_button.clicked.connect(self.handle_info_file_select_button)
+        return self._info_file_select_button
     
     def output_dir_line_edit(self):
         if not self._output_dir_line_edit:
@@ -135,11 +135,15 @@ class CalculateScoresTaskPanel(TaskPanel):
         segmentations_dir_layout = QHBoxLayout()
         segmentations_dir_layout.addWidget(self.segmentations_dir_line_edit())
         segmentations_dir_layout.addWidget(self.segmentations_dir_select_button())
+        info_file_layout = QHBoxLayout()
+        info_file_layout.addWidget(self.info_file_line_edit())
+        info_file_layout.addWidget(self.info_file_select_button())
         output_dir_layout = QHBoxLayout()
         output_dir_layout.addWidget(self.output_dir_line_edit())
         output_dir_layout.addWidget(self.output_dir_select_button())
         self.form_layout().addRow('Images directory', images_dir_layout)
         self.form_layout().addRow('Segmentations directory', segmentations_dir_layout)
+        self.form_layout().addRow('Info file', info_file_layout)
         self.form_layout().addRow('Output directory', output_dir_layout)
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
@@ -163,11 +167,11 @@ class CalculateScoresTaskPanel(TaskPanel):
             self.segmentations_dir_line_edit().setText(directory)
             self.settings().set('last_directory', directory)
 
-    def handle_heights_file_select_button(self):
+    def handle_info_file_select_button(self):
         last_directory = self.settings().get('last_directory')
         file, _ = QFileDialog.getOpenFileName(dir=last_directory)
         if file:
-            self.heights_file_line_edit().setText(file)
+            self.info_file_line_edit().setText(file)
             self.settings().set('last_directory', os.path.split(file)[0])
 
     def handle_output_dir_select_button(self):
@@ -192,7 +196,7 @@ class CalculateScoresTaskPanel(TaskPanel):
                 inputs={
                     'images': self.images_dir_line_edit().text(),
                     'segmentations': self.segmentations_dir_line_edit().text(),
-                    'heights': self.heights_file_line_edit().text(),
+                    'info': self.info_file_line_edit().text(),
                 },
                 params={'file_type': 'npy'},
                 output=self.output_dir_line_edit().text(),
@@ -255,6 +259,6 @@ class CalculateScoresTaskPanel(TaskPanel):
     def save_inputs_and_parameters(self):
         self.settings().set(f'{PANEL_NAME}/images_dir', self.images_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/segmentations_dir', self.segmentations_dir_line_edit().text())
-        self.settings().set(f'{PANEL_NAME}/heights_file', self.heights_file_line_edit().text())
+        self.settings().set(f'{PANEL_NAME}/info_file', self.info_file_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/output_dir', self.output_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/overwrite', self.overwrite_checkbox().isChecked())

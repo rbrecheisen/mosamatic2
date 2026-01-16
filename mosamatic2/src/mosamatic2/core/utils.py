@@ -249,6 +249,36 @@ def calculate_index(area: float, height: float) -> float:
     return area / (height * height)
 
 
+def calculate_bmi(weight: float, height: float) -> float:
+    return weight / (height * height)
+
+
+def calculate_sarcopenia(muscle_idx: float, bmi: float, sex: str) -> str:
+    if not sex in ['male', 'female']:
+        return 'unknown'
+    if bmi >= 25 and muscle_idx < 53:
+        return 'yes'
+    if bmi < 25 and ((sex == 'male' and muscle_idx < 43) or (sex == 'female' and muscle_idx < 41)):
+        return 'yes'
+    return 'no'
+
+def calculate_sarcopenic_obesity(muscle_idx: float, bmi: float, sex: str) -> str:
+    if sex not in ['male', 'female']:
+        return 'unknown'
+    if bmi >= 25 and ((muscle_idx < 38.5 and sex == 'male') or (muscle_idx < 52.4 and sex == 'female')):
+        return 'yes'
+    return 'no'
+
+def calculate_myosteatosis(smra: float, bmi: float) -> str:
+    if (smra < 33 and bmi >= 25) or (smra < 41 and bmi < 25):
+        return 'yes'
+    return 'no'
+
+def calculate_visceral_obesity(vat_area: float) -> str:
+    if vat_area > 100:
+        return 'yes'
+    return 'no'
+
 def calculate_mean_radiation_attenuation(image: np.array, labels: np.array, label: int) -> float:
     mask = np.copy(labels)
     mask[mask != label] = 0

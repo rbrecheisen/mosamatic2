@@ -10,6 +10,11 @@ from mosamatic2.core.utils import (
     get_pixels_from_dicom_object,
     calculate_area,
     calculate_index,
+    calculate_bmi,
+    calculate_sarcopenia,
+    calculate_sarcopenic_obesity,
+    calculate_myosteatosis,
+    calculate_visceral_obesity,
     calculate_mean_radiation_attenuation,
     calculate_lama_percentage,
     get_pixels_from_tag_file,
@@ -25,7 +30,7 @@ class CalculateScoresTask(Task):
     INPUTS = [
         'images', 
         'segmentations',
-        'heights',
+        'info',
     ]
     PARAMS = ['file_type']
 
@@ -93,15 +98,40 @@ class CalculateScoresTask(Task):
                 return None
         raise RuntimeError('Unknown file type')
 
-    def load_patient_heights(self, f):
+    def load_patient_info(self, f):
+        columns = ['file', 'height', 'weight', 'sex', 'age']
         with open(f, mode='r', encoding='utf-8') as f_obj:
             reader = csv.DictReader(f_obj)
-            return [row for row in reader]
+            if set(columns).issubset(reader.fieldnames):
+                return [row for row in reader]
+            LOG.error(f'Patient info CSV misses columns from {columns}')
+        return None
         
-    def get_patient_height(self, file_name, patient_heights):
-        for row in patient_heights:
+    def get_patient_height(self, file_name, patient_info):
+        for row in patient_info:
             if row['file'] in file_name:
                 return float(row['height'])
+        return None
+    
+    def get_patient_weight(self, file_name, patient_info):
+        for row in patient_info:
+            if row['file'] in file_name:
+                return float(row['weight'])
+        return None
+    
+    def get_patient_sex(self, file_name, patient_info) -> str:
+        for row in patient_info:
+            if row['file'] in file_name:
+                if row['sex'] in ['male', 'female']:
+                    return row['sex']
+                else:
+                    LOG.error(f'Sex should be either male or female in patient info CSV')
+        return 'unknown'
+    
+    def get_patient_age(self, file_name, patient_info):
+        for row in patient_info:
+            if row['file'] in file_name:
+                return float(row['age'])
         return None
     
     def run(self):
@@ -110,16 +140,21 @@ class CalculateScoresTask(Task):
         file_type = self.param('file_type')
         segmentations = self.load_segmentations(file_type)
         img_seg_pairs = self.collect_img_seg_pairs(images, segmentations, file_type)
-        patient_heights = None
-        patient_heights_file = self.input('heights')
-        if patient_heights_file:
-            patient_heights = self.load_patient_heights(patient_heights_file)
+        patient_info = None
+        patient_info_file = self.input('info')
+        if patient_info_file:
+            patient_info = self.load_patient_info(patient_info_file)
         # Create empty data dictionary
         data = {
             'file': [], 
             'muscle_area': [], 'muscle_idx': [], 'muscle_ra': [], 'muscle_lama_perc': [],
             'vat_area': [], 'vat_idx': [], 'vat_ra': [],
-            'sat_area': [], 'sat_idx': [], 'sat_ra': []
+            'sat_area': [], 'sat_idx': [], 'sat_ra': [],
+            'bmi': [],
+            'sarcopenia': [],
+            'sarcopenic_obesity': [],
+            'myosteatosis': [],
+            'visceral_obesity': [],
         }
         nr_steps = len(img_seg_pairs)
         for step in range(nr_steps):
@@ -136,24 +171,52 @@ class CalculateScoresTask(Task):
             file_name = os.path.split(img_seg_pairs[step][0].path())[1]
             muscle_area = calculate_area(segmentation, MUSCLE, pixel_spacing)
             muscle_idx = 0
-            if patient_heights:
-                muscle_idx = calculate_index(muscle_area, self.get_patient_height(file_name, patient_heights))
+            if patient_info:
+                muscle_idx = calculate_index(muscle_area, self.get_patient_height(file_name, patient_info))
             muscle_ra = calculate_mean_radiation_attenuation(image, segmentation, MUSCLE)
             muscle_lama_perc = calculate_lama_percentage(image, segmentation, MUSCLE)
             vat_area = calculate_area(segmentation, VAT, pixel_spacing)
             vat_idx = 0
-            if patient_heights:
-                vat_idx = calculate_index(vat_area, self.get_patient_height(file_name, patient_heights))
+            if patient_info:
+                vat_idx = calculate_index(vat_area, self.get_patient_height(file_name, patient_info))
             vat_ra = calculate_mean_radiation_attenuation(image, segmentation, VAT)
             sat_area = calculate_area(segmentation, SAT, pixel_spacing)
             sat_idx = 0
-            if patient_heights:
-                sat_idx = calculate_index(sat_area, self.get_patient_height(file_name, patient_heights))
+            if patient_info:
+                sat_idx = calculate_index(sat_area, self.get_patient_height(file_name, patient_info))
             sat_ra = calculate_mean_radiation_attenuation(image, segmentation, SAT)
+            sex = 'unknown'
+            if patient_info:
+                sex = self.get_patient_sex(file_name, patient_info)
+            bmi = 0
+            if patient_info:
+                bmi = calculate_bmi(
+                    self.get_patient_weight(file_name, patient_info), 
+                    self.get_patient_height(file_name, patient_info),
+                )
+            sarcopenia = 'no'
+            if patient_info:
+                sarcopenia = calculate_sarcopenia(muscle_idx, bmi, sex)
+            sarcopenic_obesity = 'no'
+            if patient_info:
+                sarcopenic_obesity = calculate_sarcopenic_obesity(muscle_idx, bmi, sex)
+            myosteatosis = 'no'
+            if patient_info:
+                myosteatosis = calculate_myosteatosis(muscle_ra, bmi)
+            visceral_obesity = 'no'
+            if patient_info:
+                visceral_obesity = calculate_visceral_obesity(vat_area)
             LOG.info(f'file: {file_name}, ' +
                     f'muscle_area: {muscle_area}, muscle_idx: {muscle_idx}, muscle_ra: {muscle_ra}, ' +
                     f'vat_area: {vat_area}, vat_idx: {vat_idx}, vat_ra: {vat_ra}, ' +
-                    f'sat_area: {sat_area}, sat_idx: {sat_idx}, sat_ra: {sat_ra}')
+                    f'sat_area: {sat_area}, sat_idx: {sat_idx}, sat_ra: {sat_ra}, ' +
+                    f'muscle_lama_perc: {muscle_lama_perc}, ' +
+                    f'bmi: {bmi}, ' +
+                    f'sarcopenia: {sarcopenia}, ' +
+                    f'sarcopenic_obesity: {sarcopenic_obesity}, ' +
+                    f'myosteatosis: {myosteatosis}, ' +
+                    f'visceral_obesity: {visceral_obesity}'
+            )
             # Update dataframe data
             data['file'].append(file_name)
             data['muscle_area'].append(muscle_area)
@@ -166,6 +229,11 @@ class CalculateScoresTask(Task):
             data['sat_area'].append(sat_area)
             data['sat_idx'].append(sat_idx)
             data['sat_ra'].append(sat_ra)
+            data['bmi'].append(bmi)
+            data['sarcopenia'].append(sarcopenia)
+            data['sarcopenic_obesity'].append(sarcopenic_obesity)
+            data['myosteatosis'].append(myosteatosis)
+            data['visceral_obesity'].append(visceral_obesity)
             # Update progress
             self.set_progress(step, nr_steps)
         # Build dataframe and return the CSV file as output

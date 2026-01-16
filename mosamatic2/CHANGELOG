@@ -1,7 +1,12 @@
 2.0.25
 ======
-- Updated CalculateScoresTask to allow specification of patient heights file in
-  CSV format. Heights must be specified in meters.
+- Updated CalculateScoresTask to allow:
+    (1) Specification of patient heights and genders file in CSV format
+    (2) Calculation of BMI
+    (3) Calculation of sarcopenia
+    (4) Calculation of sarcopenic obesity
+    (5) Calculation of myosteatosis
+    (6) Calculation of visceral obesity
 
 2.0.24
 ======

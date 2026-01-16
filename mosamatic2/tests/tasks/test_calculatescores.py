@@ -1,8 +1,5 @@
 import os
-
 from mosamatic2.core.tasks.calculatescorestask.calculatescorestask import CalculateScoresTask
-from tests.sources import get_sources
-SOURCES = get_sources()
 
 
 def test_calculatescores():
@@ -10,7 +7,7 @@ def test_calculatescores():
         inputs={
             'images': 'D:\\Mosamatic\\TestData\\L3',
             'segmentations': 'D:\\Mosamatic\\TestData\\L3',
-            'heights': 'D:\\Mosamatic\\TestData\\L3_heights\\heights.csv',
+            'info': 'D:\\Mosamatic\\TestData\\L3_info\\info.csv',
         },
         params={'file_type': 'tag'},
         output='D:\\Mosamatic\\TestData\\output',
@@ -27,3 +24,7 @@ def test_calculatescores():
         if f.endswith('.xlsx'):
             excel_found = True
     assert csv_found and excel_found, 'CSV or Excel file missing from output'
+
+
+if __name__ == '__main__':
+    test_calculatescores()

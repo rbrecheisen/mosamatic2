@@ -62,7 +62,7 @@ class DefaultPipeline(Pipeline):
                         self.output(),
                         'segmentmusclefatl3pytorchtask' if model_type == 'pytorch' else 'segmentmusclefatl3tensorflowtask',
                     ),
-                    'heights': None,
+                    'info': None,
                 },
                 params={'file_type': self.param('file_type')},
                 output=self.output(),

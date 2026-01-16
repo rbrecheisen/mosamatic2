@@ -24,7 +24,6 @@ class Task:
         assert len(self._inputs.keys()) == len(self.__class__.INPUTS)
         for k, v in self._inputs.items():
             assert k in self.__class__.INPUTS
-            assert isinstance(v, str)
         # Check that param names match specification (if not None)
         if self._params:
             assert len(self._params.keys()) == len(self.__class__.PARAMS)
