@@ -1,3 +1,9 @@
+2.0.24
+======
+- Added ApplyThresholdToSegmentationsTask for adjusting segmentation masks based
+  on image HU thresholds. This is particularly useful to remove edema from muscle
+  segmentations.
+
 2.0.23
 ======
 - Implemented Numpy to NIFTI and NIFTI to Numpy conversion task so the segmentation

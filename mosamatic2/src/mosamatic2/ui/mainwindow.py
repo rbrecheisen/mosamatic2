@@ -26,6 +26,7 @@ from mosamatic2.ui.widgets.panels.tasks.createdicomsummarytaskpanel import Creat
 from mosamatic2.ui.widgets.panels.tasks.selectslicefromscanstaskpanel import SelectSliceFromScansTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.totalsegmentatortaskpanel import TotalSegmentatorTaskPanel
 from mosamatic2.ui.widgets.panels.tasks.calculatemaskstatisticstaskpanel import CalculateMaskStatisticsTaskPanel
+from mosamatic2.ui.widgets.panels.tasks.applythresholdtosegmentationstaskpanel import ApplyThresholdToSegmentationsTaskPanel
 from mosamatic2.ui.widgets.panels.pipelines.defaultpipelinepanel import DefaultPipelinePanel
 from mosamatic2.ui.widgets.panels.pipelines.defaultdockerpipelinepanel import DefaultDockerPipelinePanel
 from mosamatic2.ui.widgets.panels.pipelines.boadockerpipelinepanel import BoaDockerPipelinePanel
@@ -33,6 +34,7 @@ from mosamatic2.ui.widgets.panels.pipelines.liveranalysispipelinepanel import Li
 from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.slicevisualization import SliceVisualization
 from mosamatic2.ui.widgets.panels.visualizations.sliceselectionvisualization.sliceselectionvisualization import SliceSelectionVisualization
 from mosamatic2.ui.widgets.panels.visualizations.liversegmentvisualization.liversegmentvisualization import LiverSegmentVisualization
+
 
 LOG = LogManager()
 
@@ -56,6 +58,7 @@ class MainWindow(QMainWindow):
         self._select_slice_from_scans_task_panel = None
         self._total_segmentator_task_panel = None
         self._calculate_mask_statistics_task_panel = None
+        self._apply_threshold_to_segmentations_task_panel = None
         self._default_pipeline_panel = None
         self._default_docker_pipeline_panel = None
         self._boa_docker_pipeline_panel = None
@@ -116,6 +119,8 @@ class MainWindow(QMainWindow):
         total_segmentator_task_action.triggered.connect(self.handle_total_segmentator_task_action)
         calculate_mask_statistics_task_action = QAction('CalculateMaskStatisticsTask', self)
         calculate_mask_statistics_task_action.triggered.connect(self.handle_calculate_mask_statistics_task_action)
+        apply_threshold_to_segmentations_task_action = QAction('ApplyThresholdToSegmentationsTask', self)
+        apply_threshold_to_segmentations_task_action.triggered.connect(self.handle_apply_threshold_to_segmentations_task_action)
         tasks_menu = self.menuBar().addMenu('Tasks')
         tasks_menu.addAction(rescale_dicom_images_task_action)
         tasks_menu.addAction(segment_muscle_fat_l3_tensorflow_task_action)
@@ -129,6 +134,7 @@ class MainWindow(QMainWindow):
         tasks_menu.addAction(select_slice_from_scans_task_action)
         tasks_menu.addAction(total_segmentator_task_action)
         tasks_menu.addAction(calculate_mask_statistics_task_action)
+        tasks_menu.addAction(apply_threshold_to_segmentations_task_action)
 
     def init_pipelines_menu(self):
         default_pipeline_action = QAction('DefaultPipeline', self)
@@ -182,6 +188,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.select_slice_from_scans_task_panel(), 'selectslicefromscanstaskpanel')
             self._main_panel.add_panel(self.total_segmentator_task_panel(), 'totalsegmentatortaskpanel')
             self._main_panel.add_panel(self.calculate_mask_statistics_task_panel(), 'calculatemaskstatisticstaskpanel')
+            self._main_panel.add_panel(self.apply_threshold_to_segmentations_task_panel(), 'applythresholdtosegmentationstaskpanel')
             self._main_panel.add_panel(self.default_pipeline_panel(), 'defaultpipelinepanel')
             self._main_panel.add_panel(self.default_docker_pipeline_panel(), 'defaultdockerpipelinepanel')
             self._main_panel.add_panel(self.boa_docker_pipeline_panel(), 'boadockerpipelinepanel')
@@ -259,6 +266,11 @@ class MainWindow(QMainWindow):
         if not self._calculate_mask_statistics_task_panel:
             self._calculate_mask_statistics_task_panel = CalculateMaskStatisticsTaskPanel()
         return self._calculate_mask_statistics_task_panel
+
+    def apply_threshold_to_segmentations_task_panel(self):
+        if not self._apply_threshold_to_segmentations_task_panel:
+            self._apply_threshold_to_segmentations_task_panel = ApplyThresholdToSegmentationsTaskPanel()
+        return self._apply_threshold_to_segmentations_task_panel
     
     def default_pipeline_panel(self):
         if not self._default_pipeline_panel:
@@ -338,6 +350,9 @@ class MainWindow(QMainWindow):
     def handle_calculate_mask_statistics_task_action(self):
         self.main_panel().select_panel('calculatemaskstatisticstaskpanel')
 
+    def handle_apply_threshold_to_segmentations_task_action(self):
+        self.main_panel().select_panel('applythresholdtosegmentationstaskpanel')
+
     def handle_default_pipeline_action(self):
         self.main_panel().select_panel('defaultpipelinepanel')
 
@@ -377,6 +392,7 @@ class MainWindow(QMainWindow):
         self.select_slice_from_scans_task_panel().save_inputs_and_parameters()
         self.total_segmentator_task_panel().save_inputs_and_parameters()
         self.calculate_mask_statistics_task_panel().save_inputs_and_parameters()
+        self.apply_threshold_to_segmentations_task_panel().save_inputs_and_parameters()
         self.default_pipeline_panel().save_inputs_and_parameters()
         self.default_docker_pipeline_panel().save_inputs_and_parameters()
         self.boa_docker_pipeline_panel().save_inputs_and_parameters()
