@@ -85,7 +85,7 @@ def main():
     slider = Slider(slider_ax, "Threshold", -29, 150, valinit=hu_lo)
     slider.on_changed(on_change)
     # Slider value text
-    slider_value = fig.text(0.5, 0.05, f"Threshold: {hu_lo:.1f}", ha="center", va="center", color='white')
+    slider_value = fig.text(0.5, 0.05, f"Low-RA threshold: {hu_lo:.1f}", ha="center", va="center", color='white')
     plt.show()
 
 
