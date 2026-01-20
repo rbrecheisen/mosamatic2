@@ -26,7 +26,10 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
         'images', 
         'model_files'
     ]
-    PARAMS = ['model_version']
+    PARAMS = [
+        'model_version',
+        'probabilities',
+    ]
 
     def __init__(self, inputs, params, output, overwrite=True):
         super(SegmentMuscleFatL3TensorFlowTask, self).__init__(inputs, params, output, overwrite)
@@ -88,13 +91,14 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
         mask = np.uint8(pred_max)
         return mask
 
-    def segment_muscle_and_fat(self, image, model):
+    def segment_muscle_and_fat(self, image, model, probabilities=False):
         img2 = np.expand_dims(image, 0)
         img2 = np.expand_dims(img2, -1)
         pred = model.predict([img2])
         pred_squeeze = np.squeeze(pred)
-        pred_max = pred_squeeze.argmax(axis=-1)
-        return pred_max
+        if not probabilities:
+            return pred_squeeze.argmax(axis=-1)
+        return pred_squeeze
         
     def process_file(self, image, output_dir, model, contour_model, params):
         assert isinstance(image, DicomImage)
@@ -104,10 +108,14 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
             pixels = normalize_between(pixels, params.dict['min_bound'], params.dict['max_bound'])
             pixels = pixels * mask
         pixels = pixels.astype(np.float32)
-        segmentation = self.segment_muscle_and_fat(pixels, model)
-        segmentation = convert_labels_to_157(segmentation)
-        segmentation_file_name = os.path.split(image.path())[1]
-        segmentation_file_path = os.path.join(output_dir, f'{segmentation_file_name}.seg.npy')
+        segmentation = self.segment_muscle_and_fat(pixels, model, probabilities=self.param('probabilities'))
+        if not self.param('probabilities'):
+            segmentation = convert_labels_to_157(segmentation)
+            segmentation_file_name = os.path.split(image.path())[1]
+            segmentation_file_path = os.path.join(output_dir, f'{segmentation_file_name}.seg.npy')
+        else:
+            segmentation_file_name = os.path.split(image.path())[1]
+            segmentation_file_path = os.path.join(output_dir, f'{segmentation_file_name}_prob.seg.npy')
         np.save(segmentation_file_path, segmentation)
 
     def run(self):

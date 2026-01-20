@@ -49,7 +49,10 @@ class DefaultPipeline(Pipeline):
                     'images': os.path.join(self.output(), 'rescaledicomimagestask'),
                     'model_files': self.input('model_files'),
                 },
-                params={'model_version': self.param('model_version')},
+                params={
+                    'model_version': self.param('model_version'),
+                    'probabilities': False,
+                },
                 output=self.output(),
                 overwrite=self.overwrite(),
             )

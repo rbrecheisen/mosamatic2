@@ -38,6 +38,7 @@ class SegmentMuscleFatL3TensorFlowTaskPanel(TaskPanel):
         self._model_files_dir_select_button = None
         self._output_dir_line_edit = None
         self._output_dir_select_button = None
+        self._probabilities_checkbox = None
         self._overwrite_checkbox = None
         self._form_layout = None
         self._run_task_button = None
@@ -80,6 +81,12 @@ class SegmentMuscleFatL3TensorFlowTaskPanel(TaskPanel):
             self._output_dir_select_button.clicked.connect(self.handle_output_dir_select_button)
         return self._output_dir_select_button
     
+    def probabilities_checkbox(self):
+        if not self._probabilities_checkbox:
+            self._probabilities_checkbox = QCheckBox('')
+            self._probabilities_checkbox.setChecked(self.settings().get_bool(f'{PANEL_NAME}/probabilities', False))
+        return self._probabilities_checkbox
+    
     def overwrite_checkbox(self):
         if not self._overwrite_checkbox:
             self._overwrite_checkbox = QCheckBox('')
@@ -117,6 +124,7 @@ class SegmentMuscleFatL3TensorFlowTaskPanel(TaskPanel):
         self.form_layout().addRow('Images directory', images_dir_layout)
         self.form_layout().addRow('Model files directory', model_files_dir_layout)
         self.form_layout().addRow('Output directory', output_dir_layout)
+        self.form_layout().addRow('Probabilities', self.probabilities_checkbox())
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
@@ -161,7 +169,10 @@ class SegmentMuscleFatL3TensorFlowTaskPanel(TaskPanel):
                     'images': self.images_dir_line_edit().text(),
                     'model_files': self.model_files_dir_line_edit().text(),
                 },
-                params={'model_version': 1.0},
+                params={
+                    'model_version': 1.0,
+                    'probabilities': self.probabilities_checkbox().isChecked(),
+                },
                 output=self.output_dir_line_edit().text(),
                 overwrite=self.overwrite_checkbox().isChecked(),
             )
@@ -213,4 +224,5 @@ class SegmentMuscleFatL3TensorFlowTaskPanel(TaskPanel):
         self.settings().set(f'{PANEL_NAME}/images_dir', self.images_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/model_files_dir', self.model_files_dir_line_edit().text())
         self.settings().set(f'{PANEL_NAME}/output_dir', self.output_dir_line_edit().text())
+        self.settings().set(f'{PANEL_NAME}/probabilities', self.probabilities_checkbox().isChecked())
         self.settings().set(f'{PANEL_NAME}/overwrite', self.overwrite_checkbox().isChecked())
