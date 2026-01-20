@@ -82,7 +82,6 @@ def main():
     axes[1].set_title(f"Muscle HU overlay")
     # Slider
     slider_ax = fig.add_axes([0.15, 0.06, 0.7, 0.03])
-    # slider = Slider(slider_ax, "Threshold", float(np.min(image)), float(np.max(image)), valinit=hu_lo)
     slider = Slider(slider_ax, "Threshold", -29, 150, valinit=hu_lo)
     slider.on_changed(on_change)
     # Slider value text
