@@ -61,7 +61,7 @@ class SelectSliceFromScansTaskPanel(TaskPanel):
     def vertebra_combobox(self):
         if not self._vertebra_combobox:
             self._vertebra_combobox = QComboBox()
-            self._vertebra_combobox.addItems(['L3'])
+            self._vertebra_combobox.addItems(['L3', 'T4'])
             self._vertebra_combobox.setCurrentText(self.settings().get(f'{PANEL_NAME}/vertebra'))
         return self._vertebra_combobox
     
@@ -108,7 +108,7 @@ class SelectSliceFromScansTaskPanel(TaskPanel):
         output_dir_layout.addWidget(self.output_dir_line_edit())
         output_dir_layout.addWidget(self.output_dir_select_button())
         self.form_layout().addRow('Scans directory', scans_dir_layout)
-        # self.form_layout().addRow('Vertebra', self.vertebra_combobox())
+        self.form_layout().addRow('Vertebra', self.vertebra_combobox())
         self.form_layout().addRow('Output directory', output_dir_layout)
         self.form_layout().addRow('Overwrite', self.overwrite_checkbox())
         layout = QVBoxLayout()
@@ -144,7 +144,7 @@ class SelectSliceFromScansTaskPanel(TaskPanel):
             self.save_inputs_and_parameters()
             self._task = SelectSliceFromScansTask(
                 inputs={'scans': self.scans_dir_line_edit().text()},
-                params={'vertebra': 'L3'},
+                params={'vertebra': self.vertebra_combobox().currentText()},
                 output=self.output_dir_line_edit().text(),
                 overwrite=self.overwrite_checkbox().isChecked(),
             )
