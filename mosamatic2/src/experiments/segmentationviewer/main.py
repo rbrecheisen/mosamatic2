@@ -74,19 +74,18 @@ def main():
     axes[0].imshow(image, cmap='gray')
     axes[0].imshow(overlay_muscle)
     axes[0].axis("off")
-    axes[0].set_title('Muscle mask (red)')
+    axes[0].set_title('Muscle (red)')
     # Right
     axes[1].imshow(image, cmap="gray")
     axes[1].imshow(overlay_myosteatosis)
     axes[1].axis("off")
-    axes[1].set_title(f"Muscle HU overlay")
+    axes[1].set_title(f"Muscle low-RA (yellow) and high-RA (red)")
     # Slider
     slider_ax = fig.add_axes([0.15, 0.06, 0.7, 0.03])
     slider = Slider(slider_ax, "Threshold", -29, 150, valinit=hu_lo)
     slider.on_changed(on_change)
     # Slider value text
     slider_value = fig.text(0.5, 0.05, f"Threshold: {hu_lo:.1f}", ha="center", va="center", color='white')
-    # plt.tight_layout()
     plt.show()
 
 
