@@ -89,34 +89,37 @@ class LiverSegmentViewer(QWidget):
         actor.SetMapper(mapper)
         return actor
     
-    def load_segments_and_volumes(self, liver_segments_dir, liver_volumes_file):
+    def load_segments_and_volumes(self, liver_segments_dir, liver_volumes_file, patient_id):
+        self._liver_volumes = {}
         # Load volumes
         df = pd.read_csv(liver_volumes_file, sep=';')
         for _, row in df.iterrows():
-            self._liver_volumes[row['file']] = row['volume_mL']
+            if patient_id in row['file']:
+                self._liver_volumes[row['file']] = row['volume_mL']
         self._total_volume = sum(self._liver_volumes.values())
         self._total_volume_actor.SetInput(f'Total volume: {self._total_volume} mL')
         # Load liver segment actors
         i = 0
         for f in os.listdir(liver_segments_dir):
             segment_name = f
-            f_path = os.path.join(liver_segments_dir, f)
-            reader = vtk.vtkNIFTIImageReader()
-            reader.SetFileName(f_path)
-            reader.Update()
-            image = reader.GetOutput()
-            surface = self.image_to_surface(image)
-            actor = self.surface_to_actor(surface)
-            prop = actor.GetProperty()
-            prop.SetSpecular(0.3)
-            prop.SetSpecularPower(20)
-            prop.SetDiffuse(0.7)
-            prop.SetAmbient(0.1)
-            prop.SetColor(*SEGMENT_COLORS[i])
-            prop.SetOpacity(0.5)
-            self._renderer.AddActor(actor)
-            self._liver_segment_actors[segment_name] = actor
-            i += 1
+            if patient_id in segment_name:
+                f_path = os.path.join(liver_segments_dir, f)
+                reader = vtk.vtkNIFTIImageReader()
+                reader.SetFileName(f_path)
+                reader.Update()
+                image = reader.GetOutput()
+                surface = self.image_to_surface(image)
+                actor = self.surface_to_actor(surface)
+                prop = actor.GetProperty()
+                prop.SetSpecular(0.3)
+                prop.SetSpecularPower(20)
+                prop.SetDiffuse(0.7)
+                prop.SetAmbient(0.1)
+                prop.SetColor(*SEGMENT_COLORS[i])
+                prop.SetOpacity(0.5)
+                self._renderer.AddActor(actor)
+                self._liver_segment_actors[segment_name] = actor
+                i += 1
         picker = LiverSegmentPicker(
             self._renderer, 
             self._interactor, 

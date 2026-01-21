@@ -8,7 +8,10 @@ def test_segmentmusclefatl3tensorflow():
             'images': 'M:\\data\\mosamatic\\test\\L3',
             'model_files': 'M:\\models\\L3\\tensorflow\\1.0',
         }, 
-        params={'model_version': 1.0},
+        params={
+            'model_version': 1.0,
+            'probabilities': False,
+        },
         output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )

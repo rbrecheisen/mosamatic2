@@ -28,6 +28,7 @@ class LiverSegmentVisualization(Visualization):
         self._liver_segments_dir_select_button = None
         self._liver_volumes_file_line_edit = None
         self._liver_volumes_file_select_button = None
+        self._patient_id_line_edit = None
         self._load_liver_data_button = None
         self._liver_segment_viewer = None
         self._form_layout = None
@@ -56,6 +57,11 @@ class LiverSegmentVisualization(Visualization):
             self._liver_volumes_file_select_button.clicked.connect(self.handle_liver_volumes_file_select_button)
         return self._liver_volumes_file_select_button
     
+    def patient_id_line_edit(self):
+        if not self._patient_id_line_edit:
+            self._patient_id_line_edit = QLineEdit(self.settings().get(f'{PANEL_NAME}/patient_id'))
+        return self._patient_id_line_edit
+    
     def load_liver_data_button(self):
         if not self._load_liver_data_button:
             self._load_liver_data_button = QPushButton('Load')
@@ -83,11 +89,12 @@ class LiverSegmentVisualization(Visualization):
         liver_segments_layout = QHBoxLayout()
         liver_segments_layout.addWidget(self.liver_segments_dir_line_edit())
         liver_segments_layout.addWidget(self.liver_segments_dir_select_button())
-        self.form_layout().addRow('Liver segments directory', liver_segments_layout)
         liver_volumes_layout = QHBoxLayout()
         liver_volumes_layout.addWidget(self.liver_volumes_file_line_edit())
         liver_volumes_layout.addWidget(self.liver_volumes_file_select_button())
-        self.form_layout().addRow('Liver volumes file', liver_volumes_layout)
+        self.form_layout().addRow('Liver segments directory', liver_segments_layout)
+        self.form_layout().addRow('Liver volumes CSV file', liver_volumes_layout)
+        self.form_layout().addRow('Patient ID', self.patient_id_line_edit())
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
         layout.addWidget(self.load_liver_data_button())
@@ -113,6 +120,7 @@ class LiverSegmentVisualization(Visualization):
         self.liver_segment_viewer().load_segments_and_volumes(
             liver_segments_dir=self.liver_segments_dir_line_edit().text(),
             liver_volumes_file=self.liver_volumes_file_line_edit().text(),
+            patient_id=self.patient_id_line_edit().text(),
         )
 
     def save_inputs_and_parameters(self):
