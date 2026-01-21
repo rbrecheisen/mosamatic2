@@ -1,18 +1,13 @@
 import os
-
 from mosamatic2.core.pipelines import DefaultPipeline
 from mosamatic2.core.utils import is_dicom
-from tests.sources import get_sources
-
-SOURCES = get_sources()
 
 
 def test_defaultpipeline():
-    assert os.path.exists(SOURCES['input']), 'Input directory does not exist'
     pipeline = DefaultPipeline(
         inputs={
-            'images': 'D:\\Mosamatic\\TestData\\L3',
-            'model_files': 'D:\\Mosamatic\\TensorFlowModelFiles',
+            'images': 'M:\\data\\mosamatic\\test\\L3',
+            'model_files': 'M:\\models\\L3\\tensorflow\\1.0',
         },
         params={
             'target_size': 512,
@@ -25,7 +20,7 @@ def test_defaultpipeline():
             'hu_high': 150,
             'alpha': 1.0,
         },
-        output='D:\\Mosamatic\\TestData\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     pipeline.run()

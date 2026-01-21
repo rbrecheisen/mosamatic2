@@ -1,16 +1,12 @@
 import os
 from mosamatic2.core.tasks.dicom2niftitask.dicom2niftitask import Dicom2NiftiTask
-from tests.sources import get_sources
-
-SOURCES = get_sources()
-TASK_NAME = 'Dicom2NiftiTask'.lower()
 
 
 def test_dicom2nifti():
     task = Dicom2NiftiTask(
-        inputs={'scans': 'D:\\Mosamatic\\TestData\\CT'}, 
+        inputs={'scans': 'M:\\data\\mosamatic\\test\\CT\\abdomen'}, 
         params={'compressed': True},
-        output='D:\\Mosamatic\\TestData\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     task.run()

@@ -1,16 +1,12 @@
 import os
 from mosamatic2.core.tasks.rescaledicomimagestask.rescaledicomimagestask import RescaleDicomImagesTask
-from tests.sources import get_sources
-
-SOURCES = get_sources()
-TASK_NAME = 'RescaleDicomImagesTask'.lower()
 
 
 def test_rescaledicomimages():
     task = RescaleDicomImagesTask(
-        inputs={'images': 'D:\\Mosamatic\\TestData\\L3'}, 
+        inputs={'images': 'M:\\data\\mosamatic\\test\\L3'}, 
         params={'target_size': 512},
-        output='D:\\Mosamatic\\TestData\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     task.run()

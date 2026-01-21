@@ -1,19 +1,15 @@
 import os
 from mosamatic2.core.tasks.segmentmusclefatl3tensorflowtask.segmentmusclefatl3tensorflowtask import SegmentMuscleFatL3TensorFlowTask
-from tests.sources import get_sources
-
-SOURCES = get_sources()
-TASK_NAME = 'SegmentMuscleFatL3TensorFlowTask'.lower()
 
 
 def test_segmentmusclefatl3tensorflow():
     task = SegmentMuscleFatL3TensorFlowTask(
         inputs={
-            'images': 'D:\\Mosamatic\\TestData\\L3',
-            'model_files': 'D:\\Mosamatic\\TensorFlowModelFiles',
+            'images': 'M:\\data\\mosamatic\\test\\L3',
+            'model_files': 'M:\\models\\L3\\tensorflow\\1.0',
         }, 
         params={'model_version': 1.0},
-        output='D:\\Mosamatic\\TestData\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     task.run()

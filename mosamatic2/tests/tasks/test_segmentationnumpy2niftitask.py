@@ -1,14 +1,14 @@
-import os
 from mosamatic2.core.tasks.segmentationnumpy2niftitask.segmentationnumpy2niftitask import SegmentationNumpy2NiftiTask
 
 
 def test_segmentationnumpy2nifti():
     task = SegmentationNumpy2NiftiTask(
         inputs={
-            'images': 'D:\\Mosamatic\\TestData\\L3',
-            'segmentations': 'D:\\Mosamatic\\TestData\\output\\segmentmusclefatl3tensorflowtask'}, 
+            'images': 'M:\\data\\mosamatic\\test\\L3',
+            'segmentations': 'M:\\data\\mosamatic\\test\\L3'
+        }, 
         params=None,
-        output='D:\\Mosamatic\\TestData\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     task.run()

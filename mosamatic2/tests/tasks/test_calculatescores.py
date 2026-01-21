@@ -5,11 +5,11 @@ from mosamatic2.core.tasks.calculatescorestask.calculatescorestask import Calcul
 def test_calculatescores():
     task = CalculateScoresTask(
         inputs={
-            'images': 'D:\\Mosamatic\\TestData\\L3',
-            'segmentations': 'D:\\Mosamatic\\TestData\\L3',
-            'info': 'D:\\Mosamatic\\TestData\\L3_info\\info.csv',
+            'images': 'M:\\data\\mosamatic\\test\\L3',
+            'segmentations': 'M:\\data\\mosamatic\\test\\L3',
+            'info': 'M:\\data\\mosamatic\\test\\L3_patient_info\\info.csv',
         },
-        params={'file_type': 'tag'},
+        params={'file_type': 'npy'},
         output='D:\\Mosamatic\\TestData\\output',
         overwrite=True,
     )

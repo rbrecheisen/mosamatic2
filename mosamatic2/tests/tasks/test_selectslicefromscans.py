@@ -1,16 +1,12 @@
 import os
-
 from mosamatic2.core.tasks import SelectSliceFromScansTask
-from tests.sources import get_sources
-
-SOURCES = get_sources()
 
 
 def test_selectslicefromscans():
     task = SelectSliceFromScansTask(
-        inputs={'scans': 'D:\\Mosamatic\\TestData\\CT'},
+        inputs={'scans': 'M:\\data\\mosamatic\\test\\CT\\abdomen'},
         params={'vertebra': 'L3'},
-        output='D:\\Mosamatic\\TestData\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     task.run()

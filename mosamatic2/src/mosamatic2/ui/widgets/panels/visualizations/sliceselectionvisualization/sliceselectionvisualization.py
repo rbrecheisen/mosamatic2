@@ -1,3 +1,4 @@
+import os
 import shutil
 from PySide6.QtWidgets import (
     QLineEdit,
@@ -124,7 +125,8 @@ class SliceSelectionVisualization(Visualization):
         selected_paths = self.slice_selection_viewer().selected_paths()
         for p in selected_paths:
             p_dcm = p[:-13] + '.dcm'
-            target_dir = self.output_dir_line_edit().text()
+            target_dir = f'{self.output_dir_line_edit().text()}/sliceselectionvisualization'
+            os.makedirs(target_dir, exist_ok=True)
             LOG.info(f'Copying {p_dcm} to {target_dir}')
             shutil.copy(p_dcm, target_dir)
 

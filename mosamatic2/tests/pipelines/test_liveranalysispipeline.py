@@ -1,16 +1,12 @@
 import os
 from mosamatic2.core.pipelines import LiverAnalysisPipeline
-from tests.sources import get_sources
-
-SOURCES = get_sources()
 
 
 def test_liveranalysispipeline():
-    assert os.path.exists(SOURCES['scans']), 'Input directory does not exist'
     pipeline = LiverAnalysisPipeline(
-        inputs={'scans': 'D:\\Mosamatic\\TestData\\CT'},
+        inputs={'scans': 'M:\\data\\mosamatic\\test\\CT\\abdomen'},
         params={'compressed': True},
-        output='D:\\Mosamatic\\TestData\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     pipeline.run()

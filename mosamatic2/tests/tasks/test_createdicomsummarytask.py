@@ -4,9 +4,9 @@ from mosamatic2.core.tasks.createdicomsummarytask.createdicomsummarytask import 
 
 def test_createdicomsummary():
     task = CreateDicomSummaryTask(
-        inputs={'directory': 'D:\\Mosamatic\\TestMultiScanUploadMosamatic'},
+        inputs={'directory': 'M:\\data\\mosamatic\\test\\CT\\abdomen'},
         params=None,
-        output='D:\\Mosamatic\\TestMultiScanUploadMosamatic\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     task.run()

@@ -1,16 +1,11 @@
-import os
 from mosamatic2.core.tasks.createpngsfromsegmentationstask.createpngsfromsegmentationstask import CreatePngsFromSegmentationsTask
-from tests.sources import get_sources
-
-SOURCES = get_sources()
-TASK_NAME = 'CreatePngsFromSegmentationsTask'.lower()
 
 
 def test_createpngsfromsegmentationstask():
     task = CreatePngsFromSegmentationsTask(
         inputs={
-            'images': 'D:\\Mosamatic\\TestData\\L3',
-            'segmentations': 'D:\\Mosamatic\\TestData\\L3'
+            'images': 'M:\\data\\mosamatic\\test\\L3',
+            'segmentations': 'M:\\data\\mosamatic\\test\\L3'
         }, 
         params={
             'fig_width': 10, 
@@ -19,7 +14,7 @@ def test_createpngsfromsegmentationstask():
             'hu_high': 150,
             'alpha': 1.0,
         },
-        output='D:\\Mosamatic\\TestData\\output',
+        output='M:\\data\\mosamatic\\test\\output',
         overwrite=True,
     )
     task.run()
