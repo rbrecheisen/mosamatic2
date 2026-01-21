@@ -34,6 +34,7 @@ from mosamatic2.ui.widgets.panels.pipelines.liveranalysispipelinepanel import Li
 from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.slicevisualization import SliceVisualization
 from mosamatic2.ui.widgets.panels.visualizations.sliceselectionvisualization.sliceselectionvisualization import SliceSelectionVisualization
 from mosamatic2.ui.widgets.panels.visualizations.liversegmentvisualization.liversegmentvisualization import LiverSegmentVisualization
+from mosamatic2.ui.widgets.panels.visualizations.musclefatsegmentationvisualization.musclefatsegmentationvisualization import MuscleFatSegmentationVisualization
 
 
 LOG = LogManager()
@@ -66,6 +67,7 @@ class MainWindow(QMainWindow):
         self._slice_visualization = None
         self._slice_selection_visualization = None
         self._liver_segment_visualization = None
+        self._muscle_fat_segmentation_visualization = None
         self.init_window()
 
     def init_window(self):
@@ -158,10 +160,13 @@ class MainWindow(QMainWindow):
         slice_selection_visualization_action.triggered.connect(self.handle_slice_selection_visualization_action)
         liver_segment_visualization_action = QAction('LiverSegmentVisualization', self)
         liver_segment_visualization_action.triggered.connect(self.handle_liver_segment_visualization_action)
+        muscle_fat_segmentation_visualization_action = QAction('MuscleFatSegmentationVisualization', self)
+        muscle_fat_segmentation_visualization_action.triggered.connect(self.handle_muscle_fat_segmentation_visualization_action)
         visualizations_menu = self.menuBar().addMenu('Visualizations')
         visualizations_menu.addAction(slice_visualization_action)
         visualizations_menu.addAction(slice_selection_visualization_action)
         visualizations_menu.addAction(liver_segment_visualization_action)
+        visualizations_menu.addAction(muscle_fat_segmentation_visualization_action)
 
     def init_status_bar(self):
         self.set_status('Ready')
@@ -196,6 +201,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.slice_visualization(), 'slicevisualization')
             self._main_panel.add_panel(self.slice_selection_visualization(), 'sliceselectionvisualization')
             self._main_panel.add_panel(self.liver_segment_visualization(), 'liversegmentvisualization')
+            self._main_panel.add_panel(self.muscle_fat_segmentation_visualization(), 'musclefatsegmentationvisualization')
             self._main_panel.select_panel('defaultpipelinepanel')
         return self._main_panel
     
@@ -306,6 +312,11 @@ class MainWindow(QMainWindow):
         if not self._liver_segment_visualization:
             self._liver_segment_visualization = LiverSegmentVisualization()
         return self._liver_segment_visualization
+    
+    def muscle_fat_segmentation_visualization(self):
+        if not self._muscle_fat_segmentation_visualization:
+            self._muscle_fat_segmentation_visualization = MuscleFatSegmentationVisualization()
+        return self._muscle_fat_segmentation_visualization
 
     # SETTERS
 
@@ -374,6 +385,9 @@ class MainWindow(QMainWindow):
     def handle_liver_segment_visualization_action(self):
         self.main_panel().select_panel('liversegmentvisualization')
 
+    def handle_muscle_fat_segmentation_visualization_action(self):
+        self.main_panel().select_panel('musclefatsegmentationvisualization')
+
     def showEvent(self, event):
         return super().showEvent(event)
 
@@ -400,6 +414,7 @@ class MainWindow(QMainWindow):
         self.slice_visualization().save_inputs_and_parameters()
         self.slice_selection_visualization().save_inputs_and_parameters()
         self.liver_segment_visualization().save_inputs_and_parameters()
+        self.muscle_fat_segmentation_visualization().save_inputs_and_parameters()
         return super().closeEvent(event)
 
     def load_geometry_and_state(self):
