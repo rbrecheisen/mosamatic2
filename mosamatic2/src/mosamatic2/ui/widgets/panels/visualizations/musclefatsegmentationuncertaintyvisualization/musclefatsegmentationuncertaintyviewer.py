@@ -5,18 +5,18 @@ from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as Navigation
 from matplotlib.figure import Figure
 
 
-class MuscleFatSegmentationViewer(FigureCanvas):
+class MuscleFatSegmentationUncertaintyViewer(FigureCanvas):
     def __init__(self, parent=None, width=14, height=7, dpi=100):
         self._figure = Figure(figsize=(width, height), dpi=dpi)
         self._axes = self._figure.subplots(1, 2)
-        super(MuscleFatSegmentationViewer, self).__init__(self._figure)
+        super(MuscleFatSegmentationUncertaintyViewer, self).__init__(self._figure)
         self.setParent(parent)
-        self._toolbar = NavigationToolbar(self, parent)
         self._image = None
         self._segmentation = None
         self._muscle_mask = None
         self._lo_hu = 30
         self._hi_hu = 150
+        self._toolbar = NavigationToolbar(self, parent)
 
     def figure(self):
         return self._figure

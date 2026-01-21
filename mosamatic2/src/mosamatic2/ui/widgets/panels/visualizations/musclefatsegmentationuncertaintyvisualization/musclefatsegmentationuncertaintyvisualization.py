@@ -10,14 +10,14 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 from mosamatic2.ui.widgets.panels.visualizations.visualization import Visualization
-from mosamatic2.ui.widgets.panels.visualizations.musclefatsegmentationvisualization.musclefatsegmentationviewer import MuscleFatSegmentationViewer
+from mosamatic2.ui.widgets.panels.visualizations.musclefatsegmentationuncertaintyvisualization.musclefatsegmentationuncertaintyviewer import MuscleFatSegmentationUncertaintyViewer
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 
 LOG = LogManager()
-PANEL_TITLE = 'MuscleFatSegmentationVisualization'
-PANEL_NAME = 'musclefatsegmentationvisualization'
+PANEL_TITLE = 'MuscleFatSegmentationUncertaintyVisualization'
+PANEL_NAME = 'musclefatsegmentationuncertaintyvisualization'
 
 
 class MuscleFatSegmentationVisualization(Visualization):
@@ -33,7 +33,7 @@ class MuscleFatSegmentationVisualization(Visualization):
         self._lo_slider = None
         self._hi_slider_value_label = None
         self._hi_slider = None
-        self._muscle_fat_segmentation_viewer = None
+        self._muscle_fat_segmentation_uncertainty_viewer = None
         self._form_layout = None
         self._settings = None
         self.init_layout()
@@ -94,10 +94,10 @@ class MuscleFatSegmentationVisualization(Visualization):
             self.hi_slider_value_label().setText(str(150))
         return self._hi_slider
     
-    def muscle_fat_segmentation_viewer(self):
-        if not self._muscle_fat_segmentation_viewer:
-            self._muscle_fat_segmentation_viewer = MuscleFatSegmentationViewer()
-        return self._muscle_fat_segmentation_viewer
+    def muscle_fat_segmentation_uncertainty_viewer(self):
+        if not self._muscle_fat_segmentation_uncertainty_viewer:
+            self._muscle_fat_segmentation_uncertainty_viewer = MuscleFatSegmentationUncertaintyViewer()
+        return self._muscle_fat_segmentation_uncertainty_viewer
     
     def form_layout(self):
         if not self._form_layout:
@@ -125,14 +125,14 @@ class MuscleFatSegmentationVisualization(Visualization):
         hi_slider_layout.addWidget(self.hi_slider_value_label())
         hi_slider_layout.addWidget(self.hi_slider())
         self.form_layout().addRow('Image file', image_layout)
-        self.form_layout().addRow('Segmentation file', segmentation_layout)
+        self.form_layout().addRow('Segmentation file (probabilities)', segmentation_layout)
         self.form_layout().addRow('', lo_slider_layout)
         self.form_layout().addRow('', hi_slider_layout)
         layout = QVBoxLayout()
         layout.addLayout(self.form_layout())
         layout.addWidget(self.load_data_button())
-        layout.addWidget(self.muscle_fat_segmentation_viewer().navigation_toolbar())
-        layout.addWidget(self.muscle_fat_segmentation_viewer())
+        layout.addWidget(self.muscle_fat_segmentation_uncertainty_viewer().navigation_toolbar())
+        layout.addWidget(self.muscle_fat_segmentation_uncertainty_viewer())
         self.setLayout(layout)
         self.setObjectName(PANEL_NAME)
 
@@ -151,7 +151,7 @@ class MuscleFatSegmentationVisualization(Visualization):
             self.settings().set('last_directory', file_path)
 
     def handle_load_data_button(self):
-        self.muscle_fat_segmentation_viewer().load_data(
+        self.muscle_fat_segmentation_uncertainty_viewer().load_data(
             self.image_line_edit().text(),
             self.segmentation_line_edit().text(),
             lo_hu=self.lo_slider().value(),
@@ -159,11 +159,11 @@ class MuscleFatSegmentationVisualization(Visualization):
         )
 
     def handle_lo_slider(self, value):
-        self.muscle_fat_segmentation_viewer().update_lo_hu(value)
+        self.muscle_fat_segmentation_uncertainty_viewer().update_lo_hu(value)
         self.lo_slider_value_label().setText(str(value))
 
     def handle_hi_slider(self, value):
-        self.muscle_fat_segmentation_viewer().update_hi_hu(value)
+        self.muscle_fat_segmentation_uncertainty_viewer().update_hi_hu(value)
         self.hi_slider_value_label().setText(str(value))
 
     def save_inputs_and_parameters(self):
