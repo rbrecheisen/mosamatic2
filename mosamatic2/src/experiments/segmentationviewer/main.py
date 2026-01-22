@@ -48,7 +48,7 @@ def rgba_from_binary_mask_thresholded(image, mask, label, hu_lo, hu_hi, alpha):
 
 def on_change_lo(value):
     axes[1].clear()
-    axes[1].imshow(image, cmap="gray")
+    axes[1].imshow(apply_window_and_level(image), cmap="gray")
     axes[1].imshow(rgba_from_binary_mask_thresholded(image, muscle_mask, label=1, hu_lo=value, hu_hi=hu_hi, alpha=1))
     axes[1].axis("off")
     axes[1].set_title(f"Muscle low-RA (yellow) and high-RA (red)")
@@ -57,11 +57,19 @@ def on_change_lo(value):
 
 def on_change_hi(value):
     axes[1].clear()
-    axes[1].imshow(image, cmap="gray")
+    axes[1].imshow(apply_window_and_level(image), cmap="gray")
     axes[1].imshow(rgba_from_binary_mask_thresholded(image, muscle_mask, label=1, hu_lo=hu_lo, hu_hi=value, alpha=1))
     axes[1].axis("off")
     axes[1].set_title(f"Muscle low-RA (yellow) and high-RA (red)")
     fig.canvas.draw_idle()
+
+
+def apply_window_and_level(img, window=400, level=50):
+    lo = level - window / 2.0
+    hi = level + window / 2.0
+    img = np.clip(img, lo, hi)
+    img = (img - lo) / (hi - lo)          # -> 0..1
+    return (img * 255.0 + 0.5)
 
 
 def main():
@@ -81,11 +89,11 @@ def main():
 
     # Create plots
     fig, axes = plt.subplots(1, 2, figsize=(14, 7))    
-    axes[0].imshow(image, cmap='gray')
+    axes[0].imshow(apply_window_and_level(image), cmap='gray')
     axes[0].imshow(overlay_muscle)
     axes[0].axis("off")
     axes[0].set_title('Muscle (red)')
-    axes[1].imshow(image, cmap="gray")
+    axes[1].imshow(apply_window_and_level(image), cmap="gray")
     axes[1].imshow(overlay_myosteatosis)
     axes[1].axis("off")
     axes[1].set_title(f"Muscle low-RA (yellow) and high-RA (red)")
