@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pydicom
@@ -6,13 +7,17 @@ import pydicom
 from matplotlib.widgets import Slider
 
 DICOM_FILE_NAME = '04RAND092.dcm'
-DICOM_FILE_PATH = f'/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/mosamatic2/data/l3_edema/{DICOM_FILE_NAME}'
-if sys.platform.startswith('win'):
-    DICOM_FILE_PATH = f'G:\\My Drive\\data\\mosamatic2\\data\\l3_edema\\{DICOM_FILE_NAME}'
 SEGMENTATION_FILE_NAME = '04RAND092.dcm.seg.npy'
-SEGMENTATION_FILE_PATH = f'/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/mosamatic2/data/l3_edema/{SEGMENTATION_FILE_NAME}'
-if sys.platform.startswith('win'):
-    SEGMENTATION_FILE_PATH = f'G:\\My Drive\\data\\mosamatic2\\data\\l3_edema\\{SEGMENTATION_FILE_NAME}'
+# File paths for demo Marcel and Bibi
+DICOM_FILE_PATH = os.path.join('/Volumes/PHILIPS UFD/marcelvdpoll/original', DICOM_FILE_NAME)
+SEGMENTATION_FILE_PATH = os.path.join('/Volumes/PHILIPS UFD/marcelvdpoll/output/defaultpipeline/segmentmusclefatl3tensorflowtask', SEGMENTATION_FILE_NAME)
+# DICOM_FILE_PATH = f'/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/mosamatic2/data/l3_edema/{DICOM_FILE_NAME}'
+# if sys.platform.startswith('win'):
+#     DICOM_FILE_PATH = f'G:\\My Drive\\data\\mosamatic2\\data\\l3_edema\\{DICOM_FILE_NAME}'
+# SEGMENTATION_FILE_PATH = f'/Users/ralph/Library/CloudStorage/GoogleDrive-ralph.brecheisen@gmail.com/My Drive/data/mosamatic2/data/l3_edema/{SEGMENTATION_FILE_NAME}'
+# if sys.platform.startswith('win'):
+#     SEGMENTATION_FILE_PATH = f'G:\\My Drive\\data\\mosamatic2\\data\\l3_edema\\{SEGMENTATION_FILE_NAME}'
+
 HU_MIN = -29
 HU_MAX = 150
 
