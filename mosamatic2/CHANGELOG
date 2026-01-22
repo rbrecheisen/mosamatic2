@@ -1,3 +1,9 @@
+2.0.26
+======
+- Added MuscleFatSegmentationVisualization
+- Fixed bugs LiverAnalysisPipeline and LiverSegmentVisualization
+- Added option to generate probabilities in SegmentMuscleFatL3TensorFlowTask
+
 2.0.25
 ======
 - Updated CalculateScoresTask to allow:
