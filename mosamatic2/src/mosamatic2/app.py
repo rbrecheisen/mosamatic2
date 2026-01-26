@@ -1,12 +1,24 @@
 import sys
 import traceback
+import faulthandler
 import mosamatic2.constants as constants
 from PySide6 import QtWidgets
+from PySide6 import QtCore
 from mosamatic2.ui.settings import Settings
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.ui.widgets.splashscreen import SplashScreen
-
+faulthandler.enable(all_threads=True)
 LOG = LogManager()
+
+
+def excepthook(exc_type, exc, tb):
+    traceback.print_exception(exc_type, exc, tb)
+sys.excepthook = excepthook
+
+
+def qt_message_handler(msg_type, ctx, msg):
+    LOG.error(f"QT[{msg_type}]: {msg} ({ctx.file}:{ctx.line})")
+QtCore.qInstallMessageHandler(qt_message_handler)
 
 
 def run_tests():
@@ -22,7 +34,8 @@ def main():
     try:
         splash = SplashScreen()
         splash.show()
-        sys.exit(app.exec())
+        raise SystemExit(app.exec())
+        # sys.exit(app.exec())
     except Exception as e:
         LOG.error(str(e))
         LOG.error(traceback.format_exc())
