@@ -4,8 +4,8 @@ import pydicom
 import pydicom.errors
 
 
-DATA_DIR = 'M:\\data\\contrastsensitivity\\train\\original'
-DATA_DIR_PREPARED = 'M:\\data\\contrastsensitivity\\train\\orirginal_prepared'
+DATA_DIR = 'M:\\data\\contrastsensitivity\\lieke\\original'
+DATA_DIR_PREPARED = 'M:\\data\\contrastsensitivity\\lieke\\orirginal_prepared'
 PHASES = [
     'unenhanced', 
     'arterial', 
