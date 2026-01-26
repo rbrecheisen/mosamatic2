@@ -12,7 +12,8 @@ LOG = LogManager()
 
 
 def excepthook(exc_type, exc, tb):
-    traceback.print_exception(exc_type, exc, tb)
+    LOG.error(traceback.format_exc())
+    # traceback.print_exception(exc_type, exc, tb)
 sys.excepthook = excepthook
 
 
