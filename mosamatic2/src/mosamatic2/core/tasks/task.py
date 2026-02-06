@@ -11,14 +11,16 @@ class Task:
     PARAMS = []
     OUTPUT = 'output'
 
-    def __init__(self, inputs, params, output, overwrite=True):
+    def __init__(self, inputs, params, output, overwrite=False):
         self._inputs = inputs
         self._params = params
-        self._output = os.path.join(output, self.__class__.__name__.lower())
+        # self._output = os.path.join(output, self.__class__.__name__.lower())
+        self._output = output
         self._overwrite = overwrite
-        if self._overwrite and os.path.isdir(self._output):
-            shutil.rmtree(self._output)
-        os.makedirs(self._output, exist_ok=self._overwrite)
+        # if self._overwrite and os.path.isdir(self._output):
+        #     shutil.rmtree(self._output)
+        # os.makedirs(self._output, exist_ok=self._overwrite)
+        os.makedirs(self._output, exist_ok=True)
         # Check that the inputs match specification and type
         assert isinstance(self._inputs, dict)
         assert len(self._inputs.keys()) == len(self.__class__.INPUTS)
