@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget, QPushButton
 
 from mosamatic2.ui.widgets.dialogs.helpdialog import HelpDialog
+from mosamatic2.ui.settings import Settings
 
 
 class DefaultPanel(QWidget):
@@ -9,6 +10,7 @@ class DefaultPanel(QWidget):
         self._title = None
         self._help_dialog = None
         self._show_help_button = None
+        self._settings = None
 
     def title(self):
         return self._title
@@ -20,6 +22,11 @@ class DefaultPanel(QWidget):
         if not self._help_dialog:
             self._help_dialog = HelpDialog()
         return self._help_dialog
+
+    def settings(self):
+        if not self._settings:
+            self._settings = Settings()
+        return self._settings
 
     def show_help_button(self):
         if not self._show_help_button:

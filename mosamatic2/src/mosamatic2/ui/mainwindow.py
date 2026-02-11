@@ -68,6 +68,7 @@ class MainWindow(QMainWindow):
         self._slice_selection_visualization = None
         self._liver_segment_visualization = None
         self._muscle_fat_segmentation_visualization = None
+        self._segmentation_editor_tool = None
         self.init_window()
 
     def init_window(self):
@@ -317,6 +318,13 @@ class MainWindow(QMainWindow):
         if not self._muscle_fat_segmentation_visualization:
             self._muscle_fat_segmentation_visualization = MuscleFatSegmentationVisualization()
         return self._muscle_fat_segmentation_visualization
+    
+    # I WAS HERE!!!!
+    
+    def segmentation_editor_tool(self):
+        if not self._segmentation_editor_tool:
+            self._segmentation_editor_tool = None
+        return self._segmentation_editor_tool
 
     # SETTERS
 
