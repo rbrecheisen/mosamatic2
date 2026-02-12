@@ -86,7 +86,7 @@ class SegmentationEditor(DefaultPanel):
                 self,
             )
             self._controls.image_loaded.connect(self.handle_image_loaded)
-            self._controls.segmentation_loaded.connect(self.handle_segmentation_loaded)
+            self._controls.segmentation_saved.connect(self.handle_segmentation_saved)
             self._controls.active_label_changed.connect(self.handle_active_label_changed)
             self._controls.smart_paint_changed.connect(self.handle_smart_paint_changed)
             self._controls.fix_non_active_labels_changed.connect(self.handle_fix_non_active_labels_changed)
@@ -125,9 +125,10 @@ class SegmentationEditor(DefaultPanel):
                 self.settings().set('last_directory', os.path.split(file_path)[0])
 
     #-------------------------------------------------------------------------------------------------------
-    def handle_segmentation_loaded(self):
+    def handle_segmentation_saved(self):
+        # TODO: implement this!!!
         pass
-    
+
     #-------------------------------------------------------------------------------------------------------
     def handle_active_label_changed(self, label):
         self.view().set_active_label(label)
