@@ -35,6 +35,7 @@ from mosamatic2.ui.widgets.panels.visualizations.slicevisualization.slicevisuali
 from mosamatic2.ui.widgets.panels.visualizations.sliceselectionvisualization.sliceselectionvisualization import SliceSelectionVisualization
 from mosamatic2.ui.widgets.panels.visualizations.liversegmentvisualization.liversegmentvisualization import LiverSegmentVisualization
 from mosamatic2.ui.widgets.panels.visualizations.musclefatsegmentationvisualization.musclefatsegmentationvisualization import MuscleFatSegmentationVisualization
+from mosamatic2.ui.widgets.panels.tools.segmentationeditor.segmentationeditor import SegmentationEditor
 
 
 LOG = LogManager()
@@ -68,7 +69,7 @@ class MainWindow(QMainWindow):
         self._slice_selection_visualization = None
         self._liver_segment_visualization = None
         self._muscle_fat_segmentation_visualization = None
-        self._segmentation_editor_tool = None
+        self._segmentation_editor = None
         self.init_window()
 
     def init_window(self):
@@ -88,6 +89,7 @@ class MainWindow(QMainWindow):
         self.init_tasks_menu()
         self.init_pipelines_menu()
         self.init_visualizations_menu()
+        self.init_tools_menu()
         if is_macos():            
             self.menuBar().setNativeMenuBar(False)
 
@@ -169,6 +171,12 @@ class MainWindow(QMainWindow):
         visualizations_menu.addAction(slice_selection_visualization_action)
         visualizations_menu.addAction(slice_visualization_action)
 
+    def init_tools_menu(self):
+        tools_menu = self.menuBar().addMenu('Tools')
+        segmentation_editor_action = QAction('SegmentationEditor', self)
+        segmentation_editor_action.triggered.connect(self.handdle_segmentation_editor_action)
+        tools_menu.addAction(segmentation_editor_action)
+
     def init_status_bar(self):
         self.set_status('Ready')
 
@@ -203,6 +211,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.slice_selection_visualization(), 'sliceselectionvisualization')
             self._main_panel.add_panel(self.liver_segment_visualization(), 'liversegmentvisualization')
             self._main_panel.add_panel(self.muscle_fat_segmentation_visualization(), 'musclefatsegmentationvisualization')
+            self._main_panel.add_panel(self.segmentation_editor(), 'segmentationeditor')
             self._main_panel.select_panel('defaultpipelinepanel')
         return self._main_panel
     
@@ -319,12 +328,10 @@ class MainWindow(QMainWindow):
             self._muscle_fat_segmentation_visualization = MuscleFatSegmentationVisualization()
         return self._muscle_fat_segmentation_visualization
     
-    # I WAS HERE!!!!
-    
-    def segmentation_editor_tool(self):
-        if not self._segmentation_editor_tool:
-            self._segmentation_editor_tool = None
-        return self._segmentation_editor_tool
+    def segmentation_editor(self):
+        if not self._segmentation_editor:
+            self._segmentation_editor = SegmentationEditor(self.settings())
+        return self._segmentation_editor
 
     # SETTERS
 
@@ -395,6 +402,9 @@ class MainWindow(QMainWindow):
 
     def handle_muscle_fat_segmentation_visualization_action(self):
         self.main_panel().select_panel('musclefatsegmentationvisualization')
+
+    def handdle_segmentation_editor_action(self):
+        self.main_panel().select_panel('segmentationeditor')
 
     def showEvent(self, event):
         return super().showEvent(event)

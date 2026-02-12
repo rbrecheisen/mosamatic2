@@ -3,20 +3,22 @@ from PySide6.QtWidgets import (
     QSplitter,
     QHBoxLayout,
 )
-# from rbeesoft.app.ui.widgets.pages import Page
-# from ralphomatic.widgets.pages.editor.editorgraphicsview import EditorGraphicsView
-# from ralphomatic.widgets.pages.editor.editorcontrols import EditorControls
+from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.ui.widgets.panels.defaultpanel import DefaultPanel
 from mosamatic2.ui.widgets.panels.tools.segmentationeditor.segmentationeditorcontrols import SegmentationEditorControls
 from mosamatic2.ui.widgets.panels.tools.segmentationeditor.segmentationeditorgraphicsview import SegmentationEditorGraphicsView
+
+LOG = LogManager()
+PANEL_TITLE = 'SegmentationEditor'
+PANEL_NAME = 'segmentationeditor'
 
 
 class SegmentationEditor(DefaultPanel):
 
     #-------------------------------------------------------------------------------------------------------
     def __init__(self, settings):
-        # super(EditorPage, self).__init__('editorpage', 'Segmentation Editor', settings)
         super(SegmentationEditor, self).__init__()
+        self.set_title(PANEL_TITLE)
         self._view = None
         self._controls = None
         self.init()
@@ -34,6 +36,7 @@ class SegmentationEditor(DefaultPanel):
         layout = QHBoxLayout()
         layout.addWidget(splitter)
         self.setLayout(layout)
+        self.setObjectName(PANEL_NAME)
 
     # GETTERS
 
