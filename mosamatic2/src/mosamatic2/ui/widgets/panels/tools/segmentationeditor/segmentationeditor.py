@@ -1,12 +1,17 @@
+import os
+import numpy as np
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QSplitter,
     QHBoxLayout,
+    QFileDialog,
 )
 from mosamatic2.core.managers.logmanager import LogManager
+from mosamatic2.core.data.dicomloader import DicomLoader
 from mosamatic2.ui.widgets.panels.defaultpanel import DefaultPanel
 from mosamatic2.ui.widgets.panels.tools.segmentationeditor.segmentationeditorcontrols import SegmentationEditorControls
 from mosamatic2.ui.widgets.panels.tools.segmentationeditor.segmentationeditorgraphicsview import SegmentationEditorGraphicsView
+from mosamatic2.ui.widgets.panels.tools.segmentationeditor.document import Document
 
 LOG = LogManager()
 PANEL_TITLE = 'SegmentationEditor'
@@ -81,7 +86,7 @@ class SegmentationEditor(DefaultPanel):
                 self,
             )
             self._controls.image_loaded.connect(self.handle_image_loaded)
-            self._controls.segmentation_loaded.connect(self.segmentation_loaded)
+            self._controls.segmentation_loaded.connect(self.handle_segmentation_loaded)
             self._controls.active_label_changed.connect(self.handle_active_label_changed)
             self._controls.smart_paint_changed.connect(self.handle_smart_paint_changed)
             self._controls.fix_non_active_labels_changed.connect(self.handle_fix_non_active_labels_changed)
@@ -100,7 +105,24 @@ class SegmentationEditor(DefaultPanel):
 
     #-------------------------------------------------------------------------------------------------------
     def handle_image_loaded(self):
-        pass
+        last_directory = self.settings().get('last_directory', None)
+        file_path, _ = QFileDialog.getOpenFileName(dir=last_directory)
+        if file_path:
+            loader = DicomLoader(file_path)
+            img, disp8, meta = loader.load_as_numpy_and_u8disp()
+            if img is not None and disp8 is not None and meta is not None:
+                mask = None
+                seg_path = file_path + '.seg.npy'
+                if os.path.isfile(seg_path):
+                    mask = np.load(seg_path).astype(np.uint8)
+                seg_path = file_path + '.npz'
+                if os.path.isfile(seg_path):
+                    data = np.load(file_path, allow_pickle=True)
+                    mask = data["mask"].astype(np.uint8)
+                if mask is None:
+                    mask = np.zeros_like(disp8, dtype=np.uint8)
+                self.view().set_document(Document(img=img, disp8=disp8, mask=mask, meta=meta))
+                self.settings().set('last_directory', os.path.split(file_path)[0])
 
     #-------------------------------------------------------------------------------------------------------
     def handle_segmentation_loaded(self):
