@@ -21,6 +21,8 @@ class SegmentationEditorControls(QWidget):
 
     # SIGNALS
 
+    image_loaded = Signal()
+    segmentation_loaded = Signal()
     active_label_changed = Signal(int)
     smart_paint_changed = Signal(bool)
     fix_non_active_labels_changed = Signal(bool)
@@ -65,6 +67,8 @@ class SegmentationEditorControls(QWidget):
         self._hu_hi_sat = hu_hi_sat
 
         # UI widgets
+        self._load_image_button = None
+        self._load_segmentation_button = None
         self._active_label_group = None
         self._fix_non_active_labels_checkbox = None
         self._hu_hi_range_muscle_spinbox = None
@@ -84,6 +88,12 @@ class SegmentationEditorControls(QWidget):
 
     #-------------------------------------------------------------------------------------------------------
     def init(self):
+
+        # Loading image and segmentation
+        self._load_image_button = QPushButton('Load DICOM image...')
+        self._load_image_button.clicked.connect(self.handle_load_image_button)
+        self._load_segmentation_button = QPushButton('Load segmentation mask...')
+        self._load_segmentation_button.clicked.connect(self.handle_load_segmentation_button)
 
         # Active label groupbox and radiobuttons
         active_label_groupbox = QGroupBox('Active label')
@@ -177,6 +187,8 @@ class SegmentationEditorControls(QWidget):
         # Main layout
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(self._load_image_button)
+        layout.addWidget(self._load_segmentation_button)
         layout.addWidget(active_label_groupbox)
         layout.addWidget(hu_range_groupbox)
         layout.addWidget(self._fix_non_active_labels_checkbox)
@@ -260,6 +272,14 @@ class SegmentationEditorControls(QWidget):
         return self._hu_hi_sat
     
     # EVENT HANDLERS
+
+    #-------------------------------------------------------------------------------------------------------
+    def handle_load_image_button(self):
+        self.image_loaded.emit()
+
+    #-------------------------------------------------------------------------------------------------------
+    def handle_load_segmentation_button(self):
+        self.segmentation_loaded.emit()
 
     #-------------------------------------------------------------------------------------------------------
     def handle_active_label_changed(self, label_id):

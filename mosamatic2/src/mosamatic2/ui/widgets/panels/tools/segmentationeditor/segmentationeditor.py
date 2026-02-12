@@ -80,6 +80,8 @@ class SegmentationEditor(DefaultPanel):
                 self.settings().get_int('annotationview/hu_hi_sat', -30),
                 self,
             )
+            self._controls.image_loaded.connect(self.handle_image_loaded)
+            self._controls.segmentation_loaded.connect(self.segmentation_loaded)
             self._controls.active_label_changed.connect(self.handle_active_label_changed)
             self._controls.smart_paint_changed.connect(self.handle_smart_paint_changed)
             self._controls.fix_non_active_labels_changed.connect(self.handle_fix_non_active_labels_changed)
@@ -96,6 +98,14 @@ class SegmentationEditor(DefaultPanel):
     
     # EVENT HANDLERS
 
+    #-------------------------------------------------------------------------------------------------------
+    def handle_image_loaded(self):
+        pass
+
+    #-------------------------------------------------------------------------------------------------------
+    def handle_segmentation_loaded(self):
+        pass
+    
     #-------------------------------------------------------------------------------------------------------
     def handle_active_label_changed(self, label):
         self.view().set_active_label(label)
