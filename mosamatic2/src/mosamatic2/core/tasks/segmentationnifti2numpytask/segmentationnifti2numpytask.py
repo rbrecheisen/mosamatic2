@@ -24,6 +24,7 @@ class SegmentationNifti2NumpyTask(Task):
             if f.endswith('.seg.npy.nii.gz'):
                 f_path = os.path.join(self.input('segmentations'), f)
                 segmentations.append(f_path)
+                print(f_path)
         return segmentations
     
     def load_segmentation_as_nifti(self, segmentation):
