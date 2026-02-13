@@ -1,4 +1,5 @@
 import os
+import shutil
 import numpy as np
 import SimpleITK as sitk
 from mosamatic2.core.tasks.task import Task
@@ -81,6 +82,10 @@ class SegmentationNumpy2NiftiTask(Task):
             segmentation_itk_name = os.path.split(pair[1])[1] + '.nii.gz'
             segmentation_itk_path = os.path.join(self.output(), segmentation_itk_name)
             sitk.WriteImage(segmentation_itk, segmentation_itk_path, useCompression=True)
+            # Copy NIFTI file to NumPy segmentation directory as well
+            seg_dir = os.path.split(pair[1])[0]
+            shutil.copy(segmentation_itk_path, seg_dir)
+            # Create PNG images
             self.create_png_from_array(segmentation_narray, os.path.join(self.output(), segmentation_itk_name))
             self.create_png_from_dicom(pair[0])
             self.set_progress(step, nr_steps)

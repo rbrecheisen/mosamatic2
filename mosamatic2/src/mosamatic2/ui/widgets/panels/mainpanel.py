@@ -25,6 +25,7 @@ class MainPanel(QDockWidget):
         self._title_label = None
         self._donate_button = None
         self._stacked_panel = None
+        self._current_panel_name = None
         self._panels = {}
         self.init_layout()
 
@@ -65,6 +66,9 @@ class MainPanel(QDockWidget):
     
     def panels(self):
         return self._panels
+    
+    def current_panel_name(self):
+        return self._current_panel_name
 
     # ADDING PANELS
 
@@ -75,6 +79,7 @@ class MainPanel(QDockWidget):
     def select_panel(self, name):
         self.title_label().setText(self.panels().get(name))
         self.stacked_panel().switch_to(name)
+        self._current_panel_name = name
 
     # EVENT HANDLERS
 

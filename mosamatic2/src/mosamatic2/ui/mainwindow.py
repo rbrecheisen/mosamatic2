@@ -434,6 +434,18 @@ class MainWindow(QMainWindow):
         self.liver_segment_visualization().save_inputs_and_parameters()
         self.muscle_fat_segmentation_visualization().save_inputs_and_parameters()
         return super().closeEvent(event)
+    
+    def keyPressEvent(self, event):
+        if self.main_panel().current_panel_name() == 'segmentationeditor':
+            self.segmentation_editor().view().keyPressEvent(event)
+            return
+        return super().keyPressEvent(event)
+    
+    def keyReleaseEvent(self, event):
+        if self.main_panel().current_panel_name() == 'segmentationeditor':
+            self.segmentation_editor().view().keyReleaseEvent(event)
+            return
+        return super().keyReleaseEvent(event)
 
     def load_geometry_and_state(self):
         geometry = self.settings().get(constants.MOSAMATIC2_WINDOW_GEOMETRY_KEY)

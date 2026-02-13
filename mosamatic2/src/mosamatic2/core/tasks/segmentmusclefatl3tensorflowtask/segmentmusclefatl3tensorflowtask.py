@@ -1,4 +1,5 @@
 import os
+import shutil
 import zipfile
 import tempfile
 import numpy as np
@@ -117,6 +118,8 @@ class SegmentMuscleFatL3TensorFlowTask(Task):
             segmentation_file_name = os.path.split(image.path())[1]
             segmentation_file_path = os.path.join(output_dir, f'{segmentation_file_name}_prob.seg.npy')
         np.save(segmentation_file_path, segmentation)
+        # Copy image to output directory as well
+        shutil.copy(image.path(), self.output())
 
     def run(self):
         image_data = self.load_images()

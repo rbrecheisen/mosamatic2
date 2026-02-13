@@ -79,13 +79,14 @@ class SegmentationEditor(DefaultPanel):
                 self.settings().get_float('annotationview/overall_opacity', 0.5),
                 self.settings().get_int('annotationview/hu_lo_muscle', -29),
                 self.settings().get_int('annotationview/hu_hi_muscle', 150),
-                self.settings().get_int('annotationview/hu_lo_vat', -190),
-                self.settings().get_int('annotationview/hu_hi_vat', -30),
-                self.settings().get_int('annotationview/hu_lo_sat', -150),
+                self.settings().get_int('annotationview/hu_lo_vat', -150),
+                self.settings().get_int('annotationview/hu_hi_vat', -50),
+                self.settings().get_int('annotationview/hu_lo_sat', -190),
                 self.settings().get_int('annotationview/hu_hi_sat', -30),
                 self,
             )
             self._controls.image_loaded.connect(self.handle_image_loaded)
+            self._controls.segmentation_loaded.connect(self.handle_segmentation_loaded)
             self._controls.segmentation_saved.connect(self.handle_segmentation_saved)
             self._controls.active_label_changed.connect(self.handle_active_label_changed)
             self._controls.smart_paint_changed.connect(self.handle_smart_paint_changed)
@@ -123,6 +124,10 @@ class SegmentationEditor(DefaultPanel):
                     mask = np.zeros_like(disp8, dtype=np.uint8)
                 self.view().set_document(Document(img=img, disp8=disp8, mask=mask, meta=meta))
                 self.settings().set('last_directory', os.path.split(file_path)[0])
+
+    #-------------------------------------------------------------------------------------------------------
+    def handle_segmentation_loaded(self):
+        pass
 
     #-------------------------------------------------------------------------------------------------------
     def handle_segmentation_saved(self):

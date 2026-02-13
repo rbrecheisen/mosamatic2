@@ -16,12 +16,38 @@ from PySide6.QtWidgets import (
     QFrame,
 )
 
+HELP_INFO = """
+<b>Shortcuts</b>
+<table>
+    <tr><td>Brush radius:</td><td>CTRL + mouse wheel</td></tr>
+    <tr><td>Active labels:</td><td>
+        "1" for muscle<br>
+        "5" for visceral fat<br>
+        "7" for subcutaneous fat
+    </td></tr>
+    <tr><td>Zooming</td><td>Mouse wheel</td></tr>
+    <tr><td>Zoom rectangle</td><td>Hold "Z" + mouse click and drag</td></tr>
+    <tr><td>Panning</td><td>SPACE + mouse click and drag</td></tr>
+    <tr><td>Undo</td><td>
+        CTRL + "Z"<br>
+        "U"
+    </td></tr>
+    <tr><td>Remove annotation</td><td>
+        "E" + mouse click and drag<br>
+        Right mouse button click and drag
+    </td></tr>
+    <tr><td>Toggle SmartPaint</td><td>"S"</td></tr>
+    <tr><td>Toggle fix non-active labels</td><td>"F"</td></tr>
+</table>
+"""
+
 
 class SegmentationEditorControls(QWidget):
 
     # SIGNALS
 
     image_loaded = Signal()
+    segmentation_loaded = Signal()
     segmentation_saved = Signal()
     active_label_changed = Signal(int)
     smart_paint_changed = Signal(bool)
@@ -68,6 +94,7 @@ class SegmentationEditorControls(QWidget):
 
         # UI widgets
         self._load_image_button = None
+        self._load_segmentation_button = None
         self._save_segmentation_button = None
         self._active_label_group = None
         self._fix_non_active_labels_checkbox = None
@@ -82,6 +109,7 @@ class SegmentationEditorControls(QWidget):
         self._overall_opacity_slider = None
         self._reset_zoom_button = None
         self._clear_all_labels_button = None
+        self._help_info_label = None
         self.init()
 
     # INITIALIZATION
@@ -92,6 +120,8 @@ class SegmentationEditorControls(QWidget):
         # Loading image and saving segmentation
         self._load_image_button = QPushButton('Load DICOM image...')
         self._load_image_button.clicked.connect(self.handle_load_image_button)
+        self._load_segmentation_button = QPushButton('Load segmentation...')
+        self._load_segmentation_button.clicked.connect(self.handle_load_segmentation_button)
         self._save_segmentation_button = QPushButton('Save segmentation...')
         self._save_segmentation_button.clicked.connect(self.handle_save_segmentation_button)
 
@@ -184,6 +214,12 @@ class SegmentationEditorControls(QWidget):
         self._clear_all_labels_button = QPushButton('Clear all labels')
         self._clear_all_labels_button.clicked.connect(self.handle_clear_all_labels_button)
 
+        # Help info
+        self._help_info_label = QLabel(HELP_INFO)
+        self._help_info_label.setWordWrap(True)
+        self._help_info_label.setTextFormat(Qt.RichText)
+        self._help_info_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+
         # Main layout
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -199,6 +235,7 @@ class SegmentationEditorControls(QWidget):
         layout.addWidget(self._brush_radius_label)
         layout.addWidget(self._reset_zoom_button)
         layout.addWidget(self._clear_all_labels_button)
+        layout.addWidget(self._help_info_label)
         self.setLayout(layout)
 
     # GETTERS
@@ -276,6 +313,10 @@ class SegmentationEditorControls(QWidget):
     #-------------------------------------------------------------------------------------------------------
     def handle_load_image_button(self):
         self.image_loaded.emit()
+
+    #-------------------------------------------------------------------------------------------------------
+    def handle_load_segmentation_button(self):
+        self.segmentation_loaded.emit()
 
     #-------------------------------------------------------------------------------------------------------
     def handle_save_segmentation_button(self):
