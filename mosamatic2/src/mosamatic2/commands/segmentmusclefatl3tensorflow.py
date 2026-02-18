@@ -3,7 +3,7 @@ import click
 from mosamatic2.core.tasks import SegmentMuscleFatL3TensorFlowTask
 
 
-@click.command(help='Extracts muscle and fat regions from CT images at L3 (uses PyTorch)')
+@click.command(help='Extracts muscle and fat regions from CT images at L3 (uses TensorFlow)')
 @click.option(
     '--images', 
     required=True, 
