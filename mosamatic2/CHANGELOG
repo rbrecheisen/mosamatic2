@@ -1,3 +1,15 @@
+2.0.30
+======
+- Retry
+
+2.0.29
+======
+- Retry
+
+2.0.28
+======
+- Created installation script (based on Miniforge3)
+
 2.0.27
 ======
 - Added segmentation editor
