@@ -1,19 +1,20 @@
 @echo off
 
-@rem Make sure activate the mosamatic2 environment before running
-@rem the command below!
-call mamba install -c conda-forge ^
-    poetry ^
-    pyside6 ^
-    numpy ^
-    pandas ^
-    nibabel ^
-    dicom2nifti ^
-    openpyxl ^
-    pendulum ^
-    pydicom ^
-    pillow ^
-    scipy ^
-    matplotlib ^
-    simpleitk ^
-    vtk
+@REM Make sure activate the mosamatic2 environment before running
+@REM the command below!
+call mamba install -c conda-forge poetry pyside6
+@REM call mamba install -c conda-forge ^
+@REM     poetry ^
+@REM     pyside6 ^
+@REM     numpy ^
+@REM     pandas ^
+@REM     nibabel ^
+@REM     dicom2nifti ^
+@REM     openpyxl ^
+@REM     pendulum ^
+@REM     pydicom ^
+@REM     pillow ^
+@REM     scipy ^
+@REM     matplotlib ^
+@REM     simpleitk ^
+@REM     vtk
