@@ -3,7 +3,8 @@ Advanced desktop, API and CLI tool for body composition analysis
 
 For documentation, please refer to https://www.mosamatic.com 
 
-<!-- "pyside6-essentials>=6.9",
+<!-- 
+"pyside6-essentials>=6.9",
 "pydicom>=3.0.1",
 "dicom2nifti>=2.6.2",
 "numpy>=1.26.4",
@@ -33,4 +34,5 @@ For documentation, please refer to https://www.mosamatic.com
 "docker>=7.1.0",
 "slicer>=0.0.8",
 "webdavclient3>=3.14.6",
-"simpleitk>=2.5.2", -->
+"simpleitk>=2.5.2", 
+-->

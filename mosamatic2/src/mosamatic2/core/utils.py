@@ -23,6 +23,18 @@ MUSCLE, VAT, SAT = 1, 5, 7
 LOG = LogManager()
 
 
+def is_gpu_available(based_on='torch'):
+    if based_on == 'torch':
+        import torch
+        return torch.cuda.is_available()
+    elif based_on == 'tensorflow':
+        import tensorflow as tf
+        return len(tf.config.list_physical_devices('GPU')) > 0
+    else:
+        LOG.error(f'is_gpu_available() Unknown platform: {based_on}')
+        return False
+
+
 def create_name_with_timestamp(prefix: str='') -> str:
     tz = pendulum.local_timezone()
     timestamp = pendulum.now(tz).strftime('%Y%m%d%H%M%S%f')[:17]

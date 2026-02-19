@@ -15,13 +15,13 @@ set "CONDA_BAT=%INSTALL_DIR%\condabin\conda.bat"
 mkdir "%TMP_DIR%" 2>nul
 
 echo [0/3] Checking if Miniforge already installed...
-if exist %CONDA_BAT% (
+if exist "%CONDA_BAT%" (
   echo Miniforge already installed in %INSTALL_DIR%
   echo Skipping installation...
   set "CONDA_INSTALLED=true"
 )
 
-if %CONDA_INSTALLED% == "false" (
+if "%CONDA_INSTALLED%" == "false" (
   echo [1/3] Downloading Miniforge...
   curl.exe -L --fail --retry 3 --retry-delay 2 -o "%MINIFORGE_EXE%" "%MINIFORGE_URL%"
   @rem powershell -NoProfile -ExecutionPolicy Bypass -Command ^

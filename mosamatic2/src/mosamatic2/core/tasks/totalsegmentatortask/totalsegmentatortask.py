@@ -4,6 +4,7 @@ import tempfile
 from totalsegmentator.python_api import totalsegmentator
 from mosamatic2.core.tasks.task import Task
 from mosamatic2.core.managers.logmanager import LogManager
+from mosamatic2.core.utils import is_gpu_available
 
 LOG = LogManager()
 TOTAL_SEGMENTATOR_OUTPUT_DIR = os.path.join(tempfile.gettempdir(), 'total_segmentator_output')
@@ -16,6 +17,7 @@ class TotalSegmentatorTask(Task):
     def __init__(self, inputs, params, output, overwrite):
         super(TotalSegmentatorTask, self).__init__(inputs, params, output, overwrite)
         LOG.info(f'Using temporary output directory: {TOTAL_SEGMENTATOR_OUTPUT_DIR}')
+        LOG.info(f'GPU available: {is_gpu_available()}')
 
     def load_scan_dirs(self):
         scan_dirs = []
