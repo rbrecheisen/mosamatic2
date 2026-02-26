@@ -21,7 +21,7 @@ function Invoke-Conda {
         [switch]$IgnoreExitCode
     )
 
-    if (-not (Test-Path $CONDA_BAT)) {
+    if (-not (Test-Path -LiteralPath $script:CONDA_BAT)) {
         throw "conda.bat not found at: $CONDA_BAT"
     }
 
@@ -39,7 +39,7 @@ function Invoke-Conda {
 New-Item -ItemType Directory -Force -Path $TMP_DIR | Out-Null
 
 Write-Host "Checking if Miniforge already installed..."
-if (Test-Path $CONDA_BAT) {
+if (Test-Path -LiteralPath $CONDA_BAT) {
     Write-Host "Miniforge already installed in $INSTALL_DIR"
     Write-Host "Skipping installation..."
     $CONDA_INSTALLED = $true
@@ -55,13 +55,22 @@ if (-not $CONDA_INSTALLED) {
     }
 
     Write-Host "Installing Miniforge silently..."
-    # /S = silent, /D= sets install dir (must be last and unquoted for NSIS installers)
-    & $MINIFORGE_EXE /S "/D=$INSTALL_DIR"
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "ERROR: Miniforge installer failed." -ForegroundColor Red
+    $proc = Start-Process -FilePath $MINIFORGE_EXE `
+        -ArgumentList '/S', "/D=$INSTALL_DIR" `
+        -Wait -PassThru
+
+    if ($proc.ExitCode -ne 0) {
+        Write-Host "ERROR: Miniforge installer failed with exit code $($proc.ExitCode)." -ForegroundColor Red
         Read-Host "Press Enter to exit"
         exit 1
     }
+}
+
+$maxSeconds = 30
+$elapsed = 0
+while (-not (Test-Path -LiteralPath $CONDA_BAT) -and $elapsed -lt $maxSeconds) {
+    Start-Sleep -Seconds 1
+    $elapsed++
 }
 
 Write-Host "Initializing conda (CONDA_BAT=$CONDA_BAT)"
@@ -69,14 +78,9 @@ Invoke-Conda 'init powershell' | Out-Null
 Invoke-Conda 'config --set always_yes yes --set changeps1 no' | Out-Null
 Invoke-Conda 'config --set auto_activate false' | Out-Null
 
-Read-Host "Press Enter to continue"
-
 Write-Host "Creating/refreshing env `"$ENV_NAME`" with Python $PYTHON_VERSION..."
 Invoke-Conda "env remove -n `"$ENV_NAME`"" -IgnoreExitCode | Out-Null
-Invoke-Conda "create -n `"$ENV_NAME`" python=$PYTHON_VERSION pip"
-
-Write-Host "Upgrading pip tooling..."
-Invoke-Conda "run -n `"$ENV_NAME`" python -m pip install --upgrade pip setuptools wheel"
+Invoke-Conda "create -n `"$ENV_NAME`" python=$PYTHON_VERSION pip twine setuptools wheel python-build tomlkit -c conda-forge"
 
 Write-Host "Installing `"$ENV_NAME`"..."
 Invoke-Conda "run -n `"$ENV_NAME`" python -m pip install `"$ENV_NAME`""

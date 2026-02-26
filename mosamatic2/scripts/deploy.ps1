@@ -26,6 +26,8 @@ $VERSION = (Get-Content VERSION -Raw).Trim()
 Write-Host "New version: $VERSION. Is this correct?"
 Read-Host "Press Enter to continue"
 
+Copy-Item -Path "VERSION" -Destination ".\src\mosamatic2\ui\resources\" -Force
+
 $TOKEN = (Get-Content "G:\My Drive\data\ApiKeysAndPasswordFiles\pypi-token.txt" -Raw).Trim()
 $env:TWINE_USERNAME = "__token__"
 $env:TWINE_PASSWORD = $TOKEN

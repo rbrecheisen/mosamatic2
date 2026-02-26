@@ -1,3 +1,7 @@
+2.0.33
+======
+- Fix bug in pyproject.toml to include resources
+
 2.0.32
 ======
 - Fixed bug in pyproject.toml

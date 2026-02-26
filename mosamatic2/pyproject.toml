@@ -56,8 +56,12 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
+include-package-data = true
 # this is the setuptools replacement for your "models.py" include:
 py-modules = ["models"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+mosamatic2 = ["resources/**/*"]
