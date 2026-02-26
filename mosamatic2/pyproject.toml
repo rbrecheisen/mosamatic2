@@ -1,6 +1,6 @@
 [project]
 name = "mosamatic2"
-version = "2.0.31"
+version = "2.0.32"
 description = ""
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
