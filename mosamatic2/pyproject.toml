@@ -42,7 +42,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mosamatic2 = "mosamatic2.main:main"
+mosamatic2 = "mosamatic2.app:main"
 mosamatic2-cli = "mosamatic2.cli:main"
 
 [project.optional-dependencies]

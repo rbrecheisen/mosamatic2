@@ -70,9 +70,9 @@ foreach ($a in $args) {
 }
 $argString = ($forwardedArgs -join ' ')
 
-cmd.exe /d /c "call `"$CONDA_BAT`" run --no-capture-output -n `"$ENV_NAME`" mosamaticinsights $argString"
+cmd.exe /d /c "call `"$CONDA_BAT`" run --no-capture-output -n `"$ENV_NAME`" $ENV_NAME $argString"
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "ERROR: Could not run Mosamatic Insights." -ForegroundColor Red
+    Write-Host "ERROR: Could not run Mosamatic2" -ForegroundColor Red
     Read-Host "Press Enter to exit"
     exit 1
 }
