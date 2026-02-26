@@ -1,6 +1,6 @@
 2.0.31
 ======
-- Changed installation environment
+- Changed installation environment to conda
 
 2.0.30
 ======
