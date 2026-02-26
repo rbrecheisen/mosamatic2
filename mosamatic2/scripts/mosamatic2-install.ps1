@@ -86,3 +86,4 @@ Write-Host "Installing `"$ENV_NAME`"..."
 Invoke-Conda "run -n `"$ENV_NAME`" python -m pip install `"$ENV_NAME`""
 
 Write-Host "Done." -ForegroundColor Green
+Read-Host "Press Enter to exit"

@@ -1,6 +1,6 @@
 [project]
 name = "mosamatic2"
-version = "2.0.33"
+version = "2.0.34"
 description = ""
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
@@ -64,4 +64,4 @@ py-modules = ["models"]
 where = ["src"]
 
 [tool.setuptools.package-data]
-mosamatic2 = ["resources/**/*"]
+mosamatic2 = ["ui/resources/**/*"]
