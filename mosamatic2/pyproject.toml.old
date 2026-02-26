@@ -1,13 +1,14 @@
 [project]
 name = "mosamatic2"
-version = "1.0.5"
+version = "2.0.30"
 description = ""
+authors = [
+    {name = "Ralph Brecheisen", email = "r.brecheisen@maastrichtuniversity.nl"}
+]
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
-authors = [{ name = "Brecheisen", email = "r.brecheisen@maastrichtuniversity.nl" }]
-
 dependencies = [
-    "pyside6>=6.9",
+    #"pyside6-essentials>=6.9",
     "pydicom>=3.0.1",
     "dicom2nifti>=2.6.2",
     "numpy>=1.26.4",
@@ -38,26 +39,21 @@ dependencies = [
     "slicer>=0.0.8",
     "webdavclient3>=3.14.6",
     "simpleitk>=2.5.2", 
-    "matplotlib",
 ]
 
-[project.scripts]
-mosamatic2 = "mosamatic2.main:main"
+[tool.poetry]
+packages = [
+    {include = "mosamatic2", from = "src"},
+    {include = "models.py", from = "src" },
+]
+
+[tool.poetry.scripts]
+mosamatic2 = "mosamatic2.app:main"
 mosamatic2-cli = "mosamatic2.cli:main"
 
-[project.optional-dependencies]
-dev = [
-  "pytest>=8.4.1",
-]
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
 
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-package-dir = { "" = "src" }
-# this is the setuptools replacement for your "models.py" include:
-py-modules = ["models"]
-
-[tool.setuptools.packages.find]
-where = ["src"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
