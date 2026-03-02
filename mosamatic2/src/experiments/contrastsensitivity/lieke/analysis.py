@@ -164,7 +164,7 @@ def main():
     df_arterial_new = transform_df_to_venous(df_arterial, coefficients['arterial_to_venous'])
     print_ttest_results(
         df_venous, df_unenhanced_new, df_arterial_new)
-    # create_scatter_plots(df_venous, df_unenhanced, df_arterial)
+    create_scatter_plots(df_venous, df_unenhanced, df_arterial)
 
 if __name__ == '__main__':
     main()
