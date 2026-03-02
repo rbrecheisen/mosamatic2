@@ -24,7 +24,7 @@ from mosamatic2.core.tasks import SegmentMuscleFatT4PyTorchTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Task - Automatically Segment Muscle and Fat at T4 (PyTorch)'
+PANEL_TITLE = 'Automatically Segment Muscle and Fat at T4 (PyTorch)'
 PANEL_NAME = 'segmentmusclefatt4pytorchtaskpanel'
 
 

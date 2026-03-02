@@ -28,7 +28,7 @@ from mosamatic2.core.tasks import CreateDicomSummaryTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Task - Create DICOM Summary Overview'
+PANEL_TITLE = 'Create DICOM Summary Overview'
 PANEL_NAME = 'createdicomsummarytaskpanel'
 
 

@@ -15,7 +15,7 @@ from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 
 LOG = LogManager()
-PANEL_TITLE = 'SliceVisualization'
+PANEL_TITLE = 'Slices'
 PANEL_NAME = 'slicevisualization'
 
 

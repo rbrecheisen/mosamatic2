@@ -29,7 +29,7 @@ from mosamatic2.core.tasks import ApplyThresholdToSegmentationsTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Task - Apply Threshold To Segmentations'
+PANEL_TITLE = 'Apply Threshold To Segmentations'
 PANEL_NAME = 'applythresholdtosegmentationstaskpanel'
 
 

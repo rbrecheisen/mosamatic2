@@ -24,7 +24,7 @@ from mosamatic2.core.tasks import SegmentMuscleFatL3TensorFlowTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Task - Automatically Segment Muscle and Fat at L3 (TensorFlow)'
+PANEL_TITLE = 'Automatically Segment Muscle and Fat at L3 (TensorFlow)'
 PANEL_NAME = 'segmentmusclefatl3tensorflowtaskpanel'
 
 

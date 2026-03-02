@@ -14,7 +14,7 @@ from mosamatic2.ui.widgets.panels.tools.segmentationeditor.segmentationeditorgra
 from mosamatic2.ui.widgets.panels.tools.segmentationeditor.document import Document
 
 LOG = LogManager()
-PANEL_TITLE = 'SegmentationEditor'
+PANEL_TITLE = 'Manual Segmentation Editor'
 PANEL_NAME = 'segmentationeditor'
 
 

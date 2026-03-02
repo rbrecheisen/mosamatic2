@@ -25,7 +25,7 @@ from mosamatic2.core.tasks import TotalSegmentatorTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Task - Run TotalSegmentator on CT Scans'
+PANEL_TITLE = 'Run TotalSegmentator on CT Scans'
 PANEL_NAME = 'totalsegmentatortaskpanel'
 
 

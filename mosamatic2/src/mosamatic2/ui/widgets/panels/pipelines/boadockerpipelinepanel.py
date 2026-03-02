@@ -25,7 +25,7 @@ from mosamatic2.core.pipelines import BoaDockerPipeline
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Pipeline - BOA'
+PANEL_TITLE = 'BOA'
 PANEL_NAME = 'boadockerpipeline'
 
 

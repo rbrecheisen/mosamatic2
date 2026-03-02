@@ -25,7 +25,7 @@ from mosamatic2.core.tasks import CalculateMaskStatisticsTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Task - Calculate Liver Segment Statistics'
+PANEL_TITLE = 'Calculate Liver Segment Statistics'
 PANEL_NAME = 'calculatemaskstatisticstaskpanel'
 
 

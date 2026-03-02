@@ -25,7 +25,7 @@ from mosamatic2.core.tasks import SelectSliceFromScansTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Task - Select Slice From CT Scans'
+PANEL_TITLE = 'Select Slice From CT Scans'
 PANEL_NAME = 'selectslicefromscanstaskpanel'
 
 

@@ -16,7 +16,7 @@ from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 
 LOG = LogManager()
-PANEL_TITLE = 'MuscleFatSegmentationVisualization'
+PANEL_TITLE = 'Muscle and Fat Segmentation'
 PANEL_NAME = 'musclefatsegmentationvisualization'
 
 
