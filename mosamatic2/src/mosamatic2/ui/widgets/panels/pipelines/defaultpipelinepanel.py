@@ -26,7 +26,7 @@ from mosamatic2.core.pipelines import DefaultPipeline
 
 LOG = LogManager()
 
-PANEL_TITLE = 'DefaultPipeline'
+PANEL_TITLE = 'Pipeline - Default L3'
 PANEL_NAME = 'defaultpipelinepanel'
 MODEL_TYPE_ITEM_NAMES = ['tensorflow', 'pytorch']
 MODEL_VERSION_ITEM_NAMES = ['1.0', '2.2']

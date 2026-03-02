@@ -25,7 +25,7 @@ from mosamatic2.core.tasks import SegmentationNumpy2NiftiTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'SegmentationNumpy2NiftiTask'
+PANEL_TITLE = 'Task - Convert Numpy Segmentation to NIFTI Format'
 PANEL_NAME = 'segmentationnumpy2niftitaskpanel'
 
 

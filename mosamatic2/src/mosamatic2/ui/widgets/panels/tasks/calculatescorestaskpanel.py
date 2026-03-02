@@ -28,7 +28,7 @@ from mosamatic2.core.tasks import CalculateScoresTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'CalculateScoresTask'
+PANEL_TITLE = 'Task - Calculate Body Composition Scores'
 PANEL_NAME = 'calculatescorestaskpanel'
 
 

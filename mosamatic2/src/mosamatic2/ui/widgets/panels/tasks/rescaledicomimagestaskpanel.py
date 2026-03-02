@@ -25,7 +25,7 @@ from mosamatic2.core.tasks import RescaleDicomImagesTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'RescaleDicomImagesTask'
+PANEL_TITLE = 'Task - Rescale DICOM Images to 512x512'
 PANEL_NAME = 'rescaledicomfilestaskpanel'
 
 

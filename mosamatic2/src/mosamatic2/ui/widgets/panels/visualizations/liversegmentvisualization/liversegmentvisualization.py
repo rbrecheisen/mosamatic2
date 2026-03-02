@@ -14,7 +14,7 @@ from mosamatic2.ui.settings import Settings
 from mosamatic2.ui.utils import is_macos
 
 LOG = LogManager()
-PANEL_TITLE = 'LiverSegmentVisualization'
+PANEL_TITLE = 'Visualize - Liver Segments in 3D'
 PANEL_NAME = 'liversegmentvisualization'
 
 

@@ -27,7 +27,7 @@ from mosamatic2.core.pipelines import DefaultDockerPipeline
 
 LOG = LogManager()
 
-PANEL_TITLE = 'DefaultDockerPipeline'
+PANEL_TITLE = 'Pipeline - Default L3 (Docker)'
 PANEL_NAME = 'defaultdockerpipeline'
 MODEL_TYPE_ITEM_NAMES = ['tensorflow', 'pytorch']
 MODEL_VERSION_ITEM_NAMES = ['1.0', '2.2']

@@ -26,7 +26,7 @@ from mosamatic2.core.pipelines import LiverAnalysisPipeline
 
 LOG = LogManager()
 
-PANEL_TITLE = 'LiverAnalysisPipeline'
+PANEL_TITLE = 'Pipeline - Liver Analysis'
 PANEL_NAME = 'liveranalysispipelinepanel'
 
 

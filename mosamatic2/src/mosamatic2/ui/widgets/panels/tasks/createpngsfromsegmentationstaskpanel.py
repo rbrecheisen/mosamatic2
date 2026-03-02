@@ -26,7 +26,7 @@ from mosamatic2.core.tasks import CreatePngsFromSegmentationsTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'CreatePngsFromSegmentationsTask'
+PANEL_TITLE = 'Task - Create PNGs From Segmentations'
 PANEL_NAME = 'createpngsfromsegmentationstaskpanel'
 
 

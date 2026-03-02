@@ -25,7 +25,7 @@ from mosamatic2.core.tasks import Dicom2NiftiTask
 
 LOG = LogManager()
 
-PANEL_TITLE = 'Dicom2NiftiTask'
+PANEL_TITLE = 'Task - Convert DICOM to NIFTI'
 PANEL_NAME = 'dicom2niftitaskpanel'
 
 
