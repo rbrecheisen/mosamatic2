@@ -19,7 +19,7 @@ from mosamatic2.core.pipelines import BoaDockerPipeline
 @click.option(
     '--overwrite', 
     type=click.BOOL, 
-    default=False, 
+    default=True, 
     help='Overwrite [true|false]'
 )
 def boadockerpipeline(scans, output, overwrite):

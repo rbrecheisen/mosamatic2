@@ -1,0 +1,2 @@
+scripts\tests\boadockerpipeline.ps1
+scripts\tests\defaultpipeline.ps1

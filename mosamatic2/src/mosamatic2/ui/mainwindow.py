@@ -185,6 +185,7 @@ class MainWindow(QMainWindow):
     def settings(self):
         if not self._settings:
             self._settings = Settings()
+            LOG.info(f'Settings path: {self._settings.fileName()}')
         return self._settings
 
     def main_panel(self):
