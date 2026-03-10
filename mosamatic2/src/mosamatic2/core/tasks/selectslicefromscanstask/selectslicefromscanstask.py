@@ -40,12 +40,25 @@ class SelectSliceFromScansTask(Task):
         with open(self._error_file, 'a') as f:
             f.write(message + '\n')
 
+    def find_output_file(self, name):
+        output = self.output()
+        files = os.listdir(output)
+        for f in files:
+            if f.startswith(name):
+                return os.path.join(self.output(), f)
+        return None
+
     def load_scan_dirs(self):
         scan_dirs = []
         for d in os.listdir(self.input('scans')):
             scan_dir = os.path.join(self.input('scans'), d)
             if os.path.isdir(scan_dir):
-                scan_dirs.append(scan_dir)
+                output_file_base = self.param('vertebra') + '_' + os.path.split(scan_dir)[1]
+                if self.find_output_file(output_file_base) is None:
+                    print(f'New file {scan_dir}')
+                    scan_dirs.append(scan_dir)
+                else:
+                    print(f'Output file {output_file_base} already exists')
         return scan_dirs
     
     def read_ct_series_sitk(self, scan_dir):

@@ -19,7 +19,7 @@ class Task:
         self._overwrite = overwrite
         if self._overwrite and os.path.isdir(self._output):
             shutil.rmtree(self._output)
-        os.makedirs(self._output, exist_ok=self._overwrite)
+        os.makedirs(self._output, exist_ok=True)
         # os.makedirs(self._output, exist_ok=True)
         # Check that the inputs match specification and type
         assert isinstance(self._inputs, dict)

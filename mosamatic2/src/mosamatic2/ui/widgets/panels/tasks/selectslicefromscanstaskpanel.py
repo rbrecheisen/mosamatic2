@@ -79,7 +79,8 @@ class SelectSliceFromScansTaskPanel(TaskPanel):
     def overwrite_checkbox(self):
         if not self._overwrite_checkbox:
             self._overwrite_checkbox = QCheckBox('')
-            self._overwrite_checkbox.setChecked(self.settings().get_bool(f'{PANEL_NAME}/overwrite', True))
+            # self._overwrite_checkbox.setChecked(self.settings().get_bool(f'{PANEL_NAME}/overwrite', True))
+            self._overwrite_checkbox.setChecked(False)
         return self._overwrite_checkbox
     
     def form_layout(self):
@@ -148,6 +149,7 @@ class SelectSliceFromScansTaskPanel(TaskPanel):
                 output=self.output_dir_line_edit().text(),
                 overwrite=self.overwrite_checkbox().isChecked(),
             )
+            # self._task.run()
             self._worker = Worker(self._task)
             self._thread = QThread()
             self._worker.moveToThread(self._thread)
@@ -182,8 +184,8 @@ class SelectSliceFromScansTaskPanel(TaskPanel):
             errors.append('Scans directory does not exist')
         if self.output_dir_line_edit().text() == '':
             errors.append('Empty output directory path')
-        if os.path.isdir(self.output_dir_line_edit().text()) and not self.overwrite_checkbox().isChecked():
-            errors.append('Output directory exists but overwrite=False. Please remove output directory first')
+        # if os.path.isdir(self.output_dir_line_edit().text()) and not self.overwrite_checkbox().isChecked():
+        #     errors.append('Output directory exists but overwrite=False. Please remove output directory first')
         return errors
     
     def save_inputs_and_parameters(self):
