@@ -1,3 +1,7 @@
+2.0.36
+======
+- Fixed resize issue due to segmentation editor (now QDialog)
+
 2.0.35
 ======
 - Renamed menu items

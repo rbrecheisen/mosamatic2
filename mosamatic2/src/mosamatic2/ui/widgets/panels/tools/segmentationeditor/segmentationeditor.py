@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (
     QSplitter,
     QHBoxLayout,
     QFileDialog,
+    QDialog,
 )
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.data.dicomloader import DicomLoader
@@ -18,12 +19,13 @@ PANEL_TITLE = 'Manual Segmentation Editor'
 PANEL_NAME = 'segmentationeditor'
 
 
-class SegmentationEditor(DefaultPanel):
+class SegmentationEditor(QDialog):
 
     #-------------------------------------------------------------------------------------------------------
     def __init__(self, settings):
         super(SegmentationEditor, self).__init__()
-        self.set_title(PANEL_TITLE)
+        # self.set_title(PANEL_TITLE)
+        self._settings = settings
         self._view = None
         self._controls = None
         self.init()
@@ -42,8 +44,12 @@ class SegmentationEditor(DefaultPanel):
         layout.addWidget(splitter)
         self.setLayout(layout)
         self.setObjectName(PANEL_NAME)
+        self.setMinimumWidth(1200)
 
     # GETTERS
+
+    def settings(self):
+        return self._settings
 
     #-------------------------------------------------------------------------------------------------------
     def view(self):

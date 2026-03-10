@@ -173,7 +173,7 @@ class MainWindow(QMainWindow):
 
     def init_tools_menu(self):
         tools_menu = self.menuBar().addMenu('Tools')
-        segmentation_editor_action = QAction(self.segmentation_editor().title(), self)
+        segmentation_editor_action = QAction('Manual segmentation editor', self)
         segmentation_editor_action.triggered.connect(self.handdle_segmentation_editor_action)
         tools_menu.addAction(segmentation_editor_action)
 
@@ -212,7 +212,7 @@ class MainWindow(QMainWindow):
             self._main_panel.add_panel(self.slice_selection_visualization(), 'sliceselectionvisualization')
             self._main_panel.add_panel(self.liver_segment_visualization(), 'liversegmentvisualization')
             self._main_panel.add_panel(self.muscle_fat_segmentation_visualization(), 'musclefatsegmentationvisualization')
-            self._main_panel.add_panel(self.segmentation_editor(), 'segmentationeditor')
+            # self._main_panel.add_panel(self.segmentation_editor(), 'segmentationeditor')
             self._main_panel.select_panel('defaultpipelinepanel')
         return self._main_panel
     
@@ -405,7 +405,8 @@ class MainWindow(QMainWindow):
         self.main_panel().select_panel('musclefatsegmentationvisualization')
 
     def handdle_segmentation_editor_action(self):
-        self.main_panel().select_panel('segmentationeditor')
+        # self.main_panel().select_panel('segmentationeditor')
+        self.segmentation_editor().show()
 
     def showEvent(self, event):
         return super().showEvent(event)
