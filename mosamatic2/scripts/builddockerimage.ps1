@@ -1,0 +1,1 @@
+docker build --no-cache -t brecheisen/mosamatic2-cli:2.0.36 .
