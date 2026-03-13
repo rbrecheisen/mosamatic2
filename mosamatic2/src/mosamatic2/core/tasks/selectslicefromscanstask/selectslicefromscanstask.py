@@ -243,16 +243,20 @@ class SelectSliceFromScansTask(Task):
                 self.write_error(f'{scan_dir}: Could not extract masks [{str(e)}]. Skipping scan...')
                 errors = True
             if not errors:
-                file_path, z_vert = self.find_slice(scan_dir, vertebra)
-                if file_path is not None:
-                    extension = '' if file_path.endswith('.dcm') else '.dcm'
-                    target_file_path = os.path.join(self.output(), vertebra + '_' + scan_name + extension)
-                    shutil.copyfile(file_path, target_file_path)
-                    mask_file = os.path.join(TOTAL_SEGMENTATOR_OUTPUT_DIR, f'vertebrae_{vertebra}.nii.gz')
-                    output_png = os.path.join(self.output(), f"{vertebra}_{scan_name}_sagittal.png")
-                    self.plot_sagittal_with_vertebra_overlay(scan_dir, mask_file, z_vert, output_png)
-                else:
-                    self.write_error(f'{scan_dir}: Could not find slice for vertebral level: {vertebra}')
+                try:
+                    file_path, z_vert = self.find_slice(scan_dir, vertebra)
+                    if file_path is not None:
+                        extension = '' if file_path.endswith('.dcm') else '.dcm'
+                        target_file_path = os.path.join(self.output(), vertebra + '_' + scan_name + extension)
+                        shutil.copyfile(file_path, target_file_path)
+                        mask_file = os.path.join(TOTAL_SEGMENTATOR_OUTPUT_DIR, f'vertebrae_{vertebra}.nii.gz')
+                        output_png = os.path.join(self.output(), f"{vertebra}_{scan_name}_sagittal.png")
+                        self.plot_sagittal_with_vertebra_overlay(scan_dir, mask_file, z_vert, output_png)
+                    else:
+                        self.write_error(f'{scan_dir}: Could not find slice for vertebral level: {vertebra}')
+                        errors = True
+                except Exception as e:
+                    self.write_error(f'{scan_dir}: General error ({str(e)}). Skipping scan...')
                     errors = True
                 self.delete_total_segmentator_output()
             if errors:
