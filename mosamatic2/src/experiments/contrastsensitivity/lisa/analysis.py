@@ -1,3 +1,4 @@
+import os
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,6 +7,7 @@ from scipy.stats import ttest_rel, linregress
 
 BC_SCORES_FILE_PATH = 'M:\\data\\contrastsensitivity\\lisavalidation\\output\\defaultpipeline\\calculatescorestask\\bc_scores.csv'
 COEFFICIENT_FILE_PATH = 'M:\\data\\contrastsensitivity\\lieke\\output\\coefficients.json'
+OUTPUT_DIR = 'M:\\data\\contrastsensitivity\\lisavalidation\\output'
 
 
 # LOADING DATA
@@ -31,9 +33,10 @@ def load_coefficients():
 
 # STATISTICS
 
-def ttest(df1, df2, column):
+def ttest(df1, df2, column, verbose=False):
     t_stat, p_value = ttest_rel(df1[column], df2[column], nan_policy='omit')
-    print(f'[{column}] t = {t_stat:.3f}, p-value = {p_value:.3g}')
+    if verbose:
+        print(f'[{column}] t = {t_stat:.3f}, p-value = {p_value:.3g}')
     return t_stat, p_value
 
 # TRANSFORM
@@ -48,21 +51,29 @@ def transform_df_to_venous(df_old, coefficients):
 
 # DISPLAY
 
-def print_ttest_results(df_venous, df_unenhanced, df_arterial):
-    print('\nUnenhanced vs. venous:')
-    ttest(df_unenhanced, df_venous, column='muscle_ra')
-    ttest(df_unenhanced, df_venous, column='muscle_area')
-    ttest(df_unenhanced, df_venous, column='vat_area')
-    ttest(df_unenhanced, df_venous, column='vat_ra')
-    ttest(df_unenhanced, df_venous, column='sat_area')
-    ttest(df_unenhanced, df_venous, column='sat_ra')
-    print('\nArterial vs venous:')
-    ttest(df_arterial, df_venous, column='muscle_ra')
-    ttest(df_arterial, df_venous, column='muscle_area')
-    ttest(df_arterial, df_venous, column='vat_area')
-    ttest(df_arterial, df_venous, column='vat_ra')
-    ttest(df_arterial, df_venous, column='sat_area')
-    ttest(df_arterial, df_venous, column='sat_ra')
+def print_ttest_results(df_venous, df_unenhanced, df_arterial, fn_unenhanced, fn_arterial):
+    data = {'column': [], 't_stat': [], 'p_value': []}
+    for column in ['muscle_area', 'muscle_ra', 'vat_area', 'vat_ra', 'sat_area', 'sat_ra']:
+        t_stat, p_value = ttest(df_unenhanced, df_venous, column=column)
+        data['column'].append(column)
+        data['t_stat'].append(t_stat)
+        data['p_value'].append(p_value)
+    df_unenhanced_to_venous_ttest = pd.DataFrame(data=data)
+    df_unenhanced_to_venous_ttest.to_excel(os.path.join(OUTPUT_DIR, fn_unenhanced), index=False)
+    print()
+    print('Unenhanced vs. venous:')
+    print(df_unenhanced_to_venous_ttest)
+    data = {'column': [], 't_stat': [], 'p_value': []}
+    for column in ['muscle_area', 'muscle_ra', 'vat_area', 'vat_ra', 'sat_area', 'sat_ra']:
+        t_stat, p_value = ttest(df_arterial, df_venous, column=column)
+        data['column'].append(column)
+        data['t_stat'].append(t_stat)
+        data['p_value'].append(p_value)
+    df_arterial_to_venous_ttest = pd.DataFrame(data=data)
+    df_arterial_to_venous_ttest.to_excel(os.path.join(OUTPUT_DIR, fn_arterial), index=False)
+    print()
+    print('Arterial vs venous:')
+    print(df_arterial_to_venous_ttest)
 
 def create_scatter_plots(df_venous, df_unenhanced, df_arterial):
     fig = plt.figure(figsize=(30, 15), layout='constrained')
@@ -138,8 +149,10 @@ def main():
 
     # Plot raw scores and print t-test results before conversion
     # create_scatter_plots(scores_venous, scores_unenhanced, scores_arterial)
+    print('RAW T-TEST RESULTS:')
     print_ttest_results(
-        scores_venous, scores_unenhanced, scores_arterial)
+        scores_venous, scores_unenhanced, scores_arterial, fn_unenhanced='raw_unenhanced.xlsx', fn_arterial='raw_arterial.xlsx')
+    print()
 
     # Convert unenhanced and arterial scores to venous
     scores_unenhanced_converted = transform_df_to_venous(scores_unenhanced, coefficients_unenhanced)
@@ -147,8 +160,10 @@ def main():
 
     # Plot new scores and print t-test results
     # create_scatter_plots(scores_venous, scores_unenhanced_converted, scores_arterial_converted)
+    print('CONVERTED T-TEST RESULTS')
     print_ttest_results(
-        scores_venous, scores_unenhanced_converted, scores_arterial_converted)
+        scores_venous, scores_unenhanced_converted, scores_arterial_converted, fn_unenhanced='converted_unenhanced.xlsx', fn_arterial='converted_arterial.xlsx')
+    print()
 
 if __name__ == '__main__':
     main()
