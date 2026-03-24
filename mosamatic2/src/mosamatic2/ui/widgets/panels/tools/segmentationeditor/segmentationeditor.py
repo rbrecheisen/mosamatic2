@@ -6,7 +6,9 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QFileDialog,
     QDialog,
+    QMessageBox,
 )
+from pathlib import Path
 from mosamatic2.core.managers.logmanager import LogManager
 from mosamatic2.core.data.dicomloader import DicomLoader
 from mosamatic2.ui.widgets.panels.defaultpanel import DefaultPanel
@@ -122,10 +124,6 @@ class SegmentationEditor(QDialog):
                 seg_path = file_path + '.seg.npy'
                 if os.path.isfile(seg_path):
                     mask = np.load(seg_path).astype(np.uint8)
-                seg_path = file_path + '.npz'
-                if os.path.isfile(seg_path):
-                    data = np.load(file_path, allow_pickle=True)
-                    mask = data["mask"].astype(np.uint8)
                 if mask is None:
                     mask = np.zeros_like(disp8, dtype=np.uint8)
                 self.view().set_document(Document(img=img, disp8=disp8, mask=mask, meta=meta))
@@ -137,8 +135,22 @@ class SegmentationEditor(QDialog):
 
     #-------------------------------------------------------------------------------------------------------
     def handle_segmentation_saved(self):
-        # TODO: implement this!!!
-        pass
+        document = self.view().document()
+        if document is None:
+            return
+        last_directory = self.settings().get('last_directory', None)
+        file_path, _ = QFileDialog.getSaveFileName(dir=last_directory, filter='NumPy (*.npy)')
+        if file_path:
+            file_path = Path(file_path)
+            if file_path.suffix.lower() == '.npy':
+                if os.path.isfile(file_path):
+                    QMessageBox.warning(self, 'Warning', 'Segmentation file already exists! Cannot overwrite it.')
+                else:
+                    np.save(file_path, document.mask.astype(np.uint8))
+                QMessageBox.information(self, 'Ok', 'Segmentation mask successfully saved')
+            else:
+                QMessageBox.critical(self, 'Error', f'Format {file_path.suffix.lower()} not supported')
+            self.settings().set('last_directory', os.path.split(file_path)[0])
 
     #-------------------------------------------------------------------------------------------------------
     def handle_active_label_changed(self, label):
