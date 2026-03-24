@@ -2,11 +2,13 @@ import os
 import shutil
 import pydicom
 
-DIR_ORG = 'M:\data\impact_emmy_maas\original'
-DIR_ORG_FLAT = 'M:\data\impact_emmy_maas\original_flattened'
+DIR_ORG = 'M:\\data\\emmymaas\\23-03-2026\\original'
+DIR_ORG_FLAT = 'M:\\data\\emmymaas\\23-03-2026\\original_flattened'
+os.makedirs(DIR_ORG_FLAT, exist_ok=True)
 
 
 def main():
+
     # Check uniques of file names before copying
     files = []
     for f in os.listdir(DIR_ORG):
@@ -14,6 +16,7 @@ def main():
             files.append(f)
         else:
             raise RuntimeError('File already exists!')
+    
     # Copy files to output directory
     for root, dirs, files in os.walk(DIR_ORG):
         for f in files:

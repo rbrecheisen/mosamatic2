@@ -48,17 +48,20 @@ class RescaleDicomImagesTask(Task):
                 source = images[step]
                 assert isinstance(source, DicomImage)
                 p = source.object()
-                if len(p.pixel_array.shape) == 2:
-                    source_name = os.path.split(source.path())[1]
-                    if p.Rows != self.param('target_size') or p.Columns != self.param('target_size'):
-                        p = self.rescale_image(p, self.param('target_size'))
-                        target = os.path.join(self.output(), source_name)
-                        p.save_as(target)
+                try:
+                    if len(p.pixel_array.shape) == 2:
+                        source_name = os.path.split(source.path())[1]
+                        if p.Rows != self.param('target_size') or p.Columns != self.param('target_size'):
+                            p = self.rescale_image(p, self.param('target_size'))
+                            target = os.path.join(self.output(), source_name)
+                            p.save_as(target)
+                        else:
+                            target = os.path.join(self.output(), source_name)
+                            shutil.copy(source.path(), target)
                     else:
-                        target = os.path.join(self.output(), source_name)
-                        shutil.copy(source.path(), target)
-                else:
-                    LOG.warning(f'Shape of pixel data in file {source.path()} should be 2D but is {len(p.pixel_array.shape)}D')
+                        LOG.warning(f'Shape of pixel data in file {source.path()} should be 2D but is {len(p.pixel_array.shape)}D')
+                except Exception as e:
+                    LOG.warning(f'Error occurred: {str(e)} in image {source.path()}')
                 self.set_progress(step, nr_steps)
         else:
             LOG.error('Error loading multi-DICOM image data')
