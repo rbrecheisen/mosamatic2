@@ -1,4 +1,5 @@
 import os
+import time
 import shutil
 import numpy as np
 from mosamatic2.core.tasks.task import Task
@@ -63,5 +64,6 @@ class RescaleDicomImagesTask(Task):
                 except Exception as e:
                     LOG.warning(f'Error occurred: {str(e)} in image {source.path()}')
                 self.set_progress(step, nr_steps)
+                time.sleep(0.1)
         else:
             LOG.error('Error loading multi-DICOM image data')
