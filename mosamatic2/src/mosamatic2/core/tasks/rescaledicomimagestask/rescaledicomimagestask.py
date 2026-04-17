@@ -64,6 +64,6 @@ class RescaleDicomImagesTask(Task):
                 except Exception as e:
                     LOG.warning(f'Error occurred: {str(e)} in image {source.path()}')
                 self.set_progress(step, nr_steps)
-                time.sleep(0.1)
+                time.sleep(0.01)
         else:
             LOG.error('Error loading multi-DICOM image data')

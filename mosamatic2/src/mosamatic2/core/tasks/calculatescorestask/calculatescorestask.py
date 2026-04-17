@@ -237,7 +237,7 @@ class CalculateScoresTask(Task):
             data['visceral_obesity'].append(visceral_obesity)
             # Update progress
             self.set_progress(step, nr_steps)
-            time.sleep(0.1)
+            time.sleep(0.01)
         # Build dataframe and return the CSV file as output
         csv_file_path = os.path.join(self.output(), 'bc_scores.csv')
         xls_file_path = os.path.join(self.output(), 'bc_scores.xlsx')
