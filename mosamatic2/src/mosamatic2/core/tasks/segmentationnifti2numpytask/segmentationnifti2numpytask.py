@@ -21,7 +21,7 @@ class SegmentationNifti2NumpyTask(Task):
     def load_segmentations(self):
         segmentations = []
         for f in os.listdir(self.input('segmentations')):
-            if f.endswith('.seg.npy.nii.gz'):
+            if f.endswith('.nii.gz'):
                 f_path = os.path.join(self.input('segmentations'), f)
                 segmentations.append(f_path)
                 print(f_path)
