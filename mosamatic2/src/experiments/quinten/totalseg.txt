@@ -1,0 +1,62 @@
+import os
+import shutil
+import argparse
+import tempfile
+from totalsegmentator.python_api import totalsegmentator
+
+TASKS = [
+    'total',
+    'liver_vessels',
+]
+
+TEMPDIR = os.path.join(tempfile.gettempdir(), 'totalsegmentator')
+os.makedirs(TEMPDIR, exist_ok=True)
+
+INPUT_DIR = 'M:\\data\\3dircadb\\3Dircadb1\\3Dircadb1\\3Dircadb1.1\\PATIENT_DICOM\\PATIENT_DICOM'
+
+OUTPUT_DIR = 'M:\\data\\3dircadb\\output'
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+
+#---------------------------------------------------------------------------------------------
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-i',
+        '--input-dir',
+        default=INPUT_DIR,
+        help='Input directory containing DICOM images for single CT scan',
+    )
+    parser.add_argument(
+        '-o',
+        '--output-dir',
+        default=OUTPUT_DIR,
+        help='Output directory to save Total Segmentator segmentation masks in NIFT format',
+    )
+    return parser.parse_args()
+
+
+#---------------------------------------------------------------------------------------------
+def extract_masks(input_dir, output_dir):
+    for task in TASKS:
+        try:
+            print(f'Running task {task}...')
+            totalsegmentator(input=input_dir, output=TEMPDIR, task=task)
+            for f in os.listdir(TEMPDIR):
+                if f.endswith('.nii') or f.endswith('.nii.gz'):
+                    source = os.path.join(TEMPDIR, f)
+                    target = os.path.join(output_dir, f)
+                    shutil.copyfile(source, target)
+        finally:
+            if os.path.exists(TEMPDIR):
+                shutil.rmtree(TEMPDIR)
+
+
+#---------------------------------------------------------------------------------------------
+def main():
+    args = get_args()
+    extract_masks(args.input_dir, args.output_dir)
+
+
+if __name__ == '__main__':
+    main()

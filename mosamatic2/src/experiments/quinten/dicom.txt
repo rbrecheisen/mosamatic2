@@ -1,0 +1,27 @@
+import argparse
+import pydicom
+import numpy as np
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-i'
+    )
+
+
+def main():
+    p = pydicom.dcmread('M:\\data\\3dircadb\\3Dircadb1\\3Dircadb1\\3Dircadb1.1\\PATIENT_DICOM\\PATIENT_DICOM\\image_24')
+    pixels = p.pixel_array
+    print(f'min/max: {np.min(pixels)}/{np.max(pixels)}')
+    slope = getattr(p, 'RescaleSlope', None)
+    intercept = getattr(p, 'RescaleIntercept', None)
+    if slope is not None and intercept is not None:
+        pixels = slope * pixels + intercept
+        print(f'min/max (after): {np.min(pixels)}/{np.max(pixels)}')
+    else:
+        print('Slope and intercept not found in DICOM header')
+
+
+if __name__ == '__main__':
+    main()
