@@ -211,7 +211,7 @@ class CalculateScoresTask(Task):
             LOG.info(f'file: {file_name}, ' +
                     f'muscle_area: {muscle_area}, muscle_idx: {muscle_idx}, muscle_ra: {muscle_ra}, ' +
                     f'vat_area: {vat_area}, vat_idx: {vat_idx}, vat_ra: {vat_ra}, ' +
-                    f'sat_area: {sat_area}, sat_idx: {sat_idx}, sat_ra: {sat_ra}, ' +
+                    f'sat_area: {sat_area}, sat_idx: {sat_idx}, sat_ra: {sat_ra}, '
                     # f'muscle_lama_perc: {muscle_lama_perc}, ' +
                     # f'bmi: {bmi}, ' +
                     # f'sarcopenia: {sarcopenia}, ' +
