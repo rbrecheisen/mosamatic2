@@ -148,14 +148,15 @@ class CalculateScoresTask(Task):
         # Create empty data dictionary
         data = {
             'file': [], 
-            'muscle_area': [], 'muscle_idx': [], 'muscle_ra': [], 'muscle_lama_perc': [],
+            'muscle_area': [], 'muscle_idx': [], 'muscle_ra': [], 
+            # 'muscle_lama_perc': [],
             'vat_area': [], 'vat_idx': [], 'vat_ra': [],
             'sat_area': [], 'sat_idx': [], 'sat_ra': [],
-            'bmi': [],
-            'sarcopenia': [],
-            'sarcopenic_obesity': [],
-            'myosteatosis': [],
-            'visceral_obesity': [],
+            # 'bmi': [],
+            # 'sarcopenia': [],
+            # 'sarcopenic_obesity': [],
+            # 'myosteatosis': [],
+            # 'visceral_obesity': [],
         }
         nr_steps = len(img_seg_pairs)
         for step in range(nr_steps):
@@ -175,7 +176,7 @@ class CalculateScoresTask(Task):
             if patient_info:
                 muscle_idx = calculate_index(muscle_area, self.get_patient_height(file_name, patient_info))
             muscle_ra = calculate_mean_radiation_attenuation(image, segmentation, MUSCLE)
-            muscle_lama_perc = calculate_lama_percentage(image, segmentation, MUSCLE)
+            # muscle_lama_perc = calculate_lama_percentage(image, segmentation, MUSCLE)
             vat_area = calculate_area(segmentation, VAT, pixel_spacing)
             vat_idx = 0
             if patient_info:
@@ -211,30 +212,30 @@ class CalculateScoresTask(Task):
                     f'muscle_area: {muscle_area}, muscle_idx: {muscle_idx}, muscle_ra: {muscle_ra}, ' +
                     f'vat_area: {vat_area}, vat_idx: {vat_idx}, vat_ra: {vat_ra}, ' +
                     f'sat_area: {sat_area}, sat_idx: {sat_idx}, sat_ra: {sat_ra}, ' +
-                    f'muscle_lama_perc: {muscle_lama_perc}, ' +
-                    f'bmi: {bmi}, ' +
-                    f'sarcopenia: {sarcopenia}, ' +
-                    f'sarcopenic_obesity: {sarcopenic_obesity}, ' +
-                    f'myosteatosis: {myosteatosis}, ' +
-                    f'visceral_obesity: {visceral_obesity}'
+                    # f'muscle_lama_perc: {muscle_lama_perc}, ' +
+                    # f'bmi: {bmi}, ' +
+                    # f'sarcopenia: {sarcopenia}, ' +
+                    # f'sarcopenic_obesity: {sarcopenic_obesity}, ' +
+                    # f'myosteatosis: {myosteatosis}, ' +
+                    # f'visceral_obesity: {visceral_obesity}'
             )
             # Update dataframe data
             data['file'].append(file_name)
             data['muscle_area'].append(muscle_area)
             data['muscle_idx'].append(muscle_idx)
             data['muscle_ra'].append(muscle_ra)
-            data['muscle_lama_perc'].append(muscle_lama_perc)
+            # data['muscle_lama_perc'].append(muscle_lama_perc)
             data['vat_area'].append(vat_area)
             data['vat_idx'].append(vat_idx)
             data['vat_ra'].append(vat_ra)
             data['sat_area'].append(sat_area)
             data['sat_idx'].append(sat_idx)
             data['sat_ra'].append(sat_ra)
-            data['bmi'].append(bmi)
-            data['sarcopenia'].append(sarcopenia)
-            data['sarcopenic_obesity'].append(sarcopenic_obesity)
-            data['myosteatosis'].append(myosteatosis)
-            data['visceral_obesity'].append(visceral_obesity)
+            # data['bmi'].append(bmi)
+            # data['sarcopenia'].append(sarcopenia)
+            # data['sarcopenic_obesity'].append(sarcopenic_obesity)
+            # data['myosteatosis'].append(myosteatosis)
+            # data['visceral_obesity'].append(visceral_obesity)
             # Update progress
             self.set_progress(step, nr_steps)
             time.sleep(0.01)
